@@ -34,9 +34,9 @@
                             <field name="name" string="Project Name (RU)"/>
                             <field name="name_en"/>
                             <field name="project_manager_id" widget="many2one_avatar_user" />
-                            <field name="project_type" options="{'no_create': True}"/>
-                            <field name="project_status"/>
-                            <field name="partner_id" string="Customer"/>
+                            <field name="project_type_id" />
+                            <field name="project_status" />
+                            <field name="custom_customer_id" />
                             <field name="tag_ids" string="Keywords" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
                         </group>
                         <group string="Dates">

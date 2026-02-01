@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_university_project_role_list" model="ir.ui.view">
+            <field name="name">university.project.role.list</field>
+            <field name="model">university.project.role</field>
+            <field name="arch" type="xml">
+                <list string="Project Roles" editable="bottom">
+                    <field name="name"/>
+                    <field name="code"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_university_project_role_search" model="ir.ui.view">
+            <field name="name">university.project.role.search</field>
+            <field name="model">university.project.role</field>
+            <field name="arch" type="xml">
+                <search string="Search Roles">
+                    <field name="name"/>
+                    <field name="code"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_university_project_role" model="ir.actions.act_window">
+            <field name="name">Project Roles</field>
+            <field name="res_model">university.project.role</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                Create a new Project Role
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

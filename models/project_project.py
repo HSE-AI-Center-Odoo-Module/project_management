@@ -6,12 +6,9 @@ class Project(models.Model):
 
     # --- Ваши существующие поля ---
     name_en = fields.Char(string="Name (EN)")
-    project_type = fields.Selection([
-        ('research', 'Research'),
-        ('dev', 'Development'),
-        ('education', 'Education')
-    ], string="Project Type", default='dev')
     
+    project_type_id = fields.Char(string='Type Name', required=True, translate=True)
+
     project_status = fields.Selection([
         ('draft', 'Draft'),
         ('active', 'Active'),
@@ -66,6 +63,18 @@ class Project(models.Model):
         for project in self:
             # Пользователь — менеджер, если он админ ИЛИ указан в поле project_manager_id
             project.is_manager = is_admin or (project.project_manager_id == self.env.user)
+
+    project_type_id = fields.Many2one(
+        'university.project.type', 
+        string='Project Type',
+        tracking=True
+    )
+    
+    custom_customer_id = fields.Many2one(
+        'university.project.customer', 
+        string='Customer',
+        tracking=True
+    )
 
 class ProjectTask(models.Model):
     _inherit = "project.task"

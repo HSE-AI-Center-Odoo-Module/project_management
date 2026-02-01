@@ -1,71 +1,31 @@
 <odoo>
-    <record id="role_owner" model="university.project.role">
-        <field name="name">Owner</field>
-        <field name="code">owner</field>
-        <field name="sequence">1</field>
-        <field name="can_read_project">True</field>
-        <field name="can_write_project">True</field>
-        <field name="can_read_tasks">True</field>
-        <field name="can_write_tasks">True</field>
-    </record>
-
-    <record id="role_project_manager" model="university.project.role">
-        <field name="name">Project Manager</field>
-        <field name="code">project_manager</field>
-        <field name="sequence">2</field>
-        <field name="can_read_project">True</field>
-        <field name="can_write_project">True</field>
-        <field name="can_read_tasks">True</field>
-        <field name="can_write_tasks">True</field>
-    </record>
-
     <record id="role_expert" model="university.project.role">
         <field name="name">Expert</field>
         <field name="code">expert</field>
-        <field name="sequence">3</field>
-        <field name="can_read_project">True</field>
-        <field name="can_write_project">False</field>
-        <field name="can_read_tasks">True</field>
-        <field name="can_write_tasks">True</field>
+        <field name="sequence">1</field>
     </record>
 
     <record id="role_researcher" model="university.project.role">
         <field name="name">Researcher</field>
         <field name="code">researcher</field>
-        <field name="sequence">4</field>
-        <field name="can_read_project">True</field>
-        <field name="can_write_project">False</field>
-        <field name="can_read_tasks">True</field>
-        <field name="can_write_tasks">True</field>
+        <field name="sequence">2</field>
     </record>
 
     <record id="role_developer" model="university.project.role">
         <field name="name">Developer</field>
         <field name="code">developer</field>
-        <field name="sequence">5</field>
-        <field name="can_read_project">True</field>
-        <field name="can_write_project">False</field>
-        <field name="can_read_tasks">True</field>
-        <field name="can_write_tasks">True</field>
+        <field name="sequence">3</field>
     </record>
 
     <record id="role_analyst" model="university.project.role">
         <field name="name">Analyst</field>
         <field name="code">analyst</field>
-        <field name="sequence">6</field>
-        <field name="can_read_project">True</field>
-        <field name="can_write_project">False</field>
-        <field name="can_read_tasks">True</field>
-        <field name="can_write_tasks">False</field>
+        <field name="sequence">4</field>
     </record>
 
     <record id="role_intern" model="university.project.role">
         <field name="name">Intern</field>
         <field name="code">intern</field>
-        <field name="sequence">7</field>
-        <field name="can_read_project">True</field>
-        <field name="can_write_project">False</field>
-        <field name="can_read_tasks">True</field>
-        <field name="can_write_tasks">False</field>
+        <field name="sequence">5</field>
     </record>
 </odoo>

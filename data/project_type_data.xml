@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="project_type_nir" model="university.project.type">
+            <field name="name">Research</field>
+        </record>
+
+        <record id="project_type_okr" model="university.project.type">
+            <field name="name">Development</field>
+        </record>
+
+        <record id="project_type_edu" model="university.project.type">
+            <field name="name">Educational Project</field>
+        </record>
+    </data>
+</odoo>
