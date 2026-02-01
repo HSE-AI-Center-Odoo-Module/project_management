@@ -28,24 +28,23 @@
             <xpath expr="//notebook/page[1]" position="before">
 
                 <!-- Паспорт проекта -->
-                <page string="Паспорт проекта" name="university_project_passport">
+                <page string="Project Passport" name="university_project_passport">
                     <group>
-                        <group string="Базовая информация">
-                            <field name="name" string="Название проекта (RU)"/>
+                        <group string="Basic Information" col="2">
+                            <field name="name" string="Project Name (RU)"/>
                             <field name="name_en"/>
-                            <field name="user_id" string="Менеджер проекта"/>
+                            <field name="user_id" string="Project Manager"/>
                             <field name="project_type" options="{'no_create': True}"/>
                             <field name="project_status"/>
-                            <field name="partner_id" string="Заказчик"/>
-                            <field name="tag_ids" string="Ключевые слова" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
+                            <field name="partner_id" string="Customer"/>
+                            <field name="tag_ids" string="Keywords" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
                         </group>
-                        <group string="Даты">
-                            <field name="date_start"/>
+                        <group string="Dates">
                             <field name="date"/>
                         </group>
                     </group>
 
-                    <group string="Ресурсы" col="2">
+                    <group string="Resources" col="2">
                         <field name="link_repo"/>
                         <field name="link_docs"/>
                         <field name="link_design"/>
@@ -68,7 +67,7 @@
                 </page>
 
                 <!-- Команда -->
-                <page string="Команда" name="university_project_team">
+                <page string="Team" name="university_project_team">
                     <field name="member_ids" context="{'default_project_id': id}">
                         <list editable="bottom">
                             <field name="user_id"/>
@@ -79,7 +78,7 @@
                 </page>
 
                 <!-- Вложения -->
-                <page string="Вложения" name="university_project_docs">
+                <page string="Attachments" name="university_project_docs">
                     <field name="document_ids">
                         <list editable="bottom">
                             <field name="name"/>

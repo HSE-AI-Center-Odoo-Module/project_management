@@ -1,0 +1,318 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* project_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0-20260119\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-01 18:13+0000\n"
+"PO-Revision-Date: 2026-02-01 18:13+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__active
+#: model:ir.model.fields.selection,name:project_management.selection__project_project__project_status__active
+msgid "Active"
+msgstr "Активный"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__link_ids
+msgid "Additional Links"
+msgstr "Дополнительные ссылки"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__project_member_user_ids
+msgid "Allowed Assignees"
+msgstr "Разрешённые исполнители"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Attachments"
+msgstr "Вложения"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Basic Information"
+msgstr "Основная информация"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__can_read_project
+msgid "Can Read Project"
+msgstr "Может просматривать проект"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__can_read_tasks
+msgid "Can Read Tasks"
+msgstr "Может просматривать задачи"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__can_write_project
+msgid "Can Write Project"
+msgstr "Может редактировать проект"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__can_write_tasks
+msgid "Can Write Tasks"
+msgstr "Может редактировать задачи"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_project__project_status__cancel
+msgid "Cancelled"
+msgstr "Отменено"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__link_chat
+msgid "Chat"
+msgstr "Чат"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__role_code
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__code
+msgid "Code"
+msgstr "Код"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__create_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__create_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__create_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__create_uid
+msgid "Created by"
+msgstr "Создано"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__create_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__create_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__create_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__create_date
+msgid "Created on"
+msgstr "Дата создания"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Customer"
+msgstr "Заказчик"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Dates"
+msgstr "Даты"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__link_design
+msgid "Design"
+msgstr "Дизайн"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_project__project_type__dev
+msgid "Development"
+msgstr "Разработка"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__display_name
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__display_name
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__display_name
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__display_name
+msgid "Display Name"
+msgstr "Отображаемое имя"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__link_docs
+msgid "Documentation"
+msgstr "Документация"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__document_ids
+msgid "Documents"
+msgstr "Документы"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_project__project_status__done
+msgid "Done"
+msgstr "Выполнено"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_project__project_status__draft
+msgid "Draft"
+msgstr "Черновик"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_project__project_type__education
+msgid "Education"
+msgstr "Образование"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__file_name
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__name
+msgid "Filename"
+msgstr "Имя файла"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__id
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__id
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__id
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__id
+msgid "ID"
+msgstr "ID"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Keywords"
+msgstr "Ключевые слова"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__write_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__write_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__write_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__write_uid
+msgid "Last Updated by"
+msgstr "Обновлено пользователем"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__write_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__write_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__write_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__write_date
+msgid "Last Updated on"
+msgstr "Дата последнего обновления"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__link_meeting
+msgid "Meetings"
+msgstr "Встречи"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__name
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__name
+msgid "Name"
+msgstr "Название"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__name_en
+msgid "Name (EN)"
+msgstr "Название (EN)"
+
+#. module: project_management
+#: model:ir.model,name:project_management.model_project_project
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__project_id
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__project_id
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__project_id
+msgid "Project"
+msgstr "Проект"
+
+#. module: project_management
+#: model:ir.model,name:project_management.model_university_project_document
+msgid "Project Document Attachment"
+msgstr "Вложение документа проекта"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Project Manager"
+msgstr "Менеджер проекта"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__member_user_ids
+msgid "Project Members"
+msgstr "Участники проекта"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Project Name (RU)"
+msgstr "Название проекта (RU)"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Project Passport"
+msgstr "Паспорт проекта"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__link_repo
+msgid "Repository"
+msgstr "Репозиторий"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_project__project_type__research
+msgid "Research"
+msgstr "Исследование"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Resources"
+msgstr "Ресурсы"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__role_id
+msgid "Role"
+msgstr "Роль"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__sequence
+msgid "Sequence"
+msgstr "Последовательность"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__project_status
+msgid "Status"
+msgstr "Статус"
+
+#. module: project_management
+#: model:ir.model,name:project_management.model_project_task
+msgid "Task"
+msgstr "Задача"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__member_ids
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Team"
+msgstr "Команда"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_member__role_code
+#: model:ir.model.fields,help:project_management.field_university_project_role__code
+msgid "Technical code, e.g. owner, manager, member, viewer"
+msgstr "Технический код, например owner, manager, member, viewer"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_link__url
+msgid "URL"
+msgstr "URL"
+
+#. module: project_management
+#: model:ir.model,name:project_management.model_university_project_link
+msgid "University project link"
+msgstr "Ссылка университетского проекта"
+
+#. module: project_management
+#: model:ir.model,name:project_management.model_university_project_member
+msgid "University project member"
+msgstr "Участник университетского проекта"
+
+#. module: project_management
+#: model:ir.model,name:project_management.model_university_project_role
+msgid "University project role"
+msgstr "Роль университетского проекта"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__user_id
+msgid "User"
+msgstr "Пользователь"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__project_owner_id
+msgid "Project owner"
+msgstr "Владелец"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__project_type
+msgid "Project Type"
+msgstr "Тип проекта"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__file_data
+msgid "File"
+msgstr "Файл"

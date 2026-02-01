@@ -6,10 +6,10 @@ class UniversityProjectDocument(models.Model):
     _description = "Project Document Attachment"
     _order = "name"
 
-    name = fields.Char(string="Название файла", required=True)
+    name = fields.Char(string="Filename", required=True)
     
     # КЛЮЧЕВОЕ ПОЛЕ: для загрузки и хранения самого файла
-    file_data = fields.Binary(string="Файл", required=True)
+    file_data = fields.Binary(string="File", required=True)
     file_name = fields.Char(string="Filename") # для хранения имени файла
     
     # СВЯЗЬ: Many2one, которая связывает вложение с конкретным проектом

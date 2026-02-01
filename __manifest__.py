@@ -18,6 +18,7 @@
 
         # Data
         "data/project_role_data.xml",
+        "data/russian_default.xml",
 
         # Views
         "views/project_views.xml",

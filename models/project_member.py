@@ -14,8 +14,8 @@ class UniversityProjectMember(models.Model):
     _logger.info(">>> university.project.member MODEL LOADED <<<")
 
     project_id = fields.Many2one("project.project", required=True, ondelete="cascade", index=True)
-    user_id = fields.Many2one("res.users", string="Пользователь", required=True, ondelete="restrict", index=True)
-    role_id = fields.Many2one("university.project.role", string="Роль", required=True, ondelete="restrict")
+    user_id = fields.Many2one("res.users", string="User", required=True, ondelete="restrict", index=True)
+    role_id = fields.Many2one("university.project.role", string="Role", required=True, ondelete="restrict")
 
     # для удобства отображения
     role_code = fields.Char(related="role_id.code", store=True, readonly=True)

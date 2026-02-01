@@ -10,33 +10,32 @@ class Project(models.Model):
         ('research', 'Research'),
         ('dev', 'Development'),
         ('education', 'Education')
-    ], string="Тип проекта", default='dev')
+    ], string="Project Type", default='dev')
     
     project_status = fields.Selection([
-        ('draft', 'Черновик'),
-        ('active', 'Активен'),
-        ('done', 'Завершен'),
-        ('cancel', 'Отменен')
-    ], string="Статус", default='draft')
+        ('draft', 'Draft'),
+        ('active', 'Active'),
+        ('done', 'Done'),
+        ('cancel', 'Cancelled')
+    ], string="Status", default='draft')
 
-    link_repo = fields.Char(string="Репозиторий")
-    link_docs = fields.Char(string="Документация")
-    link_design = fields.Char(string="Дизайн")
-    link_chat = fields.Char(string="Чат")
-    link_meeting = fields.Char(string="Встречи")
-
+    link_repo = fields.Char(string="Repository")
+    link_docs = fields.Char(string="Documentation")
+    link_design = fields.Char(string="Design")
+    link_chat = fields.Char(string="Chat")
+    link_meeting = fields.Char(string="Meetings")
     # Связи (One2many)
-    link_ids = fields.One2many("university.project.link", "project_id", string="Ссылки")
-    document_ids = fields.One2many("university.project.document", "project_id", string="Документы")
-    member_ids = fields.One2many("university.project.member", "project_id", string="Команда")
+    link_ids = fields.One2many("university.project.link", "project_id", string="Additional Links")
+    document_ids = fields.One2many("university.project.document", "project_id", string="Documents")
+    member_ids = fields.One2many("university.project.member", "project_id", string="Team")
 
-    project_owner_id = fields.Many2one("res.users", string="Владелец", default=lambda self: self.env.user)
+    project_owner_id = fields.Many2one("res.users", string="Project Owner", default=lambda self: self.env.user)
 
     # --- ИСПРАВЛЕНИЕ: store=True обязательно для работы ir.rule и поисков ---
     member_user_ids = fields.Many2many(
         "res.users",
         compute="_compute_member_user_ids",
-        string="Пользователи команды",
+        string="Project Members",
         store=True, 
     )
 
@@ -55,7 +54,7 @@ class ProjectTask(models.Model):
     # Техническое поле для передачи списка участников в XML-вид
     project_member_user_ids = fields.Many2many(
         related="project_id.member_user_ids", 
-        string="Допустимые исполнители",
+        string="Allowed Assignees",
         readonly=True
     )
 
@@ -75,6 +74,6 @@ class ProjectTask(models.Model):
                 if invalid_users:
                     names = ", ".join(invalid_users.mapped('name'))
                     raise ValidationError(
-                        f"Ошибка! Пользователи: [{names}] не являются участниками проекта '{task.project_id.name}'. "
-                        "Вы не можете назначить задачу сотруднику вне команды."
+                        f"Error! Users: [{names}] are not members of the project '{task.project_id.name}'. "
+                        "You cannot assign a task to a user outside the project team."
                     )
