@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_form_inherit_university" model="ir.ui.view">
+        <field name="name">project.project.form.university.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+
+            <!-- Скрываем стандартные поля -->
+            <xpath expr="//group[field[@name='label_tasks']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Добавляем вкладки в notebook -->
+            <xpath expr="//notebook/page[1]" position="before">
+
+                <!-- Паспорт проекта -->
+                <page string="Паспорт проекта" name="university_project_passport">
+                    <group>
+                        <group string="Базовая информация">
+                            <field name="name" string="Название проекта (RU)"/>
+                            <field name="name_en"/>
+                            <field name="user_id" string="Менеджер проекта"/>
+                            <field name="project_type" options="{'no_create': True}"/>
+                            <field name="project_status"/>
+                            <field name="partner_id" string="Заказчик"/>
+                            <field name="tag_ids" string="Ключевые слова" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
+                        </group>
+                        <group string="Даты">
+                            <field name="date_start"/>
+                            <field name="date"/>
+                        </group>
+                    </group>
+
+                    <group string="Ресурсы" col="2">
+                        <field name="link_repo"/>
+                        <field name="link_docs"/>
+                        <field name="link_design"/>
+                        <field name="link_chat"/>
+                        <field name="link_meeting"/>
+                        <field name="link_ids" context="{'default_project_id': id}">
+                            <list editable="bottom">
+                                <field name="name"/>
+                                <field name="url"/>
+                            </list>
+                            <form>
+                                <group>
+                                    <field name="project_id" readonly="1"/>
+                                    <field name="name"/>
+                                    <field name="url"/>
+                                </group>
+                            </form>
+                        </field>
+                    </group>
+                </page>
+
+                <!-- Команда -->
+                <page string="Команда" name="university_project_team">
+                    <field name="member_ids" context="{'default_project_id': id}">
+                        <list editable="bottom">
+                            <field name="user_id"/>
+                            <field name="role_id"/>
+                            <field name="role_code" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+
+                <!-- Вложения -->
+                <page string="Вложения" name="university_project_docs">
+                    <field name="document_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="file_data" widget="binary" filename="file_name"/>
+                            <field name="file_name" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

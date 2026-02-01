@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="rule_project_visibility_team_only" model="ir.rule">
+            <field name="name">Project: Visibility for Team Only</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/> <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">
+                ['|', '|', 
+                    ('create_uid', '=', user.id), 
+                    ('member_user_ids', 'in', user.id),
+                    ('project_owner_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <record id="rule_task_visibility_team_only" model="ir.rule">
+            <field name="name">Task: Visibility for Team Only</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">
+                ['|', '|', 
+                    ('project_id.create_uid', '=', user.id), 
+                    ('project_id.member_user_ids', 'in', user.id),
+                    ('project_id.project_owner_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <function name="write" model="ir.rule">
+            <function name="search" model="ir.rule">
+                <value eval="[('id', '=', ref('project.project_public_members_rule'))]"/>
+            </function>
+            <value eval="{'active': False}"/>
+        </function>
+
+    </data>
+</odoo>
