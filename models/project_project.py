@@ -47,6 +47,25 @@ class Project(models.Model):
                 members |= project.project_owner_id
             project.member_user_ids = members
 
+    project_manager_id = fields.Many2one(
+        'res.users', 
+        string='Project Manager',
+        tracking=True,
+        help="Пользователь, обладающий правами менеджера для этого проекта"
+    )
+
+    is_manager = fields.Boolean(
+        compute="_compute_user_is_manager",
+        string="Is current user a manager?",
+    )
+
+    @api.depends('project_manager_id')
+    def _compute_user_is_manager(self):
+        # Проверяем админа один раз для оптимизации
+        is_admin = self.env.user.has_group('project_management.administrator')
+        for project in self:
+            # Пользователь — менеджер, если он админ ИЛИ указан в поле project_manager_id
+            project.is_manager = is_admin or (project.project_manager_id == self.env.user)
 
 class ProjectTask(models.Model):
     _inherit = "project.task"

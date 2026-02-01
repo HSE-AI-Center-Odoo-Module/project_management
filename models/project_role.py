@@ -12,6 +12,9 @@ class UniversityProjectRole(models.Model):
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
 
+    # Флаг менеджера проекта (используется для разграничения прав на уровне проекта)
+    is_manager = fields.Boolean(default=False, string="Is Manager")
+
     # MVP-права на уровне проекта/задач (упрощенно)
     can_read_project = fields.Boolean(default=True)
     can_write_project = fields.Boolean(default=False)

@@ -13,8 +13,9 @@
     ],
     "data": [
         # Security
-        "security/security.xml",
+        "data/security_groups.xml",
         "security/ir.model.access.csv",
+        "security/security.xml",
 
         # Data
         "data/project_role_data.xml",

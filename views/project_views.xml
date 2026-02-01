@@ -30,10 +30,10 @@
                 <!-- Паспорт проекта -->
                 <page string="Project Passport" name="university_project_passport">
                     <group>
-                        <group string="Basic Information" col="2">
+                        <group string="Basic Information" col="2" readonly="not is_manager">
                             <field name="name" string="Project Name (RU)"/>
                             <field name="name_en"/>
-                            <field name="user_id" string="Project Manager"/>
+                            <field name="project_manager_id" widget="many2one_avatar_user" />
                             <field name="project_type" options="{'no_create': True}"/>
                             <field name="project_status"/>
                             <field name="partner_id" string="Customer"/>
@@ -44,7 +44,7 @@
                         </group>
                     </group>
 
-                    <group string="Resources" col="2">
+                    <group string="Resources" col="2" readonly="not is_manager">
                         <field name="link_repo"/>
                         <field name="link_docs"/>
                         <field name="link_design"/>
@@ -68,7 +68,7 @@
 
                 <!-- Команда -->
                 <page string="Team" name="university_project_team">
-                    <field name="member_ids" context="{'default_project_id': id}">
+                    <field name="member_ids" readonly="not is_manager" context="{'default_project_id': id}">
                         <list editable="bottom">
                             <field name="user_id"/>
                             <field name="role_id"/>
@@ -79,7 +79,7 @@
 
                 <!-- Вложения -->
                 <page string="Attachments" name="university_project_docs">
-                    <field name="document_ids">
+                    <field name="document_ids" readonly="not is_manager">
                         <list editable="bottom">
                             <field name="name"/>
                             <field name="file_data" widget="binary" filename="file_name"/>

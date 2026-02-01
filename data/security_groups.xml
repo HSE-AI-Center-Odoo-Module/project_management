@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Security groups for project management -->
+
+    <!-- Administator group - Full system control -->
+    <record id="administrator" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="base.module_category_administration" />
+        <field name="comment"> AI Research Centre Administrator - Full system control and access to all portal features</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_system'))]" />
+    </record>
+
+    <!-- Employee Group (Manager, Academic Supervisor) -->
+    <record id="employee" model="res.groups">
+        <field name="name">Employee</field>
+        <field name="category_id" ref="base.module_category_administration" />
+        <field name="comment">AI Research Centre Employee - Manager and Academic Supervisor access</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+    <!-- Access Rules Categories -->
+    <record id="ir_module_category_ai_centre" model="ir.module.category">
+        <field name="name">AI Research Centre</field>
+        <field name="description">AI Research Centre Access Rights</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Update existing groups to use category -->
+    <record id="administrator" model="res.groups">
+        <field name="category_id" ref="ir_module_category_ai_centre" />
+    </record>
+
+    <record id="employee" model="res.groups">
+        <field name="category_id" ref="ir_module_category_ai_centre" />
+    </record>
+
+</odoo>
