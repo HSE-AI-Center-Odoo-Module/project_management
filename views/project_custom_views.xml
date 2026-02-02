@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_university_project_list" model="ir.ui.view">
+            <field name="name">university.project.list.custom</field>
+            <field name="model">project.project</field>
+            <field name="priority">50</field>
+            <field name="arch" type="xml">
+                <list string="University Projects" decoration-danger="project_status=='cancel'" decoration-muted="project_status=='done'" decoration-success="project_status=='active'">
+
+                    <field name="id" optional="hide"/>
+                    <field name="name" string="Project Name"/>
+                    <field name="name_en" optional="show"/>
+                    <field name="project_type_id" widget="badge" />
+                    <field name="project_manager_id" widget="many2one_avatar_user" string="Project Manager"/>
+                    <field name="member_user_ids" widget="many2many_avatar_user" string="Team"/>
+                    <field name="project_status" widget="badge" decoration-info="project_status == 'draft'" decoration-success="project_status == 'active'" decoration-muted="project_status == 'done'" decoration-danger="project_status == 'cancel'"/>
+                    <field name="project_date_start" widget="date" optional="show"/>
+                    <field name="project_date_end" widget="date" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_university_project_kanban" model="ir.ui.view">
+            <field name="name">university.project.kanban.custom</field>
+            <field name="model">project.project</field>
+            <field name="priority">50</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="name_en"/>
+                    <field name="project_type_id"/>
+                    <field name="project_status"/>
+                    <field name="project_manager_id"/>
+                    <field name="member_user_ids"/>
+                    <field name="create_date"/>
+                    <field name="project_date_start"/>
+                    <field name="project_date_end"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click oe_kanban_card oe_kanban_content">
+
+                                <div class="o_kanban_record_top mb-2 text-muted small" style="border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; justify-content: space-between; display: flex;">
+                                    <div class="o_kanban_record_headings">
+                                        <span>
+                                            ID: <field name="id"/>
+                                            | Created:                                        <field name="create_date" widget="date"/>
+                                    </span>
+                                </div>
+                                <div class="o_kanban_top_right">
+                                    <a class="o_dropdown_toggler" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" type="edit">Edit</a>
+                                        <a class="dropdown-item" type="delete">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_record_body">
+                                <div class="mb-1">
+                                    <strong>Project Name: </strong>
+                                    <span class="text-dark">
+                                        <field name="name"/>
+                                    </span>
+                                </div>
+
+                                <div class="mb-2 text-muted">
+                                    <strong>Project Type: </strong>
+                                    <field name="project_type_id"/>
+                                </div>
+
+                                <div class="mb-2">
+                                    <i class="fa fa-users text-primary me-1"/>
+                                    <strong>Team: </strong>
+                                    <field name="member_user_ids" widget="many2many_avatar_user"/>
+                                </div>
+
+                                <div class="mb-2">
+                                    <strong>Project Manager: </strong>
+                                    <field name="project_manager_id" />
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_record_bottom mt-2 pt-2 border-top">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="project_status" widget="label_selection" options="{'classes': {'draft': 'default', 'active': 'success', 'done': 'primary', 'cancel': 'danger'}}"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <strong>End Date: </strong>
+                                    <field name="project_date_end" widget="remaining_days"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_university_project_all" model="ir.actions.act_window">
+        <field name="name">University Projects</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="project.view_project_project_filter"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_university_project_kanban')}),
+                (0, 0, {'view_mode': 'list', 'view_id': ref('view_university_project_list')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    Create a new University Project
+            </p>
+        </field>
+    </record>
+
+</data>
+</odoo>

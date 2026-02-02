@@ -6,8 +6,7 @@
 
         <menuitem id="menu_university_main" name="Projects" parent="menu_university_root" sequence="10"/>
 
-        <menuitem id="menu_university_project_list" name="All Projects" parent="menu_university_main" action="project.open_view_project_all" sequence="1"/>
-
+        <menuitem id="menu_university_project_list" name="All Projects" parent="menu_university_main" action="action_university_project_all" sequence="1"/>
 
         <menuitem id="menu_university_configuration" name="Configuration" parent="menu_university_root" sequence="100" groups="project_management.administrator"/>
 

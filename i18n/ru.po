@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0-20260119\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-01 23:40+0000\n"
-"PO-Revision-Date: 2026-02-01 23:40+0000\n"
+"POT-Creation-Date: 2026-02-02 01:23+0000\n"
+"PO-Revision-Date: 2026-02-02 01:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,44 @@ msgstr ""
 msgid ""
 " AI Research Centre Administrator - Full system control and access to all "
 "portal features"
-msgstr ""
+msgstr "Администратор Центра ИИ — полный контроль над системой и доступ ко всем функциям портала"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid ""
+"<i class=\"fa fa-users text-primary me-1\"/>\n"
+"                                    <strong>Team: </strong>"
+msgstr "<i class=\"fa fa-users text-primary me-1\"/>\n                                    <strong>Команда: </strong>"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "<span class=\"o_stat_text\">Tasks</span>"
+msgstr "<span class=\"o_stat_text\">Задачи</span>"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "<strong>End Date: </strong>"
+msgstr "<strong>Дата окончания: </strong>"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "<strong>Project Manager: </strong>"
+msgstr "<strong>Менеджер проекта: </strong>"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "<strong>Project Name (EN): </strong>"
+msgstr "<strong>Название проекта (EN): </strong>"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "<strong>Project Name: </strong>"
+msgstr "<strong>Название проекта: </strong>"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "<strong>Project Type: </strong>"
+msgstr "<strong>Тип проекта: </strong>"
 
 #. module: project_management
 #: model:ir.module.category,name:project_management.ir_module_category_ai_centre
@@ -119,6 +156,11 @@ msgid "Create a new Project Type"
 msgstr "Создать новый тип проекта"
 
 #. module: project_management
+#: model_terms:ir.actions.act_window,help:project_management.action_university_project_all
+msgid "Create a new University Project"
+msgstr "Создать новый университетский проект"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__create_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__create_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__create_uid
@@ -155,6 +197,11 @@ msgstr "Заказчики"
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
 msgid "Dates"
 msgstr "Даты"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "Delete"
+msgstr "Удалить"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_design
@@ -197,6 +244,11 @@ msgid "Draft"
 msgstr "Черновик"
 
 #. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "Edit"
+msgstr "Редактировать"
+
+#. module: project_management
 #: model:university.project.type,name:project_management.project_type_edu
 msgid "Educational Project"
 msgstr "Образовательный проект"
@@ -212,6 +264,11 @@ msgid "Employee"
 msgstr "Сотрудник"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__project_date_end
+msgid "End Date"
+msgstr "Дата окончания"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__file_data
 msgid "File"
 msgstr "Файл"
@@ -223,6 +280,11 @@ msgid "Filename"
 msgstr "Имя файла"
 
 #. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Go to Tasks"
+msgstr "Перейти к задачам"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__id
@@ -231,6 +293,11 @@ msgstr "Имя файла"
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__id
 msgid "ID"
 msgstr "ID"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "ID:"
+msgstr "ID:"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__is_manager
@@ -298,6 +365,7 @@ msgstr "Вложение документа проекта"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__project_manager_id
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_list
 msgid "Project Manager"
 msgstr "Менеджер проекта"
 
@@ -305,6 +373,11 @@ msgstr "Менеджер проекта"
 #: model:ir.model.fields,field_description:project_management.field_project_project__member_user_ids
 msgid "Project Members"
 msgstr "Участники проекта"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_list
+msgid "Project Name"
+msgstr "Название проекта"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
@@ -376,6 +449,11 @@ msgid "Sequence"
 msgstr "Последовательность"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__project_date_start
+msgid "Start Date"
+msgstr "Дата начала"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__project_status
 msgid "Status"
 msgstr "Статус"
@@ -388,6 +466,7 @@ msgstr "Задача"
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__member_ids
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_list
 msgid "Team"
 msgstr "Команда"
 
@@ -418,6 +497,12 @@ msgid "University Project Type"
 msgstr "Тип университетского проекта"
 
 #. module: project_management
+#: model:ir.actions.act_window,name:project_management.action_university_project_all
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_list
+msgid "University Projects"
+msgstr "Университетские проекты"
+
+#. module: project_management
 #: model:ir.model,name:project_management.model_university_project_link
 msgid "University project link"
 msgstr "Ссылка университетского проекта"
@@ -433,6 +518,7 @@ msgid "University project role"
 msgstr "Роль университетского проекта"
 
 #. module: project_management
+#: model:ir.model,name:project_management.model_res_users
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__user_id
 msgid "User"
 msgstr "Пользователь"
@@ -443,6 +529,11 @@ msgid "e.g. Ministry of Science"
 msgstr "например, Министерство науки"
 
 #. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
+msgid "| Created:"
+msgstr "| Создан:"
+
+#. module: project_management
 #: model:ir.model.fields,help:project_management.field_project_project__project_manager_id
 msgid "Пользователь, обладающий правами менеджера для этого проекта"
-msgstr ""
+msgstr "Пользователь, обладающий правами менеджера для этого проекта"

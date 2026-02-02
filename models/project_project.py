@@ -16,6 +16,11 @@ class Project(models.Model):
         ('cancel', 'Cancelled')
     ], string="Status", default='draft')
 
+    project_date_start = fields.Date(string="Start Date")
+    project_date_end = fields.Date(string="End Date")
+
+
+
     link_repo = fields.Char(string="Repository")
     link_docs = fields.Char(string="Documentation")
     link_design = fields.Char(string="Design")
@@ -64,6 +69,12 @@ class Project(models.Model):
             # Пользователь — менеджер, если он админ ИЛИ указан в поле project_manager_id
             project.is_manager = is_admin or (project.project_manager_id == self.env.user)
 
+    @api.constrains('project_date_start', 'project_date_end')
+    def _check_dates(self):
+        for project in self:
+            if project.project_date_start and project.project_date_end and project.project_date_end < project.project_date_start:
+                raise ValidationError('End Date cannot be earlier than Start Date.')
+
     project_type_id = fields.Many2one(
         'university.project.type', 
         string='Project Type',
@@ -105,3 +116,18 @@ class ProjectTask(models.Model):
                         f"Error! Users: [{names}] are not members of the project '{task.project_id.name}'. "
                         "You cannot assign a task to a user outside the project team."
                     )
+                
+    # ... ваши поля ...
+
+    def action_view_tasks(self):
+        """ Метод для открытия задач текущего проекта """
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Tasks',
+            'res_model': 'project.task',
+            'view_mode': 'list,form,kanban',
+            'domain': [('project_id', '=', self.id)],
+            'context': {'default_project_id': self.id},
+            'target': 'current',
+        }

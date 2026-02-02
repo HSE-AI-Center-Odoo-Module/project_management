@@ -27,7 +27,8 @@
         "views/project_role_views.xml",
         "views/project_type_views.xml",
         "views/project_customer_views.xml",
-        "views/menus.xml"
+        "views/project_custom_views.xml",
+        "views/menus.xml",
         #'views/project_actions.xml',
     ],
     "application": True,
