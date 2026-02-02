@@ -5,3 +5,4 @@ from . import project_document
 from . import project_link
 from . import project_type
 from . import project_customer
+from . import res_users
