@@ -7,6 +7,7 @@
         <field name="priority">10</field>
         <field name="arch" type="xml">
 
+
             <div name="button_box" position="inside">
                 <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
                     <div class="o_field_widget o_stat_info">
@@ -15,24 +16,33 @@
                 </button>
             </div>
 
-            <header position="inside">
-                <button name="action_view_tasks" string="Go to Tasks" type="object" class="oe_highlight"/>
-            </header>
+            <!-- Скрываем кнопку создания проектов из формы -->
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">0</attribute>
+            </xpath>
 
             <!-- Скрываем стандартные поля -->
             <xpath expr="//group[field[@name='label_tasks']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+
             <xpath expr="//field[@name='partner_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+
             <xpath expr="//field[@name='tag_ids']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+
             <xpath expr="//field[@name='user_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+
             <xpath expr="//field[@name='date_start']" position="replace">
+            </xpath>
+
+            <!-- Скрываем чат -->
+            <xpath expr="//chatter" position="replace">
             </xpath>
 
             <!-- Добавляем вкладки в notebook -->
