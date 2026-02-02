@@ -424,31 +424,6 @@ msgid "Repository"
 msgstr "Репозиторий"
 
 #. module: project_management
-#: model:university.project.type,name:project_management.role_expert
-msgid "Expert"
-msgstr "Эксперт"
-
-#. module: project_management
-#: model:university.project.type,name:project_management.role_researcher
-msgid "Researcher"
-msgstr "Исследователь"
-
-#. module: project_management
-#: model:university.project.type,name:project_management.role_developer
-msgid "Developer"
-msgstr "Разработчик"
-
-#. module: project_management
-#: model:university.project.type,name:project_management.role_analyst
-msgid "Analyst"
-msgstr "Аналитик"
-
-#. module: project_management
-#: model:university.project.type,name:project_management.role_intern
-msgid "Intern"
-msgstr "Стажёр"
-
-#. module: project_management
 #: model:university.project.type,name:project_management.project_type_nir
 msgid "Research"
 msgstr "Исследование"
