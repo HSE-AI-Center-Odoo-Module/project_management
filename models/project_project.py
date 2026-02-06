@@ -49,8 +49,11 @@ class Project(models.Model):
                 members |= project.project_owner_id
             project.member_user_ids = members
 
-    project_manager_id = fields.Many2one(
+    project_manager_id = fields.Many2many(
         'res.users', 
+        'project_project_managers_rel', # Имя таблицы связи (ОБЯЗАТЕЛЬНО)
+        'project_id',                   # Колонка для проекта
+        'user_id',                      # Колонка для пользователя
         string='Project Manager',
         tracking=True,
         help="Пользователь, обладающий правами менеджера для этого проекта"
