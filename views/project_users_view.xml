@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_res_users_custom_tree" model="ir.ui.view">
+            <field name="name">res.users.custom.list</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <list string="Users">
+                    <field name="name"/>
+                    <field name="login"/>
+                    <field name="email"/>
+                    <field name="action_id" string="Home Page"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_res_users_custom_form" model="ir.ui.view">
+            <field name="name">res.users.custom.form</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <form string="User">
+                    <header></header>
+                    <sheet>
+                        <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"/>
+                        <div class="oe_title">
+                            <label for="name" string="Full Name"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. John Doe" required="1"/>
+                            </h1>
+                            <label for="login" string="Email Address / Login"/>
+                            <h2>
+                                <field name="login" placeholder="e.g. email@example.com"/>
+                            </h2>
+                        </div>
+                        <group>
+                            <group name="contact_info" string="Contact Information">
+                                <field name="email"/>
+                                <field name="phone" widget="phone"/>
+                                <field name="mobile" widget="phone"/>
+                            </group>
+                            <group name="ai_research_settings" string="AI Research Centre Access">
+                                <field name="groups_id" widget="many2many_checkboxes" string="Access Level" domain="[('category_id', '=', %(project_management.ir_module_category_ai_centre)d)]" options="{'no_create': True}"/>
+                                <field name="action_id" string="Home Page" help="If specified, this action will be opened at login for this user in addition to the standard menu.." options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_university_users" model="ir.actions.act_window">
+            <field name="name">Users</field>
+            <field name="res_model">res.users</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Add a new user to the research centre</p>
+            </field>
+        </record>
+
+        <record id="action_university_users_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_res_users_custom_tree"/>
+            <field name="act_window_id" ref="action_university_users"/>
+        </record>
+
+        <record id="action_university_users_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_res_users_custom_form"/>
+            <field name="act_window_id" ref="action_university_users"/>
+        </record>
+    </data>
+</odoo>

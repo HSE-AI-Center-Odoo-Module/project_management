@@ -16,5 +16,7 @@
 
         <menuitem id="menu_university_project_customer" name="Customers" parent="menu_university_configuration" action="action_university_project_customer" sequence="30"/>
 
+        <menuitem id="menu_university_users" name="Users" parent="menu_university_configuration" action="action_university_users" sequence="40"/>
+
     </data>
 </odoo>
