@@ -18,6 +18,7 @@ class Project(models.Model):
 
     project_date_start = fields.Date(string="Start Date")
     project_date_end = fields.Date(string="End Date")
+    date_error_msg = fields.Char(compute="_compute_date_error_msg")
 
 
 
@@ -64,14 +65,23 @@ class Project(models.Model):
         string="Is current user a manager?",
     )
 
+    @api.depends('project_date_start', 'project_date_end')
+    def _compute_date_error_msg(self):
+        for project in self:
+            if project.project_date_start and project.project_date_end and project.project_date_end < project.project_date_start:
+                project.date_error_msg = "Внимание: Дата окончания не может быть раньше даты начала!"
+            else:
+                project.date_error_msg = False
+
+    # Исправляем проверку менеджера (Many2many)
     @api.depends('project_manager_id')
     def _compute_user_is_manager(self):
-        # Проверяем админа один раз для оптимизации
         is_admin = self.env.user.has_group('project_management.administrator')
         for project in self:
-            # Пользователь — менеджер, если он админ ИЛИ указан в поле project_manager_id
-            project.is_manager = is_admin or (project.project_manager_id == self.env.user)
+            # Используем "in", так как это Many2many
+            project.is_manager = is_admin or (self.env.user in project.project_manager_id)
 
+    # Оставляем жесткую валидацию при сохранении
     @api.constrains('project_date_start', 'project_date_end')
     def _check_dates(self):
         for project in self:

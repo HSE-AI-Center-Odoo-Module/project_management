@@ -108,6 +108,19 @@
 
             </xpath>
 
+            <xpath expr="//field[@name='project_date_end']" position="after">
+                <field name="date_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_error_msg" colspan="2"/>
+            </xpath>
+
+            <xpath expr="//field[@name='project_date_start']" position="attributes">
+                <attribute name="on_change">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='project_date_end']" position="attributes">
+                <attribute name="on_change">1</attribute>
+                <attribute name="decoration-danger">project_date_end &lt; project_date_start</attribute>
+            </xpath>
+
         </field>
     </record>
 </odoo>
