@@ -8,6 +8,6 @@ class UniversityProjectRole(models.Model):
     _order = "sequence, name"
 
     name = fields.Char(required=True)
-    code = fields.Char(help="Technical code, e.g. owner, manager, member, viewer")
+    code = fields.Char(required=True, help="Technical code, e.g. owner, manager, member, viewer")
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
