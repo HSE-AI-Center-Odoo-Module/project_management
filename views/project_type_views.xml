@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_university_project_type_list" model="ir.ui.view">
-        <field name="name">university.project.type.list</field>
-        <field name="model">university.project.type</field>
-        <field name="arch" type="xml">
-            <list string="Project Types" editable="bottom">
-                <field name="name"/>
-                <field name="active" widget="boolean_toggle"/>
-            </list>
-        </field>
-    </record>
+    <data>
 
-    <record id="view_university_project_type_search" model="ir.ui.view">
-        <field name="name">university.project.type.search</field>
-        <field name="model">university.project.type</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="name"/>
-                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
-            </search>
-        </field>
-    </record>
+        <!-- ========== PROJECT TYPE - LIST VIEW ========== -->
+        <record id="view_university_project_type_list" model="ir.ui.view">
+            <field name="name">university.project.type.list</field>
+            <field name="model">university.project.type</field>
+            <field name="arch" type="xml">
+                <list string="Project Types" editable="bottom">
+                    <field name="name"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
 
-    <record id="action_university_project_type" model="ir.actions.act_window">
-        <field name="name">Project Types</field>
-        <field name="res_model">university.project.type</field>
-        <field name="view_mode">list,form</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">Create a new Project Type</p>
-        </field>
-    </record>
+        <!-- ========== PROJECT TYPE - SEARCH VIEW ========== -->
+        <record id="view_university_project_type_search" model="ir.ui.view">
+            <field name="name">university.project.type.search</field>
+            <field name="model">university.project.type</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- ========== PROJECT TYPE - ACTION ========== -->
+        <record id="action_university_project_type" model="ir.actions.act_window">
+            <field name="name">Project Types</field>
+            <field name="res_model">university.project.type</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create a new Project Type</p>
+            </field>
+        </record>
+
+    </data>
 </odoo>

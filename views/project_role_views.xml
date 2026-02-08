@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <!-- ========== PROJECT ROLE - LIST VIEW ========== -->
         <record id="view_university_project_role_list" model="ir.ui.view">
             <field name="name">university.project.role.list</field>
             <field name="model">university.project.role</field>
@@ -12,6 +14,7 @@
             </field>
         </record>
 
+        <!-- ========== PROJECT ROLE - SEARCH VIEW ========== -->
         <record id="view_university_project_role_search" model="ir.ui.view">
             <field name="name">university.project.role.search</field>
             <field name="model">university.project.role</field>
@@ -23,6 +26,7 @@
             </field>
         </record>
 
+        <!-- ========== PROJECT ROLE - ACTION ========== -->
         <record id="action_university_project_role" model="ir.actions.act_window">
             <field name="name">Project Roles</field>
             <field name="res_model">university.project.role</field>
@@ -33,5 +37,6 @@
                 </p>
             </field>
         </record>
+
     </data>
 </odoo>

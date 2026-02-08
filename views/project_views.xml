@@ -1,132 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_project_form_inherit_university" model="ir.ui.view">
-        <field name="name">project.project.form.university.inherit</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.edit_project"/>
-        <field name="priority">10</field>
-        <field name="arch" type="xml">
+    <data>
 
-            <xpath expr="//form//sheet" position="inside">
-                <field name="is_manager" invisible="1"/>
-            </xpath>
+        <!-- ========== PROJECT - FORM VIEW INHERITANCE ========== -->
+        <record id="view_project_form_inherit_university" model="ir.ui.view">
+            <field name="name">project.project.form.university.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
 
-            <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="attributes">
-                <attribute name="readonly">not is_manager</attribute>
-            </xpath>
+                <!-- ===== INITIALIZATION ===== -->
+                <xpath expr="//form//sheet" position="inside">
+                    <field name="is_manager" invisible="1"/>
+                </xpath>
 
-            <xpath expr="//field[@name='description']" position="attributes">
-                <attribute name="readonly">not is_manager</attribute>
-                <attribute name="force_save">1</attribute>
-            </xpath>
+                <!-- ===== READONLY RESTRICTIONS ===== -->
+                <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="attributes">
+                    <attribute name="readonly">not is_manager</attribute>
+                </xpath>
 
-            <xpath expr="//form" position="attributes">
-                <attribute name="create">0</attribute>
-            </xpath>
+                <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="readonly">not is_manager</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
 
-            <xpath expr="//button[@name='action_open_share_project_wizard']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
+                <!-- ===== DISABLE FORM CREATION ===== -->
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                </xpath>
 
-            <xpath expr="//page[@name='settings']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
+                <!-- ===== HIDE STANDARD ELEMENTS ===== -->
+                <xpath expr="//button[@name='action_open_share_project_wizard']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
 
-            <xpath expr="//div[@name='button_box']" position="replace">
-                <div class="oe_button_box" name="button_box">
-                    <button class="oe_stat_button" type="object" name="action_view_stages" icon="fa-list-ul">
-                        <div class="o_field_widget o_stat_info">
-                            <span class="o_stat_text">Этапы</span>
-                        </div>
-                    </button>
-                    <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
-                        <div class="o_field_widget o_stat_info">
-                            <span class="o_stat_text">Задачи</span>
-                        </div>
-                    </button>
-                </div>
-            </xpath>
+                <xpath expr="//page[@name='settings']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
 
-            <xpath expr="//group[field[@name='label_tasks']]" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='tag_ids']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='user_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='date_start']" position="replace"/>
+                <xpath expr="//group[field[@name='label_tasks']]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_start']" position="replace"/>
 
-            <xpath expr="//notebook/page[1]" position="before">
+                <!-- ===== REPLACE BUTTON BOX ===== -->
+                <xpath expr="//div[@name='button_box']" position="replace">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_stages" icon="fa-list-ul">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Stages</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Tasks</span>
+                            </div>
+                        </button>
+                    </div>
+                </xpath>
 
-                <page string="Project Passport" name="university_project_passport">
-                    <group>
-                        <group string="Basic Information" col="2">
-                            <field name="name" string="Project Name (RU)" readonly="not is_manager"/>
-                            <field name="name_en" string="Project Name (EN)" readonly="not is_manager"/>
-                            <field name="project_manager_id" widget="many2many_tags_avatar" readonly="not is_manager"/>
-                            <field name="project_type_id" readonly="not is_manager"/>
-                            <field name="project_status" readonly="not is_manager"/>
-                            <field name="custom_customer_id" readonly="not is_manager"/>
-                            <field name="tag_ids" widget="many2many_tags" readonly="not is_manager"/>
+                <!-- ===== ADD CUSTOM PAGES ===== -->
+                <xpath expr="//notebook/page[1]" position="before">
+
+                    <!-- ===== PROJECT PASSPORT PAGE ===== -->
+                    <page string="Project Passport" name="university_project_passport">
+                        <group>
+                            <group string="Basic Information" col="2">
+                                <field name="name" string="Project Name (RU)" readonly="not is_manager"/>
+                                <field name="name_en" string="Project Name (EN)" readonly="not is_manager"/>
+                                <field name="project_manager_id" widget="many2many_tags_avatar" readonly="not is_manager"/>
+                                <field name="project_type_id" readonly="not is_manager"/>
+                                <field name="project_status" readonly="not is_manager"/>
+                                <field name="custom_customer_id" readonly="not is_manager"/>
+                                <field name="tag_ids" widget="many2many_tags" readonly="not is_manager"/>
+                            </group>
+                            <group string="Dates">
+                                <field name="project_date_start" readonly="not is_manager"/>
+                                <field name="project_date_end" readonly="not is_manager"/>
+                            </group>
                         </group>
-                        <group string="Dates">
-                            <field name="project_date_start" readonly="not is_manager"/>
-                            <field name="project_date_end" readonly="not is_manager"/>
-                        </group>
-                    </group>
 
-                    <group string="Resources" col="2">
-                        <field name="link_repo" readonly="not is_manager"/>
-                        <field name="link_docs" readonly="not is_manager"/>
-                        <field name="link_ids" readonly="not is_manager" context="{'default_project_id': id}">
+                        <group string="Resources" col="2">
+                            <field name="link_repo" readonly="not is_manager"/>
+                            <field name="link_docs" readonly="not is_manager"/>
+                            <field name="link_ids" readonly="not is_manager" context="{'default_project_id': id}">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="url"/>
+                                </list>
+                            </field>
+                        </group>
+                    </page>
+
+                    <!-- ===== TEAM PAGE ===== -->
+                    <page string="Team" name="university_project_team">
+                        <field name="member_ids" readonly="not is_manager" context="{'default_project_id': id}">
                             <list editable="bottom">
-                                <field name="name"/>
-                                <field name="url"/>
+                                <field name="user_id"/>
+                                <field name="role_id"/>
+                                <field name="role_code" column_invisible="True"/>
                             </list>
                         </field>
-                    </group>
-                </page>
+                    </page>
 
-                <page string="Team" name="university_project_team">
-                    <field name="member_ids" readonly="not is_manager" context="{'default_project_id': id}">
-                        <list editable="bottom">
-                            <field name="user_id"/>
-                            <field name="role_id"/>
-                            <field name="role_code" column_invisible="True"/>
-                        </list>
-                    </field>
-                </page>
+                    <!-- ===== ATTACHMENTS PAGE ===== -->
+                    <page string="Attachments" name="university_project_docs">
+                        <field name="document_ids" readonly="not is_manager">
+                            <list editable="bottom">
+                                <field name="name"/>
+                                <field name="file_data" widget="binary" filename="file_name"/>
+                                <field name="file_name" column_invisible="True"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
 
-                <page string="Attachments" name="university_project_docs">
-                    <field name="document_ids" readonly="not is_manager">
-                        <list editable="bottom">
-                            <field name="name"/>
-                            <field name="file_data" widget="binary" filename="file_name"/>
-                            <field name="file_name" column_invisible="True"/>
-                        </list>
-                    </field>
-                </page>
-            </xpath>
+                <!-- ===== DATE VALIDATION MESSAGE ===== -->
+                <xpath expr="//field[@name='project_date_end']" position="after">
+                    <field name="date_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_error_msg" colspan="2"/>
+                </xpath>
 
+                <!-- ===== DATE FIELD ATTRIBUTES ===== -->
+                <xpath expr="//field[@name='project_date_start']" position="attributes">
+                    <attribute name="on_change">1</attribute>
+                </xpath>
 
-            <xpath expr="//field[@name='project_date_end']" position="after">
-                <field name="date_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_error_msg" colspan="2"/>
-            </xpath>
+                <xpath expr="//field[@name='project_date_end']" position="attributes">
+                    <attribute name="on_change">1</attribute>
+                    <attribute name="decoration-danger">project_date_end &lt; project_date_start</attribute>
+                </xpath>
 
-            <xpath expr="//field[@name='project_date_start']" position="attributes">
-                <attribute name="on_change">1</attribute>
-            </xpath>
+            </field>
+        </record>
 
-            <xpath expr="//field[@name='project_date_end']" position="attributes">
-                <attribute name="on_change">1</attribute>
-                <attribute name="decoration-danger">project_date_end &lt; project_date_start</attribute>
-            </xpath>
-
-        </field>
-    </record>
+    </data>
 </odoo>

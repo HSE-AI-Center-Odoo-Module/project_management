@@ -2,13 +2,13 @@
 <odoo>
     <data>
 
+        <!-- ========== PROJECT - LIST VIEW (CUSTOM) ========== -->
         <record id="view_university_project_list" model="ir.ui.view">
             <field name="name">university.project.list.custom</field>
             <field name="model">project.project</field>
             <field name="priority">50</field>
             <field name="arch" type="xml">
                 <list string="University Projects" decoration-danger="project_status=='cancel'" decoration-muted="project_status=='done'" decoration-success="project_status=='active'">
-
                     <field name="id" optional="hide"/>
                     <field name="name" string="Project Name"/>
                     <field name="name_en" optional="show"/>
@@ -22,6 +22,7 @@
             </field>
         </record>
 
+        <!-- ========== PROJECT - KANBAN VIEW (CUSTOM) ========== -->
         <record id="view_university_project_kanban" model="ir.ui.view">
             <field name="name">university.project.kanban.custom</field>
             <field name="model">project.project</field>
@@ -47,7 +48,7 @@
                                     <div class="o_kanban_record_headings">
                                         <span>
                                             ID: <field name="id"/>
-                                            | Created:                                        <field name="create_date" widget="date"/>
+                                            | Created: <field name="create_date" widget="date"/>
                                     </span>
                                 </div>
                                 <div class="o_kanban_top_right">
@@ -103,17 +104,18 @@
         </field>
     </record>
 
+    <!-- ========== PROJECT - ACTION ========== -->
     <record id="action_university_project_all" model="ir.actions.act_window">
         <field name="name">University Projects</field>
         <field name="res_model">project.project</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="search_view_id" ref="project.view_project_project_filter"/>
         <field name="view_ids" eval="[(5, 0, 0),
-                (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_university_project_kanban')}),
-                (0, 0, {'view_mode': 'list', 'view_id': ref('view_university_project_list')})]"/>
+                    (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_university_project_kanban')}),
+                    (0, 0, {'view_mode': 'list', 'view_id': ref('view_university_project_list')})]"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                    Create a new University Project
+                        Create a new University Project
             </p>
         </field>
     </record>

@@ -2,20 +2,25 @@
 <odoo>
     <data>
 
+        <!-- ========== ROOT MENU ========== -->
         <menuitem id="menu_university_root" name="AI Research Centre" sequence="10" web_icon="project_management,static/description/icon.png"/>
 
+        <!-- ========== MAIN MENU - PROJECTS ========== -->
         <menuitem id="menu_university_main" name="Projects" parent="menu_university_root" sequence="10"/>
 
         <menuitem id="menu_university_project_list" name="All Projects" parent="menu_university_main" action="action_university_project_all" sequence="1"/>
 
+        <!-- ========== CONFIGURATION MENU ========== -->
         <menuitem id="menu_university_configuration" name="Configuration" parent="menu_university_root" sequence="100" groups="project_management.administrator"/>
 
+        <!-- Configuration: Reference Data -->
         <menuitem id="menu_university_project_role" name="Project Roles" parent="menu_university_configuration" action="action_university_project_role" sequence="10"/>
 
         <menuitem id="menu_university_project_type" name="Project Types" parent="menu_university_configuration" action="action_university_project_type" sequence="20"/>
 
         <menuitem id="menu_university_project_customer" name="Customers" parent="menu_university_configuration" action="action_university_project_customer" sequence="30"/>
 
+        <!-- Configuration: System -->
         <menuitem id="menu_university_users" name="Users" parent="menu_university_configuration" action="action_university_users" sequence="40"/>
 
     </data>
