@@ -63,6 +63,7 @@ class Project(models.Model):
     is_manager = fields.Boolean(
         compute="_compute_user_is_manager",
         string="Is current user a manager?",
+        store=False
     )
 
     @api.depends('project_date_start', 'project_date_end')

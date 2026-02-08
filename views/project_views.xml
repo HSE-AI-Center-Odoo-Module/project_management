@@ -7,37 +7,16 @@
         <field name="priority">10</field>
         <field name="arch" type="xml">
 
-            <div name="button_box" position="inside">
-                <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
-                    <div class="o_field_widget o_stat_info">
-                        <span class="o_stat_text">Tasks</span>
-                    </div>
-                </button>
-            </div>
+            <xpath expr="//form//sheet" position="inside">
+                <field name="is_manager" invisible="1"/>
+            </xpath>
 
-            <!-- Скрываем кнопку создания проектов из формы -->
+            <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="attributes">
+                <attribute name="readonly">not is_manager</attribute>
+            </xpath>
+
             <xpath expr="//form" position="attributes">
                 <attribute name="create">0</attribute>
-            </xpath>
-
-            <!-- Скрываем стандартные поля -->
-            <xpath expr="//group[field[@name='label_tasks']]" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-
-            <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-
-            <xpath expr="//field[@name='tag_ids']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-
-            <xpath expr="//field[@name='user_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-
-            <xpath expr="//field[@name='date_start']" position="replace">
             </xpath>
 
             <xpath expr="//button[@name='action_open_share_project_wizard']" position="attributes">
@@ -48,26 +27,40 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <xpath expr="//form//sheet" position="inside">
-                <field name="is_manager" invisible="1"/>
-            </xpath>
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Tasks</span>
+                    </div>
+                </button>
+            </div>
 
-            <!-- Добавляем вкладки в notebook -->
+            <xpath expr="//group[field[@name='label_tasks']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="replace"/>
+
             <xpath expr="//notebook/page[1]" position="before">
 
-                <!-- Добавить проверку на менеджера для паспорта проекта-->
-
-                <!-- Паспорт проекта -->
                 <page string="Project Passport" name="university_project_passport">
                     <group>
                         <group string="Basic Information" col="2">
                             <field name="name" string="Project Name (RU)" readonly="not is_manager"/>
-                            <field name="name_en" readonly="not is_manager"/>
+                            <field name="name_en" string="Project Name (EN)" readonly="not is_manager"/>
                             <field name="project_manager_id" widget="many2many_tags_avatar" readonly="not is_manager"/>
                             <field name="project_type_id" readonly="not is_manager"/>
                             <field name="project_status" readonly="not is_manager"/>
                             <field name="custom_customer_id" readonly="not is_manager"/>
-                            <field name="tag_ids" string="Keywords" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}" readonly="not is_manager"/>
+                            <field name="tag_ids" widget="many2many_tags" readonly="not is_manager"/>
                         </group>
                         <group string="Dates">
                             <field name="project_date_start" readonly="not is_manager"/>
@@ -78,10 +71,6 @@
                     <group string="Resources" col="2">
                         <field name="link_repo" readonly="not is_manager"/>
                         <field name="link_docs" readonly="not is_manager"/>
-                        <field name="link_design" readonly="not is_manager"/>
-                        <field name="link_chat" readonly="not is_manager"/>
-                        <field name="link_meeting" readonly="not is_manager"/>
-
                         <field name="link_ids" readonly="not is_manager" context="{'default_project_id': id}">
                             <list editable="bottom">
                                 <field name="name"/>
@@ -91,7 +80,6 @@
                     </group>
                 </page>
 
-                <!-- Команда -->
                 <page string="Team" name="university_project_team">
                     <field name="member_ids" readonly="not is_manager" context="{'default_project_id': id}">
                         <list editable="bottom">
@@ -102,7 +90,6 @@
                     </field>
                 </page>
 
-                <!-- Вложения -->
                 <page string="Attachments" name="university_project_docs">
                     <field name="document_ids" readonly="not is_manager">
                         <list editable="bottom">
@@ -112,8 +99,8 @@
                         </list>
                     </field>
                 </page>
-
             </xpath>
+
 
             <xpath expr="//field[@name='project_date_end']" position="after">
                 <field name="date_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_error_msg" colspan="2"/>
