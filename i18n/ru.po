@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0-20260119\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-02 01:23+0000\n"
-"PO-Revision-Date: 2026-02-02 01:23+0000\n"
+"POT-Creation-Date: 2026-02-08 16:30+0000\n"
+"PO-Revision-Date: 2026-02-08 16:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,17 +20,27 @@ msgstr ""
 msgid ""
 " AI Research Centre Administrator - Full system control and access to all "
 "portal features"
-msgstr "Администратор Центра ИИ — полный контроль над системой и доступ ко всем функциям портала"
+msgstr ""
+"Администратор Центра ИИ — полный контроль над системой и доступ ко всем "
+"функциям портала"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
 msgid ""
 "<i class=\"fa fa-users text-primary me-1\"/>\n"
 "                                    <strong>Team: </strong>"
-msgstr "<i class=\"fa fa-users text-primary me-1\"/>\n                                    <strong>Команда: </strong>"
+msgstr ""
+"<i class=\"fa fa-users text-primary me-1\"/>\n"
+"                                    <strong>Команда: </strong>"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "<span class=\"o_stat_text\">Stages</span>"
+msgstr "<span class=\"o_stat_text\">Этапы</span>"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
 msgid "<span class=\"o_stat_text\">Tasks</span>"
 msgstr "<span class=\"o_stat_text\">Задачи</span>"
 
@@ -43,11 +53,6 @@ msgstr "<strong>Дата окончания: </strong>"
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
 msgid "<strong>Project Manager: </strong>"
 msgstr "<strong>Менеджер проекта: </strong>"
-
-#. module: project_management
-#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
-msgid "<strong>Project Name (EN): </strong>"
-msgstr "<strong>Название проекта (EN): </strong>"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
@@ -66,6 +71,11 @@ msgid "AI Research Centre"
 msgstr "Центр ИИ"
 
 #. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid "AI Research Centre Access"
+msgstr "Доступ к Центру ИИ"
+
+#. module: project_management
 #: model:ir.module.category,description:project_management.ir_module_category_ai_centre
 msgid "AI Research Centre Access Rights"
 msgstr "Права доступа Центра ИИ"
@@ -76,12 +86,57 @@ msgid "AI Research Centre Employee - Manager and Academic Supervisor access"
 msgstr "Сотрудник Центра ИИ — доступ менеджера и научного руководителя"
 
 #. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid "Access Level"
+msgstr "Уровень доступа"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__name
+msgid "Action"
+msgstr "Действие"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_needaction
+msgid "Action Needed"
+msgstr "Требуется действие"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__active
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__active
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__active
 #: model:ir.model.fields.selection,name:project_management.selection__project_project__project_status__active
 msgid "Active"
 msgstr "Активный"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_ids
+msgid "Activities"
+msgstr "Деятельности"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Оформление исключения деятельности"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_state
+msgid "Activity State"
+msgstr "Состояние деятельности"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Значок типа деятельности"
+
+#. module: project_management
+#: model_terms:ir.actions.act_window,help:project_management.action_university_users
+msgid "Add a new user to the research centre"
+msgstr "Добавить нового пользователя в исследовательский центр"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
+msgid "Add stage description..."
+msgstr "Добавить описание этапа..."
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_ids
@@ -110,7 +165,13 @@ msgid "Archived"
 msgstr "В архиве"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_attachment_count
+msgid "Attachment Count"
+msgstr "Количество вложений"
+
+#. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
 msgid "Attachments"
 msgstr "Вложения"
 
@@ -121,6 +182,7 @@ msgstr "Основная информация"
 
 #. module: project_management
 #: model:ir.model.fields.selection,name:project_management.selection__project_project__project_status__cancel
+#: model:ir.model.fields.selection,name:project_management.selection__university_project_stage__status__cancel
 msgid "Cancelled"
 msgstr "Отменено"
 
@@ -130,15 +192,19 @@ msgid "Chat"
 msgstr "Чат"
 
 #. module: project_management
-#: model:ir.model.fields,field_description:project_management.field_university_project_member__role_code
-#: model:ir.model.fields,field_description:project_management.field_university_project_role__code
-msgid "Code"
-msgstr "Код"
+#: model:ir.model.fields.selection,name:project_management.selection__university_project_stage__status__done
+msgid "Completed"
+msgstr "Завершено"
 
 #. module: project_management
 #: model:ir.ui.menu,name:project_management.menu_university_configuration
 msgid "Configuration"
 msgstr "Администрировние"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid "Contact Information"
+msgstr "Контактная информация"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__contact_person
@@ -166,6 +232,8 @@ msgstr "Создать новый университетский проект"
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__create_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__create_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__create_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__create_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__create_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__create_uid
 msgid "Created by"
 msgstr "Создано"
@@ -176,6 +244,8 @@ msgstr "Создано"
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__create_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__create_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__create_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__create_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__create_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__create_date
 msgid "Created on"
 msgstr "Дата создания"
@@ -194,6 +264,17 @@ msgid "Customers"
 msgstr "Заказчики"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__date
+msgid "Date"
+msgstr "Дата"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__date_error_msg
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__date_error_msg
+msgid "Date Error Msg"
+msgstr "Сообщение об ошибке даты"
+
+#. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
 msgid "Dates"
 msgstr "Даты"
@@ -202,6 +283,13 @@ msgstr "Даты"
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
 msgid "Delete"
 msgstr "Удалить"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__name
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__description
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
+msgid "Description"
+msgstr "Имя файла"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_design
@@ -219,6 +307,8 @@ msgstr "Разработка"
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__display_name
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__display_name
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__display_name
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__display_name
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__display_name
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__display_name
 msgid "Display Name"
 msgstr "Отображаемое имя"
@@ -230,6 +320,7 @@ msgstr "Документация"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__document_ids
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__document_ids
 msgid "Documents"
 msgstr "Документы"
 
@@ -240,8 +331,14 @@ msgstr "Выполнено"
 
 #. module: project_management
 #: model:ir.model.fields.selection,name:project_management.selection__project_project__project_status__draft
+#: model:ir.model.fields.selection,name:project_management.selection__university_project_stage__status__draft
 msgid "Draft"
 msgstr "Черновик"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
+msgid "E.g.: Design"
+msgstr "Например: Дизайн"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
@@ -259,12 +356,18 @@ msgid "Email"
 msgstr "Электронная почта"
 
 #. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid "Email Address / Login"
+msgstr "Email / Логин"
+
+#. module: project_management
 #: model:res.groups,name:project_management.employee
 msgid "Employee"
 msgstr "Сотрудник"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__project_date_end
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__date_end
 msgid "End Date"
 msgstr "Дата окончания"
 
@@ -275,14 +378,49 @@ msgstr "Файл"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__file_name
-#: model:ir.model.fields,field_description:project_management.field_university_project_document__name
-msgid "Filename"
+msgid "File Name"
 msgstr "Имя файла"
 
 #. module: project_management
-#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
-msgid "Go to Tasks"
-msgstr "Перейти к задачам"
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_follower_ids
+msgid "Followers"
+msgstr "Подписчики"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Подписчики (Партнеры)"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_stage__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Значок Font awesome, например fa-tasks"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid "Full Name"
+msgstr "Полное имя"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__has_message
+msgid "Has Message"
+msgstr "Есть сообщение"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
+msgid "History"
+msgstr "История"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__history_ids
+msgid "History Log"
+msgstr "Журнал истории"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_tree
+msgid "Home Page"
+msgstr "Главная страница"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__id
@@ -290,6 +428,8 @@ msgstr "Перейти к задачам"
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__id
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__id
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__id
 msgid "ID"
 msgstr "ID"
@@ -300,14 +440,50 @@ msgid "ID:"
 msgstr "ID:"
 
 #. module: project_management
-#: model:ir.model.fields,field_description:project_management.field_project_project__is_manager
-msgid "Is current user a manager?"
-msgstr "Является ли текущий пользователь менеджером?"
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_exception_icon
+msgid "Icon"
+msgstr "Значок"
 
 #. module: project_management
-#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
-msgid "Keywords"
-msgstr "Ключевые слова"
+#: model:ir.model.fields,help:project_management.field_university_project_stage__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Значок для обозначения исключительной деятельности."
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_stage__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Если отмечено, новые сообщения требуют вашего внимания."
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_stage__message_has_error
+#: model:ir.model.fields,help:project_management.field_university_project_stage__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Если отмечено, некоторые сообщения имеют ошибку доставки."
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid ""
+"If specified, this action will be opened at login for this user in addition "
+"to the standard menu.."
+msgstr ""
+"Если указано, это действие будет открыто при входе для этого пользователя в "
+"дополнение к стандартному меню."
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__university_project_stage__status__in_progress
+msgid "In Progress"
+msgstr "В процессе"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_is_follower
+msgid "Is Follower"
+msgstr "Является подписчиком"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__is_manager
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__is_manager
+msgid "Is current user a manager?"
+msgstr "Является ли текущий пользователь менеджером?"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__write_uid
@@ -315,6 +491,8 @@ msgstr "Ключевые слова"
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__write_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__write_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__write_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__write_uid
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__write_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__write_uid
 msgid "Last Updated by"
 msgstr "Обновлено пользователем"
@@ -325,6 +503,8 @@ msgstr "Обновлено пользователем"
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__write_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__write_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__write_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__write_date
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__write_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__write_date
 msgid "Last Updated on"
 msgstr "Дата последнего обновления"
@@ -335,15 +515,64 @@ msgid "Meetings"
 msgstr "Встречи"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_has_error
+msgid "Message Delivery error"
+msgstr "Ошибка доставки сообщения"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_ids
+msgid "Messages"
+msgstr "Сообщения"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Мой крайний срок деятельности"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__name
-#: model:ir.model.fields,field_description:project_management.field_university_project_role__name
 msgid "Name"
 msgstr "Название"
 
 #. module: project_management
-#: model:ir.model.fields,field_description:project_management.field_project_project__name_en
-msgid "Name (EN)"
-msgstr "Название (EN)"
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Следующий крайний срок деятельности"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_summary
+msgid "Next Activity Summary"
+msgstr "Краткое описание следующей деятельности"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_type_id
+msgid "Next Activity Type"
+msgstr "Тип следующей деятельности"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Количество действий"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_has_error_counter
+msgid "Number of errors"
+msgstr "Количество ошибок"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_stage__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "Количество сообщений, требующих действия"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_stage__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Количество сообщений с ошибкой доставки"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_role__sequence
+msgid "Ordering for role display"
+msgstr "Порядок отображения роли"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__name
@@ -355,6 +584,7 @@ msgstr "Название организации"
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__project_id
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__project_id
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__project_id
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__project_id
 msgid "Project"
 msgstr "Проект"
 
@@ -380,6 +610,12 @@ msgid "Project Name"
 msgstr "Название проекта"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_project__name_en
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+msgid "Project Name (EN)"
+msgstr "Название (EN)"
+
+#. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
 msgid "Project Name (RU)"
 msgstr "Название проекта (RU)"
@@ -402,6 +638,17 @@ msgid "Project Roles"
 msgstr "Роли проекта"
 
 #. module: project_management
+#: model:ir.model,name:project_management.model_university_project_stage
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
+msgid "Project Stage"
+msgstr "Этап проекта"
+
+#. module: project_management
+#: model:ir.model,name:project_management.model_university_project_stage_history
+msgid "Project Stage History"
+msgstr "История этапа проекта"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__project_type_id
 msgid "Project Type"
 msgstr "Тип проекта"
@@ -419,6 +666,11 @@ msgid "Projects"
 msgstr "Проекты"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__rating_ids
+msgid "Ratings"
+msgstr "Оценки"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_repo
 msgid "Repository"
 msgstr "Репозиторий"
@@ -434,9 +686,24 @@ msgid "Resources"
 msgstr "Ресурсы"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_user_id
+msgid "Responsible User"
+msgstr "Ответственный пользователь"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__role_id
 msgid "Role"
 msgstr "Роль"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__name
+msgid "Role Name"
+msgstr "Название"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Ошибка доставки SMS"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_role_search
@@ -445,18 +712,51 @@ msgstr "Поиск ролей"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__sequence
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__sequence
 msgid "Sequence"
 msgstr "Последовательность"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__stage_id
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__stage_id
+msgid "Stage"
+msgstr "Этап"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__name
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
+msgid "Stage Name"
+msgstr "Название этапа"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__project_date_start
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__date_start
 msgid "Start Date"
 msgstr "Дата начала"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__project_status
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__status
 msgid "Status"
 msgstr "Статус"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_stage__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Статус, основанный на деятельности\n"
+"Просрочено: Крайний срок уже прошел\n"
+"Сегодня: Дата деятельности - сегодня\n"
+"Запланировано: Будущие деятельности."
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid "System Language"
+msgstr "Язык системы"
 
 #. module: project_management
 #: model:ir.model,name:project_management.model_project_task
@@ -471,15 +771,30 @@ msgid "Team"
 msgstr "Команда"
 
 #. module: project_management
-#: model:ir.model.fields,help:project_management.field_university_project_member__role_code
+#: model:ir.model.fields,field_description:project_management.field_university_project_member__role_code
+#: model:ir.model.fields,field_description:project_management.field_university_project_role__code
+msgid "Technical Code"
+msgstr "Код"
+
+#. module: project_management
 #: model:ir.model.fields,help:project_management.field_university_project_role__code
-msgid "Technical code, e.g. owner, manager, member, viewer"
+msgid "Technical code: owner, manager, member, viewer"
+msgstr "Технический код, например owner, manager, member, viewer"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_member__role_code
+msgid "Technical role code"
 msgstr "Технический код, например owner, manager, member, viewer"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__name
 msgid "Type Name"
 msgstr "Название типа"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_stage__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Тип исключительной деятельности в записи."
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__url
@@ -520,8 +835,52 @@ msgstr "Роль университетского проекта"
 #. module: project_management
 #: model:ir.model,name:project_management.model_res_users
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__user_id
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__user_id
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
 msgid "User"
 msgstr "Пользователь"
+
+#. module: project_management
+#: model:ir.model.constraint,message:project_management.constraint_university_project_member_uniq_project_user
+msgid "User is already in project team."
+msgstr "Пользователь уже в команде проекта."
+
+#. module: project_management
+#: model:ir.actions.act_window,name:project_management.action_university_users
+#: model:ir.ui.menu,name:project_management.menu_university_users
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_tree
+msgid "Users"
+msgstr "Пользователи"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_stage__website_message_ids
+msgid "Website Messages"
+msgstr "Сообщения сайта"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_stage__website_message_ids
+msgid "Website communication history"
+msgstr "История общения сайта"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_customer__active
+msgid "Whether customer is active"
+msgstr "Активен ли заказчик"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_type__active
+msgid "Whether project type is available"
+msgstr "Доступен ли тип проекта"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_role__active
+msgid "Whether role is active"
+msgstr "Активна ли роль"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid "e.g. John Doe"
+msgstr "например, Иван Петров"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_customer_form
@@ -529,11 +888,11 @@ msgid "e.g. Ministry of Science"
 msgstr "например, Министерство науки"
 
 #. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
+msgid "e.g. email@example.com"
+msgstr "например, email@example.com"
+
+#. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
 msgid "| Created:"
 msgstr "| Создан:"
-
-#. module: project_management
-#: model:ir.model.fields,help:project_management.field_project_project__project_manager_id
-msgid "Пользователь, обладающий правами менеджера для этого проекта"
-msgstr "Пользователь, обладающий правами менеджера для этого проекта"
