@@ -7,7 +7,6 @@
         <field name="priority">10</field>
         <field name="arch" type="xml">
 
-
             <div name="button_box" position="inside">
                 <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
                     <div class="o_field_widget o_stat_info">
@@ -49,45 +48,45 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
+            <xpath expr="//form//sheet" position="inside">
+                <field name="is_manager" invisible="1"/>
+            </xpath>
+
             <!-- Добавляем вкладки в notebook -->
             <xpath expr="//notebook/page[1]" position="before">
+
+                <!-- Добавить проверку на менеджера для паспорта проекта-->
 
                 <!-- Паспорт проекта -->
                 <page string="Project Passport" name="university_project_passport">
                     <group>
-                        <group string="Basic Information" col="2" readonly="not is_manager">
-                            <field name="name" string="Project Name (RU)"/>
-                            <field name="name_en"/>
-                            <field name="project_manager_id" widget="many2many_tags_avatar" />
-                            <field name="project_type_id" />
-                            <field name="project_status" />
-                            <field name="custom_customer_id" />
-                            <field name="tag_ids" string="Keywords" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
+                        <group string="Basic Information" col="2">
+                            <field name="name" string="Project Name (RU)" readonly="not is_manager"/>
+                            <field name="name_en" readonly="not is_manager"/>
+                            <field name="project_manager_id" widget="many2many_tags_avatar" readonly="not is_manager"/>
+                            <field name="project_type_id" readonly="not is_manager"/>
+                            <field name="project_status" readonly="not is_manager"/>
+                            <field name="custom_customer_id" readonly="not is_manager"/>
+                            <field name="tag_ids" string="Keywords" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}" readonly="not is_manager"/>
                         </group>
                         <group string="Dates">
-                            <field name="project_date_start"/>
-                            <field name="project_date_end"/>
+                            <field name="project_date_start" readonly="not is_manager"/>
+                            <field name="project_date_end" readonly="not is_manager"/>
                         </group>
                     </group>
 
-                    <group string="Resources" col="2" readonly="not is_manager">
-                        <field name="link_repo"/>
-                        <field name="link_docs"/>
-                        <field name="link_design"/>
-                        <field name="link_chat"/>
-                        <field name="link_meeting"/>
-                        <field name="link_ids" context="{'default_project_id': id}">
+                    <group string="Resources" col="2">
+                        <field name="link_repo" readonly="not is_manager"/>
+                        <field name="link_docs" readonly="not is_manager"/>
+                        <field name="link_design" readonly="not is_manager"/>
+                        <field name="link_chat" readonly="not is_manager"/>
+                        <field name="link_meeting" readonly="not is_manager"/>
+
+                        <field name="link_ids" readonly="not is_manager" context="{'default_project_id': id}">
                             <list editable="bottom">
                                 <field name="name"/>
                                 <field name="url"/>
                             </list>
-                            <form>
-                                <group>
-                                    <field name="project_id" readonly="1"/>
-                                    <field name="name"/>
-                                    <field name="url"/>
-                                </group>
-                            </form>
                         </field>
                     </group>
                 </page>

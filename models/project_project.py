@@ -5,7 +5,7 @@ class Project(models.Model):
     _inherit = "project.project"
 
     # --- Ваши существующие поля ---
-    name_en = fields.Char(string="Name (EN)")
+    name_en = fields.Char(string="Project Name (EN)")
     
     project_type_id = fields.Char(string='Type Name', required=True, translate=True)
 
