@@ -93,6 +93,9 @@
                         <group string="Resources" col="2">
                             <field name="link_repo" readonly="not is_manager"/>
                             <field name="link_docs" readonly="not is_manager"/>
+                            <field name="link_design" readonly="not is_manager"/>
+                            <field name="link_chat" readonly="not is_manager"/>
+                            <field name="link_meeting" readonly="not is_manager"/>
                             <field name="link_ids" readonly="not is_manager" context="{'default_project_id': id}">
                                 <list editable="bottom">
                                     <field name="name"/>
