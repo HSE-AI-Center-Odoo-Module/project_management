@@ -32,13 +32,20 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <div name="button_box" position="inside">
-                <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
-                    <div class="o_field_widget o_stat_info">
-                        <span class="o_stat_text">Tasks</span>
-                    </div>
-                </button>
-            </div>
+            <xpath expr="//div[@name='button_box']" position="replace">
+                <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button" type="object" name="action_view_stages" icon="fa-list-ul">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Этапы</span>
+                        </div>
+                    </button>
+                    <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Задачи</span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
 
             <xpath expr="//group[field[@name='label_tasks']]" position="attributes">
                 <attribute name="invisible">1</attribute>

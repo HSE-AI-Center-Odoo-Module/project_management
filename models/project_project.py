@@ -102,13 +102,29 @@ class Project(models.Model):
     project_type_id = fields.Many2one('university.project.type', string='Project Type', tracking=True)
     custom_customer_id = fields.Many2one('university.project.customer', string='Customer', tracking=True)
 
+    def action_view_stages(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Project Stages',
+            'res_model': 'university.project.stage',
+            'view_mode': 'list,form', # Сначала список, потом форма
+            'domain': [('project_id', '=', self.id)],
+            'context': {
+                'default_project_id': self.id,
+                # Ограничиваем возможность создания для не-менеджеров на уровне UI
+                'create': self.is_manager, 
+            },
+            'target': 'current', # Открывает в текущем окне
+        }
+
     def action_view_tasks(self):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
             'name': 'Tasks',
             'res_model': 'project.task',
-            'view_mode': 'list,form,kanban',
+            'view_mode': 'kanban,form,list',
             'domain': [('project_id', '=', self.id)],
             'context': {'default_project_id': self.id},
             'target': 'current',

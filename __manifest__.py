@@ -23,6 +23,7 @@
         "data/project_type_data.xml",
 
         # Views
+        "views/project_stage_views.xml",
         "views/project_views.xml",
         "views/project_role_views.xml",
         "views/project_type_views.xml",

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_university_project_stage_form" model="ir.ui.view">
+        <field name="name">university.project.stage.form</field>
+        <field name="model">university.project.stage</field>
+        <field name="arch" type="xml">
+            <form string="Project Stage">
+                <header>
+                    <field name="status" widget="statusbar" options="{'clickable': '1'}" readonly="not is_manager"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Задачи</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <field name="is_manager" invisible="1"/>
+
+                    <div class="oe_title">
+                        <label for="name" string="Stage Name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Например: Проектирование" readonly="not is_manager"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="project_id" readonly="1" options="{'no_open': True}"/>
+                        </group>
+                        <group>
+                            <field name="date_start" readonly="not is_manager"/>
+                            <field name="date_end" readonly="not is_manager" decoration-danger="date_end &lt; date_start"/>
+                            <field name="date_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_error_msg" colspan="2"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Описание" name="description">
+                            <field name="description" nolabel="1" placeholder="Добавьте описание этапа..." readonly="not is_manager"/>
+                        </page>
+                        <page string="Attachments" name="university_project_docs">
+                            <field name="document_ids" readonly="not is_manager">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="file_data" widget="binary" filename="file_name"/>
+                                    <field name="file_name" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="History" name="history">
+                            <field name="history_ids" readonly="1" options="{'no_create': True}">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="date"/>
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
