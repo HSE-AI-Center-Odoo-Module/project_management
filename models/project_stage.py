@@ -94,6 +94,57 @@ class UniversityProjectStage(models.Model):
             'context': {'default_project_id': self.project_id.id},
             'target': 'current',
         }
+    
+    # ========== METHODS ==========
+    def write(self, vals):
+        # Список полей, изменения которых мы хотим логировать
+        tracked_fields = {
+            'name': 'Name',
+            'status': 'Status',
+            'date_start': 'Start Date',
+            'date_end': 'End Date',
+            'project_id': 'Project'
+        }
+
+        for rec in self:
+            changes = []
+            for field, label in tracked_fields.items():
+                if field in vals:
+                    old_raw = rec[field]
+                    new_raw = vals[field]
+
+                    # 1. Обработка полей Selection (Статус)
+                    if field == 'status':
+                        selection = dict(self._fields['status'].selection)
+                        old_val = selection.get(old_raw, old_raw)
+                        new_val = selection.get(new_raw, new_raw)
+                    
+                    # 2. Обработка Many2one (Проект)
+                    elif field == 'project_id':
+                        old_val = old_raw.display_name if old_raw else 'empty'
+                        # Для Many2one в vals приходит только ID (цифра)
+                        new_obj = self.env['project.project'].browse(new_raw)
+                        new_val = new_obj.display_name if new_obj else 'empty'
+                    
+                    # 3. Остальные поля (Char, Date)
+                    else:
+                        old_val = str(old_raw) if old_raw else 'empty'
+                        new_val = str(new_raw) if new_raw else 'empty'
+
+                    # Если значения действительно изменились
+                    if str(old_raw) != str(new_raw):
+                        changes.append(f"{label}: {old_val} → {new_val}")
+
+            # Если были зафиксированы изменения, создаем запись в истории
+            if changes:
+                self.env['university.project.stage.history'].create({
+                    'stage_id': rec.id,
+                    'name': " | ".join(changes),
+                    'user_id': self.env.user.id,
+                    'date': fields.Datetime.now(),
+                })
+
+        return super(UniversityProjectStage, self).write(vals)
 
 
 class UniversityProjectStageHistory(models.Model):
@@ -120,14 +171,3 @@ class UniversityProjectStageHistory(models.Model):
         string="Date",
         default=fields.Datetime.now
     )
-
-    # ========== METHODS ==========
-    def write(self, vals):
-        """Track status changes in history"""
-        if 'status' in vals:
-            for rec in self:
-                self.env['university.project.stage.history'].create({
-                    'stage_id': rec.id,
-                    'name': f"Status changed from {rec.status} to {vals['status']}",
-                })
-        return super(UniversityProjectStage, self).write(vals)

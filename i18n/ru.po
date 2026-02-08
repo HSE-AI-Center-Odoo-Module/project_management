@@ -289,7 +289,7 @@ msgstr "Удалить"
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__description
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
 msgid "Description"
-msgstr "Имя файла"
+msgstr "Описание"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_design
