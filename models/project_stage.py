@@ -83,17 +83,35 @@ class UniversityProjectStage(models.Model):
 
     # ========== ACTIONS ==========
     def action_view_tasks(self):
-        """Open stage tasks"""
+        """Open tasks using custom kanban and form views"""
         self.ensure_one()
+        
+        # Получаем ID ваших новых представлений по их внешним ID (External ID)
+        # Замените 'your_module_name' на реальное техническое имя вашего модуля
+        kanban_view = self.env.ref('project_management.view_university_task_kanban_custom').id
+        form_view = self.env.ref('project_management.view_university_task_form_custom').id
+        
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Tasks',
+            'name': 'Задачи: %s' % self.name,
             'res_model': 'project.task',
-            'view_mode': 'kanban,form,list',
+            # Указываем порядок переключения видов
+            'view_mode': 'kanban,list,form',
+            'views': [
+                (kanban_view, 'kanban'), # Первым откроется ваш кастомный канбан
+                (False, 'list'),         # Список останется стандартным (False)
+                (form_view, 'form'),     # При открытии задачи будет ваша новая форма
+            ],
+            # Если кнопка в проекте, используем self.id. Если в этапе — self.project_id.id
             'domain': [('project_id', '=', self.project_id.id)],
-            'context': {'default_project_id': self.project_id.id},
+            'context': {
+                'default_project_id': self.project_id.id,
+                # Группируем по стадиям (вашим фазам) сразу при открытии
+                'group_by': 'stage_id',
+            },
             'target': 'current',
         }
+
     
     # ========== METHODS ==========
     def write(self, vals):

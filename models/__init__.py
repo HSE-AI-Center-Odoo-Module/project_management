@@ -13,6 +13,10 @@ from . import project_project
 from . import project_member
 from . import project_stage
 
+# ===== PROJECT TASKS =====
+# Task management
+from . import project_task
+
 # ===== PROJECT RESOURCES =====
 # Documents and links attached to projects
 from . import project_document

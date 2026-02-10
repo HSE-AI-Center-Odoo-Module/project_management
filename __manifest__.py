@@ -21,8 +21,10 @@
         "data/project_role_data.xml",
         "data/russian_default.xml",
         "data/project_type_data.xml",
+        "data/project_task_phases_data.xml",
 
         # Views
+        "views/project_task_views.xml",
         "views/project_stage_views.xml",
         "views/project_views.xml",
         "views/project_role_views.xml",

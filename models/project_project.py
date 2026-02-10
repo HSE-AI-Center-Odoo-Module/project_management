@@ -126,6 +126,35 @@ class Project(models.Model):
             else:
                 project.date_error_msg = False
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        # 1. Создаем проект стандартным способом
+        projects = super(Project, self).create(vals_list)
+        
+        # 2. Находим ваши этапы по их внешним ID (из xml файла)
+        # Убедитесь, что 'project_management' — это имя папки вашего модуля
+        stage_xml_ids = [
+            'project_management.phase_backlog',
+            'project_management.phase_spec',
+            'project_management.phase_dev',
+            'project_management.phase_test',
+            'project_management.phase_delivered',
+            'project_management.phase_archive',
+        ]
+        
+        stages = self.env['project.task.type']
+        for xml_id in stage_xml_ids:
+            stage = self.env.ref(xml_id, raise_if_not_found=False)
+            if stage:
+                stages |= stage
+
+        # 3. Привязываем эти этапы к каждому новому созданному проекту
+        if stages:
+            for project in projects:
+                project.type_ids = [(6, 0, stages.ids)]
+        
+        return projects
+
     # ========== VALIDATIONS ==========
     @api.constrains('project_date_start', 'project_date_end')
     def _check_dates(self):
@@ -153,15 +182,32 @@ class Project(models.Model):
         }
 
     def action_view_tasks(self):
-        """Open project tasks"""
+        """Open tasks using custom kanban and form views"""
         self.ensure_one()
+        
+        # Получаем ID ваших новых представлений по их внешним ID (External ID)
+        # Замените 'your_module_name' на реальное техническое имя вашего модуля
+        kanban_view = self.env.ref('project_management.view_university_task_kanban_custom').id
+        form_view = self.env.ref('project_management.view_university_task_form_custom').id
+        
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Tasks',
+            'name': 'Задачи: %s' % self.name,
             'res_model': 'project.task',
-            'view_mode': 'kanban,form,list',
+            # Указываем порядок переключения видов
+            'view_mode': 'kanban,list,form',
+            'views': [
+                (kanban_view, 'kanban'), # Первым откроется ваш кастомный канбан
+                (False, 'list'),         # Список останется стандартным (False)
+                (form_view, 'form'),     # При открытии задачи будет ваша новая форма
+            ],
+            # Если кнопка в проекте, используем self.id. Если в этапе — self.project_id.id
             'domain': [('project_id', '=', self.id)],
-            'context': {'default_project_id': self.id},
+            'context': {
+                'default_project_id': self.id,
+                # Группируем по стадиям (вашим фазам) сразу при открытии
+                'group_by': 'stage_id',
+            },
             'target': 'current',
         }
 
