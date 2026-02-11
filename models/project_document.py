@@ -39,6 +39,12 @@ class UniversityProjectDocument(models.Model):
         ondelete="cascade"
     )
 
+    task_id = fields.Many2one(
+        'project.task', 
+        string="Задача", 
+        ondelete='cascade'
+    )
+
     # ========== METHODS ==========
     @api.onchange('stage_id')
     def _onchange_stage_id(self):

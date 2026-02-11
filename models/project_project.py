@@ -182,34 +182,38 @@ class Project(models.Model):
         }
 
     def action_view_tasks(self):
-        """Open tasks using custom kanban and form views"""
+        """Открыть задачи с использованием кастомного канбана и стандартной формы"""
         self.ensure_one()
         
-        # Получаем ID ваших новых представлений по их внешним ID (External ID)
-        # Замените 'your_module_name' на реальное техническое имя вашего модуля
-        kanban_view = self.env.ref('project_management.view_university_task_kanban_custom').id
-        form_view = self.env.ref('project_management.view_university_task_form_custom').id
+        # Определяем ID проекта в зависимости от того, откуда вызван метод (Project или Stage)
+        # Если модель 'project.project', используем self.id, если нет — self.project_id.id
+        project_id = self.id if self._name == 'project.project' else self.project_id.id
+        
+        # Получаем ID вашего кастомного канбана
+        # Форму (form_view) больше не передаем принудительно, 
+        # чтобы Odoo использовала вашу унаследованную версию по умолчанию.
+        module = 'project_management'
+        kanban_view = self.env.ref(f'{module}.view_university_task_kanban_custom').id
         
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Задачи: %s' % self.name,
+            'name': f'Задачи: {self.name}',
             'res_model': 'project.task',
-            # Указываем порядок переключения видов
             'view_mode': 'kanban,list,form',
             'views': [
-                (kanban_view, 'kanban'), # Первым откроется ваш кастомный канбан
-                (False, 'list'),         # Список останется стандартным (False)
-                (form_view, 'form'),     # При открытии задачи будет ваша новая форма
+                (kanban_view, 'kanban'), 
+                (False, 'list'), 
+                (False, 'form') # False заставит Odoo искать форму с высшим приоритетом
             ],
-            # Если кнопка в проекте, используем self.id. Если в этапе — self.project_id.id
-            'domain': [('project_id', '=', self.id)],
+            'domain': [('project_id', '=', project_id)],
             'context': {
-                'default_project_id': self.id,
-                # Группируем по стадиям (вашим фазам) сразу при открытии
+                'default_project_id': project_id,
                 'group_by': 'stage_id',
+                # Это поможет методу _read_group_stage_ids найти стадии
+                'active_test': False, 
             },
             'target': 'current',
-        }
+    }
 
 
 class ProjectTask(models.Model):
