@@ -168,6 +168,7 @@ class Project(models.Model):
     def action_view_stages(self):
         """Open project stages"""
         self.ensure_one()
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Project Stages',
@@ -194,6 +195,12 @@ class Project(models.Model):
         # чтобы Odoo использовала вашу унаследованную версию по умолчанию.
         module = 'project_management'
         kanban_view = self.env.ref(f'{module}.view_university_task_kanban_custom').id
+
+        is_admin = self.env.user.has_group('project_management.administrator')
+        is_project_manager = self.env.user in self.project_manager_id
+        task_domain = [('project_id', '=', project_id)]
+        if not (is_admin or is_project_manager):
+            task_domain.append(('user_ids', 'in', self.env.user.id))
         
         return {
             'type': 'ir.actions.act_window',
@@ -205,7 +212,7 @@ class Project(models.Model):
                 (False, 'list'), 
                 (False, 'form') # False заставит Odoo искать форму с высшим приоритетом
             ],
-            'domain': [('project_id', '=', project_id)],
+            'domain': task_domain,
             'context': {
                 'default_project_id': project_id,
                 'group_by': 'stage_id',
