@@ -216,28 +216,3 @@ class Project(models.Model):
     }
 
 
-class ProjectTask(models.Model):
-    """Extended task with team restrictions"""
-    _inherit = "project.task"
-
-    # ========== COMPUTED FIELDS ==========
-    project_member_user_ids = fields.Many2many(
-        related="project_id.member_user_ids",
-        string="Allowed Assignees",
-        readonly=True
-    )
-
-    # ========== VALIDATIONS ==========
-    @api.constrains('user_ids', 'project_id')
-    def _check_task_members(self):
-        """Ensure task assignees are project members"""
-        for task in self:
-            if not task.project_id:
-                continue
-            if task.user_ids:
-                invalid_users = task.user_ids - task.project_id.member_user_ids
-                if invalid_users:
-                    names = ", ".join(invalid_users.mapped('name'))
-                    raise ValidationError(
-                        f"Users: [{names}] are not members of project '{task.project_id.name}'."
-                    )

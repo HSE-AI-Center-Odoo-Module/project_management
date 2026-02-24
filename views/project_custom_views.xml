@@ -13,7 +13,7 @@
                     <field name="name" string="Project Name"/>
                     <field name="name_en" optional="show"/>
                     <field name="project_type_id" widget="badge" />
-                    <field name="project_manager_id" widget="many2one_avatar_user" string="Project Manager"/>
+                    <field name="project_manager_id" widget="many2many_avatar_user" string="Project Manager"/>
                     <field name="member_user_ids" widget="many2many_avatar_user" string="Team"/>
                     <field name="project_status" widget="badge" decoration-info="project_status == 'draft'" decoration-success="project_status == 'active'" decoration-muted="project_status == 'done'" decoration-danger="project_status == 'cancel'"/>
                     <field name="project_date_start" widget="date" optional="show"/>
