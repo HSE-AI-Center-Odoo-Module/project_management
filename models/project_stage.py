@@ -83,41 +83,13 @@ class UniversityProjectStage(models.Model):
 
     # ========== ACTIONS ==========
     def action_view_tasks(self):
-        """Открыть задачи с использованием кастомного канбана и стандартной формы"""
+        """Open tasks of the related project using unified project action logic."""
         self.ensure_one()
-        
-        # Определяем ID проекта в зависимости от того, откуда вызван метод (Project или Stage)
-        # Если модель 'project.project', используем self.id, если нет — self.project_id.id
-        project_id = self.id if self._name == 'project.project' else self.project_id.id
-        
-        # Получаем ID вашего кастомного канбана
-        # Форму (form_view) больше не передаем принудительно, 
-        # чтобы Odoo использовала вашу унаследованную версию по умолчанию.
-        module = 'project_management'
-        kanban_view = self.env.ref(f'{module}.view_university_task_kanban_custom').id
-        
-        return {
-            'type': 'ir.actions.act_window',
-            'name': f'Задачи: {self.name}',
-            'res_model': 'project.task',
-            'view_mode': 'kanban,list,form',
-            'views': [
-                (kanban_view, 'kanban'), 
-                (False, 'list'), 
-                (False, 'form') # False заставит Odoo искать форму с высшим приоритетом
-            ],
-            'domain': [('project_id', '=', project_id)],
-            'context': {
-                'default_project_id': project_id,
-                'group_by': 'stage_id',
-                # Это поможет методу _read_group_stage_ids найти стадии
-                'active_test': False, 
-            },
-            'target': 'current',
-    }
+        return self.project_id._prepare_tasks_action(
+            project_id=self.project_id.id,
+            action_name=f'Задачи: {self.name}',
+        )
 
-
-    
     # ========== METHODS ==========
     def write(self, vals):
         # Список полей, изменения которых мы хотим логировать
