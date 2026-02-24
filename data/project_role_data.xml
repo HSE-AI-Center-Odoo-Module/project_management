@@ -1,4 +1,10 @@
-<odoo>
+﻿<odoo>
+    <record id="role_manager" model="university.project.role">
+        <field name="name">Менеджер проекта</field>
+        <field name="code">manager</field>
+        <field name="sequence">0</field>
+    </record>
+
     <record id="role_expert" model="university.project.role">
         <field name="name">Эксперт</field>
         <field name="code">expert</field>

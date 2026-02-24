@@ -10,6 +10,9 @@ class UniversityProjectRole(models.Model):
     _name = "university.project.role"
     _description = "University project role"
     _order = "sequence, name"
+    _sql_constraints = [
+        ("university_project_role_code_uniq", "unique(code)", "Role code must be unique."),
+    ]
 
     # ========== FIELDS ==========
     name = fields.Char(

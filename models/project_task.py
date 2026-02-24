@@ -5,15 +5,6 @@ from odoo.exceptions import ValidationError
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
-    projectID = fields.Many2one(
-        "project.project",
-        string="Проект",
-        readonly=True,
-        store=True,
-        compute="_compute_project_id_custom",
-        default=lambda self: self.env.context.get("default_project_id"),
-    )
-
     date_start = fields.Date(string="Дата начала")
     date_end = fields.Date(string="Дата конца")
 
@@ -57,14 +48,6 @@ class ProjectTask(models.Model):
         copy=False,
         group_expand="_read_group_stage_ids",
     )
-
-    @api.depends("project_id")
-    def _compute_project_id_custom(self):
-        for task in self:
-            if task.project_id:
-                task.projectID = task.project_id
-            elif not task.projectID and self.env.context.get("default_project_id"):
-                task.projectID = self.env.context.get("default_project_id")
 
     @api.depends("project_id")
     def _compute_is_manager(self):

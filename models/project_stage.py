@@ -1,4 +1,4 @@
-"""Project Stage Model
+﻿"""Project Stage Model
 Defines project stages/milestones with tracking.
 """
 from odoo import models, fields, api
@@ -83,50 +83,15 @@ class UniversityProjectStage(models.Model):
 
     # ========== ACTIONS ==========
     def action_view_tasks(self):
-        """Открыть задачи с использованием кастомного канбана и стандартной формы"""
         self.ensure_one()
-        
-        # Определяем ID проекта в зависимости от того, откуда вызван метод (Project или Stage)
-        # Если модель 'project.project', используем self.id, если нет — self.project_id.id
-        project_id = self.id if self._name == 'project.project' else self.project_id.id
-        
-        # Получаем ID вашего кастомного канбана
-        # Форму (form_view) больше не передаем принудительно, 
-        # чтобы Odoo использовала вашу унаследованную версию по умолчанию.
-        module = 'project_management'
-        kanban_view = self.env.ref(f'{module}.view_university_task_kanban_custom').id
-        
-        is_admin = self.env.user.has_group('project_management.administrator')
-        is_project_manager = self.env.user in self.project_id.project_manager_id
-        task_domain = [('project_id', '=', project_id)]
-        if not (is_admin or is_project_manager):
-            task_domain.append(('user_ids', 'in', self.env.user.id))
+        return self.project_id._build_task_board_action(
+            project_id=self.project_id.id,
+            action_name=f"Задачи: {self.name}",
+        )
 
-        return {
-            'type': 'ir.actions.act_window',
-            'name': f'Задачи: {self.name}',
-            'res_model': 'project.task',
-            'view_mode': 'kanban,list,form',
-            'views': [
-                (kanban_view, 'kanban'), 
-                (False, 'list'), 
-                (False, 'form') # False заставит Odoo искать форму с высшим приоритетом
-            ],
-            'domain': task_domain,
-            'context': {
-                'default_project_id': project_id,
-                'group_by': 'stage_id',
-                # Это поможет методу _read_group_stage_ids найти стадии
-                'active_test': False, 
-            },
-            'target': 'current',
-    }
-
-
-    
     # ========== METHODS ==========
     def write(self, vals):
-        # Список полей, изменения которых мы хотим логировать
+        # Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿Ð¾Ð»ÐµÐ¹, Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… Ð¼Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ð¼ Ð»Ð¾Ð³Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ
         tracked_fields = {
             'name': 'Name',
             'status': 'Status',
@@ -142,29 +107,29 @@ class UniversityProjectStage(models.Model):
                     old_raw = rec[field]
                     new_raw = vals[field]
 
-                    # 1. Обработка полей Selection (Статус)
+                    # 1. ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ð¿Ð¾Ð»ÐµÐ¹ Selection (Ð¡Ñ‚Ð°Ñ‚ÑƒÑ)
                     if field == 'status':
                         selection = dict(self._fields['status'].selection)
                         old_val = selection.get(old_raw, old_raw)
                         new_val = selection.get(new_raw, new_raw)
                     
-                    # 2. Обработка Many2one (Проект)
+                    # 2. ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Many2one (ÐŸÑ€Ð¾ÐµÐºÑ‚)
                     elif field == 'project_id':
                         old_val = old_raw.display_name if old_raw else 'empty'
-                        # Для Many2one в vals приходит только ID (цифра)
+                        # Ð”Ð»Ñ Many2one Ð² vals Ð¿Ñ€Ð¸Ñ…Ð¾Ð´Ð¸Ñ‚ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ ID (Ñ†Ð¸Ñ„Ñ€Ð°)
                         new_obj = self.env['project.project'].browse(new_raw)
                         new_val = new_obj.display_name if new_obj else 'empty'
                     
-                    # 3. Остальные поля (Char, Date)
+                    # 3. ÐžÑÑ‚Ð°Ð»ÑŒÐ½Ñ‹Ðµ Ð¿Ð¾Ð»Ñ (Char, Date)
                     else:
                         old_val = str(old_raw) if old_raw else 'empty'
                         new_val = str(new_raw) if new_raw else 'empty'
 
-                    # Если значения действительно изменились
+                    # Ð•ÑÐ»Ð¸ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¸Ð·Ð¼ÐµÐ½Ð¸Ð»Ð¸ÑÑŒ
                     if str(old_raw) != str(new_raw):
-                        changes.append(f"{label}: {old_val} → {new_val}")
+                        changes.append(f"{label}: {old_val} â†’ {new_val}")
 
-            # Если были зафиксированы изменения, создаем запись в истории
+            # Ð•ÑÐ»Ð¸ Ð±Ñ‹Ð»Ð¸ Ð·Ð°Ñ„Ð¸ÐºÑÐ¸Ñ€Ð¾Ð²Ð°Ð½Ñ‹ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ, ÑÐ¾Ð·Ð´Ð°ÐµÐ¼ Ð·Ð°Ð¿Ð¸ÑÑŒ Ð² Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ð¸
             if changes:
                 self.env['university.project.stage.history'].create({
                     'stage_id': rec.id,

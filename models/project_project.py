@@ -1,4 +1,4 @@
-"""Extended Project Model
+﻿"""Extended Project Model
 Main project model with team, documents, links, and tracking.
 """
 from odoo import models, fields, api
@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError
 class Project(models.Model):
     """Extended project with university features"""
     _inherit = "project.project"
+    _MANAGER_ROLE_CODE = "manager"
 
     # ========== METADATA ==========
     name_en = fields.Char(string="Project Name (EN)")
@@ -69,6 +70,7 @@ class Project(models.Model):
         'project_id', 'user_id',
         string='Project Manager',
         compute="_compute_project_manager_id",
+        inverse="_inverse_project_manager_id",
         store=True,
         readonly=False
     )
@@ -105,9 +107,31 @@ class Project(models.Model):
         """Collect users with 'manager' role"""
         for project in self:
             managers = project.member_ids.filtered(
-                lambda m: m.role_id.code == 'manager'
+                lambda m: m.role_code == self._MANAGER_ROLE_CODE
             ).mapped('user_id')
             project.project_manager_id = managers
+
+    def _inverse_project_manager_id(self):
+        """Ensure selected managers are present in Team with manager role."""
+        role_model = self.env["university.project.role"]
+        member_model = self.env["university.project.member"]
+        manager_role = role_model.search([("code", "=", self._MANAGER_ROLE_CODE)], limit=1)
+        if not manager_role:
+            raise ValidationError("Role with code 'manager' is required for Project Manager sync.")
+
+        for project in self:
+            members_by_user = {member.user_id.id: member for member in project.member_ids}
+            for user in project.project_manager_id:
+                member = members_by_user.get(user.id)
+                if not member:
+                    member_model.create({
+                        "project_id": project.id,
+                        "user_id": user.id,
+                        "role_id": manager_role.id,
+                    })
+                    continue
+                if member.role_id != manager_role:
+                    member.role_id = manager_role
 
     @api.depends('project_manager_id')
     def _compute_user_is_manager(self):
@@ -128,11 +152,11 @@ class Project(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        # 1. Создаем проект стандартным способом
+        # 1. Ð¡Ð¾Ð·Ð´Ð°ÐµÐ¼ Ð¿Ñ€Ð¾ÐµÐºÑ‚ ÑÑ‚Ð°Ð½Ð´Ð°Ñ€Ñ‚Ð½Ñ‹Ð¼ ÑÐ¿Ð¾ÑÐ¾Ð±Ð¾Ð¼
         projects = super(Project, self).create(vals_list)
         
-        # 2. Находим ваши этапы по их внешним ID (из xml файла)
-        # Убедитесь, что 'project_management' — это имя папки вашего модуля
+        # 2. ÐÐ°Ñ…Ð¾Ð´Ð¸Ð¼ Ð²Ð°ÑˆÐ¸ ÑÑ‚Ð°Ð¿Ñ‹ Ð¿Ð¾ Ð¸Ñ… Ð²Ð½ÐµÑˆÐ½Ð¸Ð¼ ID (Ð¸Ð· xml Ñ„Ð°Ð¹Ð»Ð°)
+        # Ð£Ð±ÐµÐ´Ð¸Ñ‚ÐµÑÑŒ, Ñ‡Ñ‚Ð¾ 'project_management' â€” ÑÑ‚Ð¾ Ð¸Ð¼Ñ Ð¿Ð°Ð¿ÐºÐ¸ Ð²Ð°ÑˆÐµÐ³Ð¾ Ð¼Ð¾Ð´ÑƒÐ»Ñ
         stage_xml_ids = [
             'project_management.phase_backlog',
             'project_management.phase_spec',
@@ -148,7 +172,7 @@ class Project(models.Model):
             if stage:
                 stages |= stage
 
-        # 3. Привязываем эти этапы к каждому новому созданному проекту
+        # 3. ÐŸÑ€Ð¸Ð²ÑÐ·Ñ‹Ð²Ð°ÐµÐ¼ ÑÑ‚Ð¸ ÑÑ‚Ð°Ð¿Ñ‹ Ðº ÐºÐ°Ð¶Ð´Ð¾Ð¼Ñƒ Ð½Ð¾Ð²Ð¾Ð¼Ñƒ ÑÐ¾Ð·Ð´Ð°Ð½Ð½Ð¾Ð¼Ñƒ Ð¿Ñ€Ð¾ÐµÐºÑ‚Ñƒ
         if stages:
             for project in projects:
                 project.type_ids = [(6, 0, stages.ids)]
@@ -183,43 +207,39 @@ class Project(models.Model):
         }
 
     def action_view_tasks(self):
-        """Открыть задачи с использованием кастомного канбана и стандартной формы"""
         self.ensure_one()
-        
-        # Определяем ID проекта в зависимости от того, откуда вызван метод (Project или Stage)
-        # Если модель 'project.project', используем self.id, если нет — self.project_id.id
-        project_id = self.id if self._name == 'project.project' else self.project_id.id
-        
-        # Получаем ID вашего кастомного канбана
-        # Форму (form_view) больше не передаем принудительно, 
-        # чтобы Odoo использовала вашу унаследованную версию по умолчанию.
-        module = 'project_management'
-        kanban_view = self.env.ref(f'{module}.view_university_task_kanban_custom').id
+        return self._build_task_board_action(
+            project_id=self.id,
+            action_name=f"Задачи: {self.name}",
+        )
 
+    def _task_board_domain(self, project_id):
+        self.ensure_one()
         is_admin = self.env.user.has_group('project_management.administrator')
         is_project_manager = self.env.user in self.project_manager_id
-        task_domain = [('project_id', '=', project_id)]
+        domain = [('project_id', '=', project_id)]
         if not (is_admin or is_project_manager):
-            task_domain.append(('user_ids', 'in', self.env.user.id))
-        
+            domain.append(('user_ids', 'in', self.env.user.id))
+        return domain
+
+    def _build_task_board_action(self, project_id, action_name):
+        self.ensure_one()
+        kanban_view = self.env.ref('project_management.view_university_task_kanban_custom').id
         return {
             'type': 'ir.actions.act_window',
-            'name': f'Задачи: {self.name}',
+            'name': action_name,
             'res_model': 'project.task',
             'view_mode': 'kanban,list,form',
             'views': [
-                (kanban_view, 'kanban'), 
-                (False, 'list'), 
-                (False, 'form') # False заставит Odoo искать форму с высшим приоритетом
+                (kanban_view, 'kanban'),
+                (False, 'list'),
+                (False, 'form'),
             ],
-            'domain': task_domain,
+            'domain': self._task_board_domain(project_id),
             'context': {
                 'default_project_id': project_id,
                 'group_by': 'stage_id',
-                # Это поможет методу _read_group_stage_ids найти стадии
-                'active_test': False, 
+                'active_test': False,
             },
             'target': 'current',
-    }
-
-
+        }

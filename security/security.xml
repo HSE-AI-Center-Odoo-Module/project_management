@@ -50,7 +50,7 @@
             <field name="name">Task: Visibility for Project Manager</field>
             <field name="model_id" ref="project.model_project_task"/>
             <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
-            <field name="domain_force">[('project_id.project_manager_id', '=', user.id)]</field>
+            <field name="domain_force">[('project_id.project_manager_id', 'in', user.id)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
