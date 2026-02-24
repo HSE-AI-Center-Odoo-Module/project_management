@@ -4,7 +4,7 @@ Manages team members and their roles in projects.
 """
 import logging
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -62,5 +62,5 @@ class UniversityProjectMember(models.Model):
         for rec in self:
             if rec.user_id and not rec.user_id.active:
                 raise ValidationError(
-                    "You cannot add an inactive user to the team."
+                    _("You cannot add an inactive user to the team.")
                 )

@@ -1,4 +1,4 @@
-﻿from odoo import api, fields, models
+﻿from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -64,8 +64,14 @@ class ProjectTask(models.Model):
             if task.date_end and task.university_stage_id and task.university_stage_id.date_end:
                 if task.date_end > task.university_stage_id.date_end:
                     raise ValidationError(
-                        f"Дата конца задачи ({task.date_end}) не может быть позже "
-                        f"даты конца этапа ({task.university_stage_id.date_end})"
+                        _(
+                            "Task end date (%(task_end)s) cannot be later than "
+                            "stage end date (%(stage_end)s)."
+                        )
+                        % {
+                            "task_end": task.date_end,
+                            "stage_end": task.university_stage_id.date_end,
+                        }
                     )
 
     @api.constrains("user_ids", "project_id")
@@ -77,7 +83,10 @@ class ProjectTask(models.Model):
             if invalid_users:
                 names = ", ".join(invalid_users.mapped("name"))
                 raise ValidationError(
-                    f"Users: [{names}] are not members of project '{task.project_id.name}'."
+                    _(
+                        "Users: [%(users)s] are not members of project '%(project)s'."
+                    )
+                    % {"users": names, "project": task.project_id.name}
                 )
 
     @api.model

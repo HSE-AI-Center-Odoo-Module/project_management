@@ -1,7 +1,7 @@
 ﻿"""Project Stage Model
 Defines project stages/milestones with tracking.
 """
-from odoo import models, fields, api
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -79,7 +79,7 @@ class UniversityProjectStage(models.Model):
         for stage in self:
             if (stage.date_start and stage.date_end and
                     stage.date_end < stage.date_start):
-                raise ValidationError('End Date cannot be earlier than Start Date.')
+                raise ValidationError(_("End Date cannot be earlier than Start Date."))
 
     # ========== ACTIONS ==========
     def action_view_tasks(self):

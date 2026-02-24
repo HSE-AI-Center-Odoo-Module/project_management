@@ -1,7 +1,7 @@
 ﻿"""Extended Project Model
 Main project model with team, documents, links, and tracking.
 """
-from odoo import models, fields, api
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -117,7 +117,10 @@ class Project(models.Model):
         member_model = self.env["university.project.member"]
         manager_role = role_model.search([("code", "=", self._MANAGER_ROLE_CODE)], limit=1)
         if not manager_role:
-            raise ValidationError("Role with code 'manager' is required for Project Manager sync.")
+            raise ValidationError(
+                _("Role with code '%s' is required for Project Manager sync.")
+                % self._MANAGER_ROLE_CODE
+            )
 
         for project in self:
             members_by_user = {member.user_id.id: member for member in project.member_ids}
@@ -186,7 +189,7 @@ class Project(models.Model):
         for project in self:
             if (project.project_date_start and project.project_date_end and
                     project.project_date_end < project.project_date_start):
-                raise ValidationError('End Date cannot be earlier than Start Date.')
+                raise ValidationError(_("End Date cannot be earlier than Start Date."))
 
     # ========== ACTIONS ==========
     def action_view_stages(self):

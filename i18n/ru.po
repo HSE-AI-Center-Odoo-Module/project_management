@@ -896,3 +896,26 @@ msgstr "например, email@example.com"
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
 msgid "| Created:"
 msgstr "| Создан:"
+
+#. module: project_management
+#: code:addons/project_management/models/project_project.py:0
+#, python-format
+msgid "Role with code '%s' is required for Project Manager sync."
+msgstr "Для синхронизации менеджера проекта требуется роль с кодом '%s'."
+
+#. module: project_management
+#: code:addons/project_management/models/project_task.py:0
+#, python-format
+msgid "Task end date (%(task_end)s) cannot be later than stage end date (%(stage_end)s)."
+msgstr "Дата окончания задачи (%(task_end)s) не может быть позже даты окончания этапа (%(stage_end)s)."
+
+#. module: project_management
+#: code:addons/project_management/models/project_task.py:0
+#, python-format
+msgid "Users: [%(users)s] are not members of project '%(project)s'."
+msgstr "Пользователи [%(users)s] не являются участниками проекта '%(project)s'."
+
+#. module: project_management
+#: code:addons/project_management/models/project_member.py:0
+msgid "You cannot add an inactive user to the team."
+msgstr "Нельзя добавить неактивного пользователя в команду."
