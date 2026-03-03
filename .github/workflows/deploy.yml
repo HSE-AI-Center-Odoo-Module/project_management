@@ -66,7 +66,7 @@ jobs:
                   git reset --hard origin/main
 
                   # Обновляем модуль (БД)
-                  sudo docker exec odoo-stack-odoo-1 odoo \
+                  docker exec odoo-stack-odoo-1 odoo \
                     -d $DB_NAME \
                     --db_host=$DB_HOST \
                     --db_user=$DB_USER \
