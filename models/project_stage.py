@@ -91,7 +91,7 @@ class UniversityProjectStage(models.Model):
 
     # ========== METHODS ==========
     def write(self, vals):
-        # Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿Ð¾Ð»ÐµÐ¹, Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… Ð¼Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ð¼ Ð»Ð¾Ð³Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ
+        # Track selected field changes in history.
         tracked_fields = {
             'name': 'Name',
             'status': 'Status',
@@ -107,29 +107,29 @@ class UniversityProjectStage(models.Model):
                     old_raw = rec[field]
                     new_raw = vals[field]
 
-                    # 1. ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ð¿Ð¾Ð»ÐµÐ¹ Selection (Ð¡Ñ‚Ð°Ñ‚ÑƒÑ)
+                    # 1. Selection field handling.
                     if field == 'status':
                         selection = dict(self._fields['status'].selection)
                         old_val = selection.get(old_raw, old_raw)
                         new_val = selection.get(new_raw, new_raw)
                     
-                    # 2. ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Many2one (ÐŸÑ€Ð¾ÐµÐºÑ‚)
+                    # 2. Many2one field handling.
                     elif field == 'project_id':
                         old_val = old_raw.display_name if old_raw else 'empty'
-                        # Ð”Ð»Ñ Many2one Ð² vals Ð¿Ñ€Ð¸Ñ…Ð¾Ð´Ð¸Ñ‚ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ ID (Ñ†Ð¸Ñ„Ñ€Ð°)
+                        # For Many2one in vals we receive raw ID.
                         new_obj = self.env['project.project'].browse(new_raw)
                         new_val = new_obj.display_name if new_obj else 'empty'
                     
-                    # 3. ÐžÑÑ‚Ð°Ð»ÑŒÐ½Ñ‹Ðµ Ð¿Ð¾Ð»Ñ (Char, Date)
+                    # 3. Other field types (Char/Date/etc.).
                     else:
                         old_val = str(old_raw) if old_raw else 'empty'
                         new_val = str(new_raw) if new_raw else 'empty'
 
-                    # Ð•ÑÐ»Ð¸ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¸Ð·Ð¼ÐµÐ½Ð¸Ð»Ð¸ÑÑŒ
+                    # Log only real changes.
                     if str(old_raw) != str(new_raw):
-                        changes.append(f"{label}: {old_val} â†’ {new_val}")
+                        changes.append(f"{label}: {old_val} -> {new_val}")
 
-            # Ð•ÑÐ»Ð¸ Ð±Ñ‹Ð»Ð¸ Ð·Ð°Ñ„Ð¸ÐºÑÐ¸Ñ€Ð¾Ð²Ð°Ð½Ñ‹ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ, ÑÐ¾Ð·Ð´Ð°ÐµÐ¼ Ð·Ð°Ð¿Ð¸ÑÑŒ Ð² Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ð¸
+            # Persist history entry if there were changes.
             if changes:
                 self.env['university.project.stage.history'].create({
                     'stage_id': rec.id,
