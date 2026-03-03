@@ -45,11 +45,22 @@
                                 <field name="description" nolabel="1" placeholder="Add stage description..." readonly="not is_manager"/>
                             </page>
                             <page string="Attachments" name="university_project_docs">
-                                <field name="document_ids" readonly="not is_manager">
+                                <field name="document_ids" readonly="not is_manager" context="{'form_view_ref': 'project_management.view_university_project_document_form'}">
                                     <list editable="bottom">
                                         <field name="name"/>
+                                        <field name="version_label" readonly="1"/>
                                         <field name="file_data" widget="binary" filename="file_name"/>
                                         <field name="file_name" column_invisible="True"/>
+                                        <field name="uploaded_by" readonly="1"/>
+                                        <field name="uploaded_at" readonly="1"/>
+                                        <button
+                                            type="object"
+                                            name="action_create_new_version"
+                                            string="New Version"
+                                            icon="fa-files-o"
+                                            class="btn-link"
+                                            invisible="not id or not is_latest_version"/>
+                                        <field name="is_latest_version" column_invisible="True"/>
                                     </list>
                                 </field>
                             </page>

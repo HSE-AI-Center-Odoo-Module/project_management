@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_university_project_document_form" model="ir.ui.view">
+            <field name="name">university.project.document.form</field>
+            <field name="model">university.project.document</field>
+            <field name="arch" type="xml">
+                <form string="Document Version">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="file_data" filename="file_name"/>
+                                <field name="file_name" invisible="1"/>
+                                <field name="version_of_id" options="{'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="version_label" readonly="1"/>
+                                <field name="uploaded_by" readonly="1"/>
+                                <field name="uploaded_at" readonly="1"/>
+                                <field name="is_latest_version" invisible="1"/>
+                            </group>
+                        </group>
+                        <group string="Scope">
+                            <field name="project_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="stage_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="task_id" readonly="1" options="{'no_open': True}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

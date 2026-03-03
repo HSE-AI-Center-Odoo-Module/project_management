@@ -23,5 +23,10 @@
         <!-- Configuration: System -->
         <menuitem id="menu_university_users" name="Users" parent="menu_university_configuration" action="action_university_users" sequence="40"/>
 
+        <!-- Configuration: Utilities -->
+        <menuitem id="menu_university_utilities" name="Utilities" parent="menu_university_configuration" sequence="50"/>
+
+        <menuitem id="menu_university_stage_sync_wizard" name="Reset Task Stages" parent="menu_university_utilities" action="action_project_stage_sync_wizard" sequence="10"/>
+
     </data>
 </odoo>

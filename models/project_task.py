@@ -7,6 +7,10 @@ class ProjectTask(models.Model):
 
     date_start = fields.Date(string="Дата начала")
     date_end = fields.Date(string="Дата конца")
+    date_stage_error_msg = fields.Char(
+        string="Date validation message",
+        compute="_compute_date_stage_error_msg",
+    )
 
     document_ids = fields.One2many(
         "university.project.document",
@@ -57,6 +61,17 @@ class ProjectTask(models.Model):
             if rec.project_id:
                 is_project_manager = self.env.user in rec.project_id.project_manager_id
             rec.is_manager = is_admin or is_project_manager
+
+    @api.depends("date_end", "university_stage_id", "university_stage_id.date_end")
+    def _compute_date_stage_error_msg(self):
+        for task in self:
+            if task.date_end and task.university_stage_id and task.university_stage_id.date_end:
+                if task.date_end > task.university_stage_id.date_end:
+                    task.date_stage_error_msg = _(
+                        "Task end date cannot be later than stage end date (%(stage_end)s)."
+                    ) % {"stage_end": task.university_stage_id.date_end}
+                    continue
+            task.date_stage_error_msg = False
 
     @api.constrains("date_end", "university_stage_id")
     def _check_dates_against_stage(self):
