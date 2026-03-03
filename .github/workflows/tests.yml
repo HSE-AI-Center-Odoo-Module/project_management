@@ -105,6 +105,7 @@ jobs:
             --addons-path="$ADDONS_PATH" \
             -i "$MODULE_NAME" \
             --test-enable \
+            --test-tags="/$MODULE_NAME" \
             --without-demo=all \
             --workers=0 \
             --stop-after-init \
@@ -123,6 +124,7 @@ jobs:
             --addons-path="$ADDONS_PATH" \
             -u "$MODULE_NAME" \
             --test-enable \
+            --test-tags="/$MODULE_NAME" \
             --without-demo=all \
             --workers=0 \
             --stop-after-init \
