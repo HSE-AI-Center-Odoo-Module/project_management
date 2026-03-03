@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_project_stage_sync_wizard_form" model="ir.ui.view">
+            <field name="name">project.stage.sync.wizard.form</field>
+            <field name="model">project.stage.sync.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reset Project Task Stages">
+                    <sheet>
+                        <group>
+                            <field name="scope"/>
+                            <field name="project_ids" widget="many2many_tags" options="{'no_create': True}" invisible="scope != 'selected'"/>
+                            <field name="project_count" readonly="1"/>
+                            <field name="move_tasks"/>
+                            <field name="dry_run"/>
+                        </group>
+                        <div class="text-warning">
+                            This utility overwrites task stage set on target projects with module default phases.
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="action_apply" type="object" string="Apply" class="btn-primary"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_project_stage_sync_wizard" model="ir.actions.act_window">
+            <field name="name">Reset Task Stages</field>
+            <field name="res_model">project.stage.sync.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_project_stage_sync_wizard_form"/>
+            <field name="binding_model_id" ref="project.model_project_project"/>
+            <field name="binding_view_types">list,form</field>
+        </record>
+
+    </data>
+</odoo>

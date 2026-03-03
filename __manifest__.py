@@ -32,6 +32,7 @@
         "views/project_customer_views.xml",
         "views/project_custom_views.xml",
         "views/project_users_view.xml",
+        "views/project_stage_sync_wizard_views.xml",
         "views/menus.xml",
     ],
     "application": True,
