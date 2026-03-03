@@ -1,97 +1,99 @@
 name: Deploy Odoo Module
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-    inputs:
-      backup_db:
-        description: "Create database backup before deploy?"
-        required: true
-        default: true
-        type: boolean
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+        inputs:
+            backup_db:
+                description: "Create database backup before deploy?"
+                required: true
+                default: true
+                type: boolean
 
 jobs:
-  # ==========================================
-  # Бэкап базы данных
-  # ==========================================
-  backup:
-    name: Backup Database
-    runs-on: self-hosted
-    if: ${{ github.event_name == 'push' || github.event.inputs.backup_db == true }}
-    steps:
-      - name: Create database backup
-        run: |
-          # 1. Создаём директорию для бэкапов
-          mkdir -p /home/hseai/odoo-stack/backups
+    # ==========================================
+    # Бэкап базы данных
+    # ==========================================
+    backup:
+        name: Backup Database
+        runs-on: self-hosted
+        if: ${{ github.event_name == 'push' || github.event.inputs.backup_db == true }}
+        steps:
+            - name: Create database backup
+              run: |
+                  # 1. Создаём директорию для бэкапов
+                  mkdir -p /home/hseai/odoo-stack/backups
 
-          # 2. Имя бэкапа с датой
-          BACKUP_NAME="hseai_backup_$(date +%Y%m%d_%H%M%S).sql.gz"
+                  # 2. Имя бэкапа с датой
+                  BACKUP_NAME="hseai_backup_$(date +%Y%m%d_%H%M%S).sql.gz"
 
-          echo "Starting backup: $BACKUP_NAME..."
+                  echo "Starting backup: $BACKUP_NAME..."
 
-          # 3. Дамп базы из Docker в файл
-          docker exec odoo-stack-db-1 pg_dump -U odoo odoo | gzip > /home/hseai/odoo-stack/backups/$BACKUP_NAME
+                  # 3. Дамп базы из Docker в файл
+                  docker exec odoo-stack-db-1 pg_dump -U odoo odoo | gzip > /home/hseai/odoo-stack/backups/$BACKUP_NAME
 
-          echo "✅ Backup created successfully"
+                  echo "✅ Backup created successfully"
 
-          # 4. Очистка: оставляем только 10 последних файлов
-          cd /home/hseai/odoo-stack/backups && ls -t *.sql.gz 2>/dev/null | tail -n +11 | xargs -r rm -- || true
+                  # 4. Очистка: оставляем только 10 последних файлов
+                  cd /home/hseai/odoo-stack/backups && ls -t *.sql.gz 2>/dev/null | tail -n +11 | xargs -r rm -- || true
 
-          echo "📦 Current backups in storage:"
-          ls -lh /home/hseai/odoo-stack/backups/
+                  echo "📦 Current backups in storage:"
+                  ls -lh /home/hseai/odoo-stack/backups/
 
-  # ==========================================
-  # Деплой модуля
-  # ==========================================
-  deploy:
-    name: Deploy Module
-    runs-on: self-hosted
-    needs: backup # Ждем успешного завершения бэкапа
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    # ==========================================
+    # Деплой модуля
+    # ==========================================
+    deploy:
+        name: Deploy Module
+        runs-on: self-hosted
+        needs: backup # Ждем успешного завершения бэкапа
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Update Code and Odoo
-        run: |
-          # Переходим в папку с кодом
-          cd /home/hseai/odoo-stack/addons/project_management
-          git fetch origin main
-          git reset --hard origin/main
+            - name: Update Code and Odoo
+              env:
+                  DB_NAME: ${{ secrets.DB_NAME }}
+              run: |
+                  # Переходим в папку с кодом
+                  cd /home/hseai/odoo-stack/addons/project_management
+                  git fetch origin main
+                  git reset --hard origin/main
 
-          # Обновляем модуль (БД)
-          docker exec odoo-stack-odoo-1 odoo -u project_management --stop-after-init
+                  # Обновляем модуль (БД)
+                  docker exec odoo-stack-odoo-1 odoo -d $DB_NAME -u project_management --stop-after-init
 
-          # Рестарт сервиса
-          docker restart odoo-stack-odoo-1
-          echo "✅ Deployment finished"
+                  # Рестарт сервиса
+                  docker restart odoo-stack-odoo-1
+                  echo "✅ Deployment finished"
 
-  # ==========================================
-  # Проверка после деплоя (внешняя)
-  # ==========================================
-  post-deploy:
-    name: Post-deploy Check
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - name: Health check
-        run: |
-          echo "Waiting 20s for Odoo to warm up..."
-          sleep 20
+    # ==========================================
+    # Проверка после деплоя (внешняя)
+    # ==========================================
+    post-deploy:
+        name: Post-deploy Check
+        runs-on: ubuntu-latest
+        needs: deploy
+        steps:
+            - name: Health check
+              run: |
+                  echo "Waiting 20s for Odoo to warm up..."
+                  sleep 20
 
-          # Проверяем доступность вашего URL
-          HTTP_CODE=$(curl -s -L -o /dev/null -w "%{http_code}" https://hseai.smartlilac.com/web/login || echo "000")
+                  # Проверяем доступность вашего URL
+                  HTTP_CODE=$(curl -s -L -o /dev/null -w "%{http_code}" https://hseai.smartlilac.com/web/login || echo "000")
 
-          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "303" ]; then
-            echo "✅ Site is accessible (HTTP $HTTP_CODE)"
-          else
-            echo "❌ Site returned HTTP $HTTP_CODE"
-            exit 1
-          fi
+                  if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "303" ]; then
+                    echo "✅ Site is accessible (HTTP $HTTP_CODE)"
+                  else
+                    echo "❌ Site returned HTTP $HTTP_CODE"
+                    exit 1
+                  fi
 
-      - name: Notify on success
-        if: success()
-        run: |
-          echo "🎉 Deployment completed!"
-          echo "🌐 URL: https://hseai.smartlilac.com"
+            - name: Notify on success
+              if: success()
+              run: |
+                  echo "🎉 Deployment completed!"
+                  echo "🌐 URL: https://hseai.smartlilac.com"
