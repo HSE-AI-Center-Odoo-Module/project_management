@@ -16,6 +16,7 @@ from . import project_stage
 # ===== PROJECT TASKS =====
 # Task management
 from . import project_task
+from . import project_stage_sync_wizard
 
 # ===== PROJECT RESOURCES =====
 # Documents and links attached to projects
