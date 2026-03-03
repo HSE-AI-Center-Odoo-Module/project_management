@@ -36,6 +36,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install system dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          apt-get update
+          apt-get install -y postgresql-client
+
       - name: Resolve module path
         shell: bash
         run: |
@@ -61,20 +68,22 @@ jobs:
         run: |
           set -euo pipefail
           if [ -d "$GITHUB_WORKSPACE/models" ]; then
-            python -m compileall -q "$GITHUB_WORKSPACE/models"
+            python3 -m compileall -q "$GITHUB_WORKSPACE/models"
           fi
           if [ -d "$GITHUB_WORKSPACE/tests" ]; then
-            python -m compileall -q "$GITHUB_WORKSPACE/tests"
+            python3 -m compileall -q "$GITHUB_WORKSPACE/tests"
           fi
           if [ -d "$GITHUB_WORKSPACE/addons/$MODULE_NAME/models" ]; then
-            python -m compileall -q "$GITHUB_WORKSPACE/addons/$MODULE_NAME/models"
+            python3 -m compileall -q "$GITHUB_WORKSPACE/addons/$MODULE_NAME/models"
           fi
           if [ -d "$GITHUB_WORKSPACE/addons/$MODULE_NAME/tests" ]; then
-            python -m compileall -q "$GITHUB_WORKSPACE/addons/$MODULE_NAME/tests"
+            python3 -m compileall -q "$GITHUB_WORKSPACE/addons/$MODULE_NAME/tests"
           fi
 
       - name: Wait for PostgreSQL
         shell: bash
+        env:
+          PGPASSWORD: odoo
         run: |
           set -euo pipefail
           for i in $(seq 1 30); do
