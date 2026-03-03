@@ -1,0 +1,68 @@
+name: tag release on integration merge
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  tag-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect merge source branch
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+          MSG="$(git log -1 --pretty=%B)"
+          echo "Last commit message: $MSG"
+
+          if echo "$MSG" | grep -Eq "from .*/integration|from integration"; then
+            echo "from_integration=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "from_integration=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stop if push is not integration merge
+        if: steps.detect.outputs.from_integration != 'true'
+        run: |
+          echo "Push to main is not a merge from integration. Skipping tag."
+
+      - name: Compute next patch tag
+        if: steps.detect.outputs.from_integration == 'true'
+        id: next
+        shell: bash
+        run: |
+          set -euo pipefail
+          LAST_TAG="$(git tag --list 'v*' --sort=-v:refname | head -n 1)"
+
+          if [ -z "$LAST_TAG" ]; then
+            NEXT_TAG="v0.1.0"
+          else
+            VERSION="${LAST_TAG#v}"
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+            PATCH=$((PATCH + 1))
+            NEXT_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          fi
+
+          echo "next_tag=$NEXT_TAG" >> "$GITHUB_OUTPUT"
+          echo "Next tag: $NEXT_TAG"
+
+      - name: Create and push tag
+        if: steps.detect.outputs.from_integration == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.next.outputs.next_tag }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "$TAG"

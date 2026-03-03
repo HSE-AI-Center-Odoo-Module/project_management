@@ -3,7 +3,7 @@ name: project_management tests
 on:
   pull_request:
   push:
-    branches: [main, master]
+    branches: [main, master, integration]
   workflow_dispatch:
 
 jobs:
