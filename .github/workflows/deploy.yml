@@ -56,6 +56,9 @@ jobs:
             - name: Update Code and Odoo
               env:
                   DB_NAME: ${{ secrets.DB_NAME }}
+                  DB_HOST: db
+                  DB_USER: odoo
+                  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
               run: |
                   # Переходим в папку с кодом
                   cd /home/hseai/odoo-stack/addons/project_management
@@ -63,7 +66,14 @@ jobs:
                   git reset --hard origin/main
 
                   # Обновляем модуль (БД)
-                  docker exec odoo-stack-odoo-1 odoo -d $DB_NAME -u project_management --stop-after-init
+                  sudo docker exec odoo-stack-odoo-1 odoo \
+                    -d $DB_NAME \
+                    --db_host=$DB_HOST \
+                    --db_user=$DB_USER \
+                    --db_password=$DB_PASSWORD \
+                    -u project_management \
+                    --stop-after-init \
+                    --no-http
 
                   # Рестарт сервиса
                   docker restart odoo-stack-odoo-1
