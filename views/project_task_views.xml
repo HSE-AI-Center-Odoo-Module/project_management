@@ -1,4 +1,4 @@
-<odoo>
+﻿<odoo>
     <data>
 
         <!-- ========== PROJECT TASK - KANBAN VIEW ========== -->
@@ -76,8 +76,9 @@
                                 <div class="o_row">
                                     <field name="date_start" widget="date" placeholder="Начало" readonly="not is_manager"/>
                                     <i class="fa fa-long-arrow-right mx-2" title="по" role="img" aria-label="по"/>
-                                    <field name="date_end" widget="date" placeholder="Конец" readonly="not is_manager"/>
+                                    <field name="date_end" widget="date" placeholder="Конец" readonly="not is_manager" decoration-danger="date_stage_error_msg"/>
                                 </div>
+                                <field name="date_stage_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_stage_error_msg"/>
                                 <field name="priority" widget="priority" readonly="not is_manager"/>
                                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="not is_manager"/>
                             </group>
@@ -105,3 +106,5 @@
 
     </data>
 </odoo>
+
+

@@ -155,11 +155,10 @@ class Project(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        # 1. Ð¡Ð¾Ð·Ð´Ð°ÐµÐ¼ Ð¿Ñ€Ð¾ÐµÐºÑ‚ ÑÑ‚Ð°Ð½Ð´Ð°Ñ€Ñ‚Ð½Ñ‹Ð¼ ÑÐ¿Ð¾ÑÐ¾Ð±Ð¾Ð¼
+        # 1. Create project(s) with standard Odoo flow.
         projects = super(Project, self).create(vals_list)
         
-        # 2. ÐÐ°Ñ…Ð¾Ð´Ð¸Ð¼ Ð²Ð°ÑˆÐ¸ ÑÑ‚Ð°Ð¿Ñ‹ Ð¿Ð¾ Ð¸Ñ… Ð²Ð½ÐµÑˆÐ½Ð¸Ð¼ ID (Ð¸Ð· xml Ñ„Ð°Ð¹Ð»Ð°)
-        # Ð£Ð±ÐµÐ´Ð¸Ñ‚ÐµÑÑŒ, Ñ‡Ñ‚Ð¾ 'project_management' â€” ÑÑ‚Ð¾ Ð¸Ð¼Ñ Ð¿Ð°Ð¿ÐºÐ¸ Ð²Ð°ÑˆÐµÐ³Ð¾ Ð¼Ð¾Ð´ÑƒÐ»Ñ
+        # 2. Resolve default task stage templates by XML IDs.
         stage_xml_ids = [
             'project_management.phase_backlog',
             'project_management.phase_spec',
@@ -175,7 +174,7 @@ class Project(models.Model):
             if stage:
                 stages |= stage
 
-        # 3. ÐŸÑ€Ð¸Ð²ÑÐ·Ñ‹Ð²Ð°ÐµÐ¼ ÑÑ‚Ð¸ ÑÑ‚Ð°Ð¿Ñ‹ Ðº ÐºÐ°Ð¶Ð´Ð¾Ð¼Ñƒ Ð½Ð¾Ð²Ð¾Ð¼Ñƒ ÑÐ¾Ð·Ð´Ð°Ð½Ð½Ð¾Ð¼Ñƒ Ð¿Ñ€Ð¾ÐµÐºÑ‚Ñƒ
+        # 3. Assign default stage set to each created project.
         if stages:
             for project in projects:
                 project.type_ids = [(6, 0, stages.ids)]
