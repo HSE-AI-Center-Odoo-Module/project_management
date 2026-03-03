@@ -1,0 +1,129 @@
+name: project_management tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  odoo-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: odoo:18
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_DB: odoo_test
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+        options: >-
+          --health-cmd "pg_isready -U odoo -d odoo_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DB_NAME: odoo_test
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: odoo
+      DB_PASSWORD: odoo
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve module path
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f "$GITHUB_WORKSPACE/__manifest__.py" ]; then
+            MODULE_NAME="$(basename "$GITHUB_WORKSPACE")"
+            ADDONS_PARENT="$(dirname "$GITHUB_WORKSPACE")"
+          elif [ -f "$GITHUB_WORKSPACE/addons/project_management/__manifest__.py" ]; then
+            MODULE_NAME="project_management"
+            ADDONS_PARENT="$GITHUB_WORKSPACE/addons"
+          else
+            echo "Cannot find project_management module manifest"
+            exit 1
+          fi
+
+          echo "MODULE_NAME=$MODULE_NAME" >> "$GITHUB_ENV"
+          echo "ADDONS_PATH=/usr/lib/python3/dist-packages/odoo/addons,$ADDONS_PARENT" >> "$GITHUB_ENV"
+          echo "Using module: $MODULE_NAME"
+          echo "Using addons path: /usr/lib/python3/dist-packages/odoo/addons,$ADDONS_PARENT"
+
+      - name: Python syntax check (models/tests)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d "$GITHUB_WORKSPACE/models" ]; then
+            python -m compileall -q "$GITHUB_WORKSPACE/models"
+          fi
+          if [ -d "$GITHUB_WORKSPACE/tests" ]; then
+            python -m compileall -q "$GITHUB_WORKSPACE/tests"
+          fi
+          if [ -d "$GITHUB_WORKSPACE/addons/$MODULE_NAME/models" ]; then
+            python -m compileall -q "$GITHUB_WORKSPACE/addons/$MODULE_NAME/models"
+          fi
+          if [ -d "$GITHUB_WORKSPACE/addons/$MODULE_NAME/tests" ]; then
+            python -m compileall -q "$GITHUB_WORKSPACE/addons/$MODULE_NAME/tests"
+          fi
+
+      - name: Wait for PostgreSQL
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 30); do
+            pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" && exit 0
+            sleep 2
+          done
+          echo "PostgreSQL did not become ready"
+          exit 1
+
+      - name: Test install
+        shell: bash
+        run: |
+          set -euo pipefail
+          odoo -d "$DB_NAME" \
+            --db_host="$DB_HOST" \
+            --db_port="$DB_PORT" \
+            --db_user="$DB_USER" \
+            --db_password="$DB_PASSWORD" \
+            --addons-path="$ADDONS_PATH" \
+            -i "$MODULE_NAME" \
+            --test-enable \
+            --without-demo=all \
+            --workers=0 \
+            --stop-after-init \
+            --log-level=test \
+            2>&1 | tee odoo-test-install.log
+
+      - name: Test update
+        shell: bash
+        run: |
+          set -euo pipefail
+          odoo -d "$DB_NAME" \
+            --db_host="$DB_HOST" \
+            --db_port="$DB_PORT" \
+            --db_user="$DB_USER" \
+            --db_password="$DB_PASSWORD" \
+            --addons-path="$ADDONS_PATH" \
+            -u "$MODULE_NAME" \
+            --test-enable \
+            --without-demo=all \
+            --workers=0 \
+            --stop-after-init \
+            --log-level=test \
+            2>&1 | tee odoo-test-update.log
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: odoo-test-logs
+          path: |
+            odoo-test-install.log
+            odoo-test-update.log
