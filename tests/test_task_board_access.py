@@ -1,4 +1,4 @@
-from odoo.tests import TransactionCase, tagged
+﻿from odoo.tests import TransactionCase, tagged
 
 
 @tagged("post_install", "-at_install")
@@ -12,6 +12,7 @@ class TestTaskBoardAccess(TransactionCase):
 
         self.group_employee = self.env.ref("project_management.employee")
         self.group_admin = self.env.ref("project_management.administrator")
+        self.group_project_manager = self.env.ref("project.group_project_manager")
         self.role_manager = self.env.ref("project_management.role_manager")
         self.role_developer = self.env.ref("project_management.role_developer")
 
@@ -20,7 +21,7 @@ class TestTaskBoardAccess(TransactionCase):
                 "name": "PM Test Employee",
                 "login": "pm_test_employee",
                 "email": "pm_test_employee@example.com",
-                "groups_id": [(6, 0, [self.group_employee.id])],
+                "groups_id": [(6, 0, [self.group_employee.id, self.group_project_manager.id])],
             }
         )
         self.user_pm = self.Users.create(
@@ -51,6 +52,11 @@ class TestTaskBoardAccess(TransactionCase):
         self.project = self.Project.with_user(self.user_admin).create(
             {
                 "name": "Access Matrix Project",
+            }
+        )
+        self.project_hidden = self.Project.with_user(self.user_admin).create(
+            {
+                "name": "Hidden Project",
             }
         )
 
@@ -109,3 +115,8 @@ class TestTaskBoardAccess(TransactionCase):
         domain = self._get_task_domain(self.user_admin)
         self.assertIn(("project_id", "=", self.project.id), domain)
         self.assertNotIn(("user_ids", "in", self.user_admin.id), domain)
+
+    def test_employee_project_visibility_is_limited_to_team_membership(self):
+        visible_projects = self.Project.with_user(self.user_employee).search([])
+        self.assertIn(self.project, visible_projects)
+        self.assertNotIn(self.project_hidden, visible_projects)

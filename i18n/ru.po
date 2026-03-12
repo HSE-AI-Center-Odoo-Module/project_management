@@ -1,4 +1,4 @@
-# Translation of Odoo Server.
+﻿# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* project_management
 #
@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0-20260119\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-08 16:30+0000\n"
-"PO-Revision-Date: 2026-02-08 16:30+0000\n"
+"POT-Creation-Date: 2026-03-12 21:10+0000\n"
+"PO-Revision-Date: 2026-03-12 21:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,32 +17,33 @@ msgstr ""
 
 #. module: project_management
 #: model:res.groups,comment:project_management.administrator
-msgid ""
-" AI Research Centre Administrator - Full system control and access to all "
-"portal features"
-msgstr ""
-"Администратор Центра ИИ — полный контроль над системой и доступ ко всем "
-"функциям портала"
+msgid " AI Research Centre Administrator - Full system control and access to all portal features"
+msgstr "Администратор Центра ИИ — полный контроль над системой и доступ ко всем функциям портала"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+msgid "<i class=\\"fa fa-long-arrow-right mx-2\\" title=\\"по\\" role=\\"img\\" aria-label=\\"по\\"/>"
+msgstr "<i class=\\"fa fa-long-arrow-right mx-2\\" title=\\"по\\" role=\\"img\\" aria-label=\\"по\\"/>"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
 msgid ""
-"<i class=\"fa fa-users text-primary me-1\"/>\n"
+"<i class=\\"fa fa-users text-primary me-1\\"/>\\n"
 "                                    <strong>Team: </strong>"
 msgstr ""
-"<i class=\"fa fa-users text-primary me-1\"/>\n"
+"<i class=\\"fa fa-users text-primary me-1\\"/>\\n"
 "                                    <strong>Команда: </strong>"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
-msgid "<span class=\"o_stat_text\">Stages</span>"
-msgstr "<span class=\"o_stat_text\">Этапы</span>"
+msgid "<span class=\\"o_stat_text\\">Stages</span>"
+msgstr "<span class=\\"o_stat_text\\">Этапы</span>"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
-msgid "<span class=\"o_stat_text\">Tasks</span>"
-msgstr "<span class=\"o_stat_text\">Задачи</span>"
+msgid "<span class=\\"o_stat_text\\">Tasks</span>"
+msgstr "<span class=\\"o_stat_text\\">Задачи</span>"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
@@ -154,9 +155,19 @@ msgid "All Projects"
 msgstr "Все проекты"
 
 #. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_stage_sync_wizard__scope__all
+msgid "All projects"
+msgstr "Все проекты"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_task__project_member_user_ids
 msgid "Allowed Assignees"
 msgstr "Разрешённые исполнители"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_stage_sync_wizard_form
+msgid "Apply"
+msgstr "Применить"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_customer_search
@@ -171,6 +182,7 @@ msgstr "Количество вложений"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
 msgid "Attachments"
 msgstr "Вложения"
@@ -179,6 +191,11 @@ msgstr "Вложения"
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
 msgid "Basic Information"
 msgstr "Основная информация"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_stage_sync_wizard_form
+msgid "Cancel"
+msgstr "Отмена"
 
 #. module: project_management
 #: model:ir.model.fields.selection,name:project_management.selection__project_project__project_status__cancel
@@ -190,6 +207,11 @@ msgstr "Отменено"
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_chat
 msgid "Chat"
 msgstr "Чат"
+
+#. module: project_management
+#: model:ir.model.fields,help:project_management.field_university_project_document__version_of_id
+msgid "Choose previous file to create next version."
+msgstr "Выберите предыдущий файл, чтобы создать следующую версию."
 
 #. module: project_management
 #: model:ir.model.fields.selection,name:project_management.selection__university_project_stage__status__done
@@ -227,6 +249,7 @@ msgid "Create a new University Project"
 msgstr "Создать новый университетский проект"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__create_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__create_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__create_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__create_uid
@@ -239,6 +262,7 @@ msgid "Created by"
 msgstr "Создано"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__create_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__create_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__create_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__create_date
@@ -275,6 +299,11 @@ msgid "Date Error Msg"
 msgstr "Сообщение об ошибке даты"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__date_stage_error_msg
+msgid "Date validation message"
+msgstr "Сообщение проверки даты"
+
+#. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
 msgid "Dates"
 msgstr "Даты"
@@ -289,7 +318,7 @@ msgstr "Удалить"
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__description
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
 msgid "Description"
-msgstr "Описание"
+msgstr "Имя файла"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_design
@@ -302,6 +331,7 @@ msgid "Development"
 msgstr "Разработка"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__display_name
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__display_name
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__display_name
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__display_name
@@ -314,12 +344,24 @@ msgid "Display Name"
 msgstr "Отображаемое имя"
 
 #. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_document_form
+msgid "Document Version"
+msgstr "Версия документа"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_document.py:0
+msgid "Document version must belong to the same project/stage/task scope."
+msgstr "Версия документа должна относиться к той же области проекта/этапа/задачи."
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_docs
 msgid "Documentation"
 msgstr "Документация"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__document_ids
+#: model:ir.model.fields,field_description:project_management.field_project_task__document_ids
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__document_ids
 msgid "Documents"
 msgstr "Документы"
@@ -372,6 +414,13 @@ msgid "End Date"
 msgstr "Дата окончания"
 
 #. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_project.py:0
+#: code:addons/project_management/models/project_stage.py:0
+msgid "End Date cannot be earlier than Start Date."
+msgstr "Дата окончания не может быть раньше даты начала."
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__file_data
 msgid "File"
 msgstr "Файл"
@@ -397,6 +446,12 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Значок Font awesome, например fa-tasks"
 
 #. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_stage_sync_wizard.py:0
+msgid "For selected scope, open from project list/form context or choose projects manually in this wizard."
+msgstr "Для выбранной области откройте мастер из списка/формы проектов или выберите проекты вручную в этом мастере."
+
+#. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
 msgid "Full Name"
 msgstr "Полное имя"
@@ -405,6 +460,11 @@ msgstr "Полное имя"
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__has_message
 msgid "Has Message"
 msgstr "Есть сообщение"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_task__priority__2
+msgid "High"
+msgstr "Высокий"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
@@ -423,6 +483,7 @@ msgid "Home Page"
 msgstr "Главная страница"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__id
@@ -462,12 +523,8 @@ msgstr "Если отмечено, некоторые сообщения име�
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
-msgid ""
-"If specified, this action will be opened at login for this user in addition "
-"to the standard menu.."
-msgstr ""
-"Если указано, это действие будет открыто при входе для этого пользователя в "
-"дополнение к стандартному меню."
+msgid "If specified, this action will be opened at login for this user in addition to the standard menu.."
+msgstr "Если указано, это действие будет открыто при входе для этого пользователя в дополнение к стандартному меню."
 
 #. module: project_management
 #: model:ir.model.fields.selection,name:project_management.selection__university_project_stage__status__in_progress
@@ -480,12 +537,18 @@ msgid "Is Follower"
 msgstr "Является подписчиком"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__is_manager
+msgid "Is Manager"
+msgstr "Является менеджером"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__is_manager
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__is_manager
 msgid "Is current user a manager?"
 msgstr "Является ли текущий пользователь менеджером?"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__write_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__write_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__write_uid
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__write_uid
@@ -498,6 +561,7 @@ msgid "Last Updated by"
 msgstr "Обновлено пользователем"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__write_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__write_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__write_date
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__write_date
@@ -508,6 +572,21 @@ msgstr "Обновлено пользователем"
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__write_date
 msgid "Last Updated on"
 msgstr "Дата последнего обновления"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__is_latest_version
+msgid "Latest"
+msgstr "Последняя"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_task__priority__0
+msgid "Low"
+msgstr "Низкий"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_task__priority__1
+msgid "Medium"
+msgstr "Высокий"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__link_meeting
@@ -525,6 +604,11 @@ msgid "Messages"
 msgstr "Сообщения"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__move_tasks
+msgid "Move existing tasks to new stages"
+msgstr "Переместить существующие задачи на новые этапы"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__my_activity_date_deadline
 msgid "My Activity Deadline"
 msgstr "Мой крайний срок деятельности"
@@ -533,6 +617,19 @@ msgstr "Мой крайний срок деятельности"
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__name
 msgid "Name"
 msgstr "Название"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_document.py:0
+msgid "New File Version"
+msgstr "Новая версия файла"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_stage_form
+msgid "New Version"
+msgstr "Новая версия"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_date_deadline
@@ -548,6 +645,23 @@ msgstr "Краткое описание следующей деятельнос�
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_type_id
 msgid "Next Activity Type"
 msgstr "Тип следующей деятельности"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__version_ids
+msgid "Next Versions"
+msgstr "Следующие версии"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_stage_sync_wizard.py:0
+msgid "No default stages found. Check project_task_phases_data.xml."
+msgstr "Этапы по умолчанию не найдены. Проверьте project_task_phases_data.xml."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_stage_sync_wizard.py:0
+msgid "No projects found for selected scope."
+msgstr "Для выбранной области проекты не найдены."
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_needaction_counter
@@ -578,6 +692,16 @@ msgstr "Порядок отображения роли"
 #: model:ir.model.fields,field_description:project_management.field_university_project_customer__name
 msgid "Organization Name"
 msgstr "Название организации"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__dry_run
+msgid "Preview only (do not write changes)"
+msgstr "Только предварительный просмотр (без записи изменений)"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__priority
+msgid "Priority"
+msgstr "Приоритет"
 
 #. module: project_management
 #: model:ir.model,name:project_management.model_project_project
@@ -649,6 +773,11 @@ msgid "Project Stage History"
 msgstr "История этапа проекта"
 
 #. module: project_management
+#: model:ir.model,name:project_management.model_project_stage_sync_wizard
+msgid "Project Task Stages Sync Wizard"
+msgstr "Мастер синхронизации этапов задач проекта"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__project_type_id
 msgid "Project Type"
 msgstr "Тип проекта"
@@ -666,6 +795,11 @@ msgid "Projects"
 msgstr "Проекты"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__project_count
+msgid "Projects to update"
+msgstr "Проекты для обновления"
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__rating_ids
 msgid "Ratings"
 msgstr "Оценки"
@@ -679,6 +813,17 @@ msgstr "Репозиторий"
 #: model:university.project.type,name:project_management.project_type_nir
 msgid "Research"
 msgstr "Исследование"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_stage_sync_wizard_form
+msgid "Reset Project Task Stages"
+msgstr "Сброс этапов задач проекта"
+
+#. module: project_management
+#: model:ir.actions.act_window,name:project_management.action_project_stage_sync_wizard
+#: model:ir.ui.menu,name:project_management.menu_university_stage_sync_wizard
+msgid "Reset Task Stages"
+msgstr "Сброс этапов задач"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_project_form_inherit_university
@@ -701,14 +846,49 @@ msgid "Role Name"
 msgstr "Название"
 
 #. module: project_management
+#: model:ir.model.constraint,message:project_management.constraint_university_project_role_university_project_role_code_uniq
+msgid "Role code must be unique."
+msgstr "Код роли должен быть уникальным."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_project.py:0
+msgid "Role with code '%s' is required for Project Manager sync."
+msgstr "Для синхронизации менеджера проекта требуется роль с кодом '%s'."
+
+#. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__message_has_sms_error
 msgid "SMS Delivery error"
 msgstr "Ошибка доставки SMS"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__scope
+#: model_terms:ir.ui.view,arch_db:project_management.view_university_project_document_form
+msgid "Scope"
+msgstr "Область"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_stage_sync_wizard.py:0
+msgid "Scope: %(scope)s. Projects: %(projects)s. Stage templates: %(stages)s. Project-specific copies created: %(copies)s. Tasks moved: %(tasks)s. Dry run: %(dry_run)s."
+msgstr "Область: %(scope)s. Проекты: %(projects)s. Шаблоны этапов: %(stages)s. Создано проектных копий: %(copies)s. Перемещено задач: %(tasks)s. Тестовый режим: %(dry_run)s."
+
+#. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_role_search
 msgid "Search Roles"
 msgstr "Поиск ролей"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_document.py:0
+msgid "Selected base document for versioning was not found."
+msgstr "Выбранный базовый документ для версионирования не найден."
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_stage_sync_wizard__project_ids
+#: model:ir.model.fields.selection,name:project_management.selection__project_stage_sync_wizard__scope__selected
+msgid "Selected projects"
+msgstr "Выбранные проекты"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_role__sequence
@@ -717,6 +897,7 @@ msgid "Sequence"
 msgstr "Последовательность"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__stage_id
 #: model:ir.model.fields,field_description:project_management.field_university_project_document__stage_id
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__stage_id
 msgid "Stage"
@@ -743,14 +924,14 @@ msgstr "Статус"
 #. module: project_management
 #: model:ir.model.fields,help:project_management.field_university_project_stage__activity_state
 msgid ""
-"Status based on activities\n"
-"Overdue: Due date is already passed\n"
-"Today: Activity date is today\n"
+"Status based on activities\\n"
+"Overdue: Due date is already passed\\n"
+"Today: Activity date is today\\n"
 "Planned: Future activities."
 msgstr ""
-"Статус, основанный на деятельности\n"
-"Просрочено: Крайний срок уже прошел\n"
-"Сегодня: Дата деятельности - сегодня\n"
+"Статус, основанный на деятельности\\n"
+"Просрочено: Крайний срок уже прошел\\n"
+"Сегодня: Дата деятельности - сегодня\\n"
 "Запланировано: Будущие деятельности."
 
 #. module: project_management
@@ -760,8 +941,27 @@ msgstr "Язык системы"
 
 #. module: project_management
 #: model:ir.model,name:project_management.model_project_task
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__task_id
 msgid "Task"
 msgstr "Задача"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_task.py:0
+msgid "Task end date (%(task_end)s) cannot be later than stage end date (%(stage_end)s)."
+msgstr "Дата окончания задачи (%(task_end)s) не может быть позже даты окончания этапа (%(stage_end)s)."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_task.py:0
+msgid "Task end date cannot be later than stage end date (%(stage_end)s)."
+msgstr "Дата окончания задачи не может быть позже даты окончания этапа (%(stage_end)s)."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_stage_sync_wizard.py:0
+msgid "Task stages sync completed"
+msgstr "Синхронизация этапов задач завершена"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_project_project__member_ids
@@ -785,6 +985,11 @@ msgstr "Технический код, например owner, manager, member, 
 #: model:ir.model.fields,help:project_management.field_university_project_member__role_code
 msgid "Technical role code"
 msgstr "Технический код, например owner, manager, member, viewer"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_project_stage_sync_wizard_form
+msgid "This utility overwrites task stage set on target projects with module default phases."
+msgstr "Эта утилита заменяет набор этапов задач в целевых проектах фазами по умолчанию из модуля."
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__name
@@ -833,6 +1038,16 @@ msgid "University project role"
 msgstr "Роль университетского проекта"
 
 #. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__uploaded_at
+msgid "Uploaded At"
+msgstr "Загружено"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__uploaded_by
+msgid "Uploaded By"
+msgstr "Кем загружено"
+
+#. module: project_management
 #: model:ir.model,name:project_management.model_res_users
 #: model:ir.model.fields,field_description:project_management.field_university_project_member__user_id
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__user_id
@@ -851,6 +1066,42 @@ msgstr "Пользователь уже в команде проекта."
 #: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_tree
 msgid "Users"
 msgstr "Пользователи"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_task.py:0
+msgid "Users: [%(users)s] are not members of project '%(project)s'."
+msgstr "Пользователи: [%(users)s] не являются участниками проекта '%(project)s'."
+
+#. module: project_management
+#: model:ir.ui.menu,name:project_management.menu_university_utilities
+msgid "Utilities"
+msgstr "Утилиты"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__version_number
+msgid "Version"
+msgstr "Версия"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__version_label
+msgid "Version Label"
+msgstr "Метка версии"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__version_of_id
+msgid "Version Of"
+msgstr "Исходная версия"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_project_document__root_version_id
+msgid "Version Root"
+msgstr "Корневая версия"
+
+#. module: project_management
+#: model:ir.model.fields.selection,name:project_management.selection__project_task__priority__3
+msgid "Very High"
+msgstr "Очень высокий"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__website_message_ids
@@ -878,6 +1129,12 @@ msgid "Whether role is active"
 msgstr "Активна ли роль"
 
 #. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/project_member.py:0
+msgid "You cannot add an inactive user to the team."
+msgstr "Нельзя добавить неактивного пользователя в команду."
+
+#. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_res_users_custom_form
 msgid "e.g. John Doe"
 msgstr "например, Иван Петров"
@@ -898,24 +1155,81 @@ msgid "| Created:"
 msgstr "| Создан:"
 
 #. module: project_management
-#: code:addons/project_management/models/project_project.py:0
-#, python-format
-msgid "Role with code '%s' is required for Project Manager sync."
-msgstr "Для синхронизации менеджера проекта требуется роль с кодом '%s'."
+#: model:project.task.type,name:project_management.phase_archive
+msgid "Архив"
+msgstr "Архив"
 
 #. module: project_management
-#: code:addons/project_management/models/project_task.py:0
-#, python-format
-msgid "Task end date (%(task_end)s) cannot be later than stage end date (%(stage_end)s)."
-msgstr "Дата окончания задачи (%(task_end)s) не может быть позже даты окончания этапа (%(stage_end)s)."
+#: model:project.task.type,name:project_management.phase_backlog
+msgid "Бэклог"
+msgstr "Бэклог"
 
 #. module: project_management
-#: code:addons/project_management/models/project_task.py:0
-#, python-format
-msgid "Users: [%(users)s] are not members of project '%(project)s'."
-msgstr "Пользователи [%(users)s] не являются участниками проекта '%(project)s'."
+#: model:ir.model.fields,field_description:project_management.field_project_task__date_end
+msgid "Дата конца"
+msgstr "Дата завершения"
 
 #. module: project_management
-#: code:addons/project_management/models/project_member.py:0
-msgid "You cannot add an inactive user to the team."
-msgstr "Нельзя добавить неактивного пользователя в команду."
+#: model:ir.model.fields,field_description:project_management.field_project_task__date_start
+msgid "Дата начала"
+msgstr "Дата начала"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+msgid "Добавьте описание задачи..."
+msgstr "Добавьте описание задачи..."
+
+#. module: project_management
+#: model:project.task.type,name:project_management.phase_delivered
+msgid "Доставлено"
+msgstr "Доставлено"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+msgid "Конец"
+msgstr "Конец"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+msgid "Название задачи"
+msgstr "Название задачи"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+msgid "Например: Разработка ТЗ"
+msgstr "Например: Разработка ТЗ"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+msgid "Начало"
+msgstr "Начало"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+msgid "Описание"
+msgstr "Описание"
+
+#. module: project_management
+#: model:project.task.type,name:project_management.phase_dev
+msgid "Разработка и реализация"
+msgstr "Разработка и реализация"
+
+#. module: project_management
+#: model:project.task.type,name:project_management.phase_spec
+msgid "Спецификация и анализ"
+msgstr "Спецификация и анализ"
+
+#. module: project_management
+#: model_terms:ir.ui.view,arch_db:project_management.view_task_form2_inherited_university_v2
+msgid "Сроки выполнения"
+msgstr "Сроки выполнения"
+
+#. module: project_management
+#: model:project.task.type,name:project_management.phase_test
+msgid "Тестирование и приемка"
+msgstr "Тестирование и приемка"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__university_stage_id
+msgid "Этап проекта"
+msgstr "Этап проекта"
