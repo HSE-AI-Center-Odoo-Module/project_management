@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data>
 
         <record id="rule_project_visibility_employee" model="ir.rule">
             <field name="name">Project: Read-Only Visibility for AI Center Employee</field>
@@ -71,5 +71,12 @@
             <value eval="{'active': False}"/>
         </function>
 
+        <function name="write" model="ir.rule">
+            <function name="search" model="ir.rule">
+                <value eval="[('id', '=', ref('project.project_project_manager_rule'))]"/>
+            </function>
+            <value eval="{'active': False}"/>
+        </function>
     </data>
 </odoo>
+
