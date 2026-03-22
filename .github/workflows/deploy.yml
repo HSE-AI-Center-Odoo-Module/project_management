@@ -50,8 +50,6 @@ jobs:
     runs-on: self-hosted
     needs: backup
     steps:
-      # actions/checkout здесь НЕ нужен —
-      # мы работаем напрямую с папкой на сервере
       - name: Pull latest code to server
         run: |
           set -euo pipefail
@@ -59,7 +57,6 @@ jobs:
 
           echo "📁 Working in: $MODULE_DIR"
 
-          # Проверяем что папка существует и это git-репозиторий
           if [ ! -d "$MODULE_DIR/.git" ]; then
             echo "❌ $MODULE_DIR is not a git repository!"
             echo "Run manually: git clone <repo_url> $MODULE_DIR"
@@ -68,13 +65,11 @@ jobs:
 
           cd "$MODULE_DIR"
 
-          # Диагностика: что сейчас в папке
           echo "--- Current state ---"
           echo "Branch: $(git branch --show-current || echo 'detached HEAD')"
           echo "Commit before: $(git rev-parse --short HEAD)"
           echo "Remote: $(git remote get-url origin)"
 
-          # Сбрасываем любые локальные изменения и тянем main
           git fetch origin main
           git reset --hard origin/main
 
@@ -87,7 +82,6 @@ jobs:
           set -euo pipefail
 
           echo "--- Checking volume mount inside container ---"
-          # Подставь правильный путь — тот что указан в addons-path в odoo.conf
           docker exec odoo-stack-odoo-1 ls /mnt/extra-addons/project_management/ 2>/dev/null \
             && echo "✅ Volume mount OK: /mnt/extra-addons" \
             || docker exec odoo-stack-odoo-1 ls /usr/lib/python3/dist-packages/odoo/addons/project_management/ 2>/dev/null \
@@ -103,32 +97,19 @@ jobs:
         run: |
           set -euo pipefail
 
-          echo "🔄 Stopping Odoo before update..."
-          docker stop odoo-stack-odoo-1
+          echo "🔄 Running odoo -u project_management inside container..."
 
-          echo "🔄 Running odoo -u project_management..."
+          docker exec odoo-stack-odoo-1 odoo \
+            -d "$DB_NAME" \
+            --db_host="$DB_HOST" \
+            --db_user="$DB_USER" \
+            --db_password="$DB_PASSWORD" \
+            -u project_management \
+            --stop-after-init \
+            --no-http \
+            --log-level=info \
+          2>&1 | tee /tmp/odoo-update.log
 
-          # Запускаем одноразовый контейнер для обновления модуля.
-          # Используем те же volumes что и основной контейнер.
-          docker run --rm \
-            --network odoo-stack_default \
-            -v /home/hseai/odoo-stack/addons:/mnt/extra-addons \
-            -v /home/hseai/odoo-stack/config:/etc/odoo \
-            odoo:17 \
-            odoo \
-              -d "$DB_NAME" \
-              --db_host="$DB_HOST" \
-              --db_user="$DB_USER" \
-              --db_password="$DB_PASSWORD" \
-              --addons-path="/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons" \
-              -u project_management \
-              --stop-after-init \
-              --no-http \
-              --log-level=info \
-            2>&1 | tee /tmp/odoo-update.log
-
-          # Odoo часто возвращает exit 0 даже при ошибках —
-          # проверяем лог явно
           if grep -qE "^[0-9].*ERROR.*project_management" /tmp/odoo-update.log; then
             echo "❌ Module update failed — errors found:"
             grep -E "ERROR|WARNING.*project_management" /tmp/odoo-update.log | tail -30
@@ -137,15 +118,11 @@ jobs:
 
           echo "✅ Module updated successfully"
 
-      - name: Start Odoo
-        # always() — запускаем Odoo даже если обновление упало,
-        # чтобы сервис не оставался лежать
+      - name: Restart Odoo
         if: always()
         run: |
-          docker start odoo-stack-odoo-1 2>/dev/null || true
-          sleep 3
           docker restart odoo-stack-odoo-1
-          echo "✅ Odoo started"
+          echo "✅ Odoo restarted"
 
       - name: Upload update log
         if: always()
