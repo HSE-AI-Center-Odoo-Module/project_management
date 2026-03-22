@@ -64,6 +64,122 @@
             <field name="domain_force">[(1, '=', 1)]</field>
         </record>
 
+        <record id="rule_task_tab_visibility_employee" model="ir.rule">
+            <field name="name">Task Tab: Visibility for AI Center Employee</field>
+            <field name="model_id" ref="model_university_task_tab"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('task_id.user_ids', 'in', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_task_tab_visibility_manager" model="ir.rule">
+            <field name="name">Task Tab: Visibility for Project Manager</field>
+            <field name="model_id" ref="model_university_task_tab"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('task_id.project_id.project_manager_id', 'in', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_task_tab_visibility_admin" model="ir.rule">
+            <field name="name">Task Tab: Full Visibility for AI Center Admin</field>
+            <field name="model_id" ref="model_university_task_tab"/>
+            <field name="groups" eval="[(4, ref('project_management.administrator'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="rule_task_approval_item_visibility_employee" model="ir.rule">
+            <field name="name">Task Approval: Visibility for AI Center Employee</field>
+            <field name="model_id" ref="model_university_task_approval_item"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('task_id.user_ids', 'in', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_task_approval_item_visibility_manager" model="ir.rule">
+            <field name="name">Task Approval: Visibility for Project Manager</field>
+            <field name="model_id" ref="model_university_task_approval_item"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('task_id.project_id.project_manager_id', 'in', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_task_approval_item_visibility_admin" model="ir.rule">
+            <field name="name">Task Approval: Full Visibility for AI Center Admin</field>
+            <field name="model_id" ref="model_university_task_approval_item"/>
+            <field name="groups" eval="[(4, ref('project_management.administrator'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="rule_task_tab_comment_visibility_employee" model="ir.rule">
+            <field name="name">Task Tab Comment: Visibility for AI Center Employee</field>
+            <field name="model_id" ref="model_university_task_tab_comment"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('tab_id.task_id.user_ids', 'in', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_task_tab_comment_visibility_manager" model="ir.rule">
+            <field name="name">Task Tab Comment: Visibility for Project Manager</field>
+            <field name="model_id" ref="model_university_task_tab_comment"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('tab_id.task_id.project_id.project_manager_id', 'in', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_task_tab_comment_visibility_admin" model="ir.rule">
+            <field name="name">Task Tab Comment: Full Visibility for AI Center Admin</field>
+            <field name="model_id" ref="model_university_task_tab_comment"/>
+            <field name="groups" eval="[(4, ref('project_management.administrator'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="rule_task_approval_comment_visibility_employee" model="ir.rule">
+            <field name="name">Task Approval Comment: Visibility for AI Center Employee</field>
+            <field name="model_id" ref="model_university_task_approval_comment"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('approval_item_id.task_id.user_ids', 'in', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_task_approval_comment_visibility_manager" model="ir.rule">
+            <field name="name">Task Approval Comment: Visibility for Project Manager</field>
+            <field name="model_id" ref="model_university_task_approval_comment"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('approval_item_id.task_id.project_id.project_manager_id', 'in', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_task_approval_comment_visibility_admin" model="ir.rule">
+            <field name="name">Task Approval Comment: Full Visibility for AI Center Admin</field>
+            <field name="model_id" ref="model_university_task_approval_comment"/>
+            <field name="groups" eval="[(4, ref('project_management.administrator'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
         <function name="write" model="ir.rule">
             <function name="search" model="ir.rule">
                 <value eval="[('id', '=', ref('project.project_public_members_rule'))]"/>

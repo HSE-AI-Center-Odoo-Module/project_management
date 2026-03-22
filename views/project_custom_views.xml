@@ -64,7 +64,6 @@
 
                             <div class="o_kanban_record_body">
                                 <div class="mb-1">
-                                    <strong>Project Name: </strong>
                                     <span class="text-dark">
                                         <field name="name"/>
                                     </span>
