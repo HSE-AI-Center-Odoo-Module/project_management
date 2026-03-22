@@ -17,6 +17,10 @@ from . import project_stage
 # Task management
 from . import project_task
 from . import project_stage_sync_wizard
+from . import task_tab
+from . import task_approval_item
+from . import task_tab_comment
+from . import task_approval_comment
 
 # ===== PROJECT RESOURCES =====
 # Documents and links attached to projects
