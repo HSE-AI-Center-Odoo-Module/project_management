@@ -1,16 +1,26 @@
-name: tag release on integration merge
+name: Tag Release
 
+# Больше не триггерится на push в main напрямую.
+# Запускается только через workflow_dispatch из deploy.yml
+# после успешного post-deploy health check.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      triggered_by_deploy:
+        description: "Set to true only when called from deploy.yml"
+        required: false
+        default: "false"
+        type: string
 
 permissions:
   contents: write
 
 jobs:
   tag-version:
+    name: Compute and Push Tag
     runs-on: ubuntu-latest
+    # Дополнительная защита: не запускаться если вызвано вручную без флага
+    if: ${{ github.event.inputs.triggered_by_deploy == 'true' }}
     steps:
       - name: Checkout full history
         uses: actions/checkout@v4
@@ -31,10 +41,10 @@ jobs:
             echo "from_integration=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Stop if push is not integration merge
+      - name: Skip if not an integration merge
         if: steps.detect.outputs.from_integration != 'true'
         run: |
-          echo "Push to main is not a merge from integration. Skipping tag."
+          echo "ℹ️ Last commit is not a merge from integration. Skipping tag."
 
       - name: Compute next patch tag
         if: steps.detect.outputs.from_integration == 'true'
@@ -64,5 +74,6 @@ jobs:
           TAG="${{ steps.next.outputs.next_tag }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "$TAG" -m "Release $TAG"
+          git tag -a "$TAG" -m "Release $TAG — deployed successfully"
           git push origin "$TAG"
+          echo "🏷️ Tagged $TAG"

@@ -2,7 +2,6 @@ name: project_management tests
 
 on:
   pull_request:
-  push:
     branches: [main, master, integration]
   workflow_dispatch:
 
@@ -88,6 +87,17 @@ jobs:
             --log-level=test \
             2>&1 | tee odoo-test-install.log
 
+      - name: Check for test failures in install log
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -qE "FAIL|ERROR" odoo-test-install.log; then
+            echo "❌ Test failures detected in install log"
+            grep -E "FAIL|ERROR" odoo-test-install.log
+            exit 1
+          fi
+          echo "✅ Install tests passed"
+
       - name: Test update
         shell: bash
         run: |
@@ -107,6 +117,17 @@ jobs:
             --stop-after-init \
             --log-level=test \
             2>&1 | tee odoo-test-update.log
+
+      - name: Check for test failures in update log
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -qE "FAIL|ERROR" odoo-test-update.log; then
+            echo "❌ Test failures detected in update log"
+            grep -E "FAIL|ERROR" odoo-test-update.log
+            exit 1
+          fi
+          echo "✅ Update tests passed"
 
       - name: Upload logs
         if: always()
