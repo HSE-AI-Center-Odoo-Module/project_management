@@ -1,198 +1,109 @@
 name: Deploy Odoo Module
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-    inputs:
-      backup_db:
-        description: "Create database backup before deploy?"
-        required: true
-        default: true
-        type: boolean
-
-permissions:
-  contents: read
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+        inputs:
+            backup_db:
+                description: "Create database backup before deploy?"
+                required: true
+                default: true
+                type: boolean
 
 jobs:
-  # ==========================================
-  # Бэкап базы данных
-  # ==========================================
-  backup:
-    name: Backup Database
-    runs-on: self-hosted
-    if: ${{ github.event_name == 'push' || github.event.inputs.backup_db == true }}
-    steps:
-      - name: Create database backup
-        run: |
-          mkdir -p /home/hseai/odoo-stack/backups
+    # ==========================================
+    # Бэкап базы данных
+    # ==========================================
+    backup:
+        name: Backup Database
+        runs-on: self-hosted
+        if: ${{ github.event_name == 'push' || github.event.inputs.backup_db == true }}
+        steps:
+            - name: Create database backup
+              run: |
+                  # 1. Создаём директорию для бэкапов
+                  mkdir -p /home/hseai/odoo-stack/backups
 
-          BACKUP_NAME="hseai_backup_$(date +%Y%m%d_%H%M%S).sql.gz"
-          echo "Starting backup: $BACKUP_NAME..."
+                  # 2. Имя бэкапа с датой
+                  BACKUP_NAME="hseai_backup_$(date +%Y%m%d_%H%M%S).sql.gz"
 
-          docker exec odoo-stack-db-1 pg_dump -U odoo odoo \
-            | gzip > /home/hseai/odoo-stack/backups/$BACKUP_NAME
+                  echo "Starting backup: $BACKUP_NAME..."
 
-          echo "✅ Backup created: $BACKUP_NAME"
+                  # 3. Дамп базы из Docker в файл
+                  docker exec odoo-stack-db-1 pg_dump -U odoo odoo | gzip > /home/hseai/odoo-stack/backups/$BACKUP_NAME
 
-          cd /home/hseai/odoo-stack/backups \
-            && ls -t *.sql.gz 2>/dev/null | tail -n +11 | xargs -r rm -- || true
+                  echo "✅ Backup created successfully"
 
-          echo "📦 Current backups:"
-          ls -lh /home/hseai/odoo-stack/backups/
+                  # 4. Очистка: оставляем только 10 последних файлов
+                  cd /home/hseai/odoo-stack/backups && ls -t *.sql.gz 2>/dev/null | tail -n +11 | xargs -r rm -- || true
 
-  # ==========================================
-  # Деплой модуля
-  # ==========================================
-  deploy:
-    name: Deploy Module
-    runs-on: self-hosted
-    needs: backup
-    steps:
-      # actions/checkout здесь НЕ нужен —
-      # мы работаем напрямую с папкой на сервере
-      - name: Pull latest code to server
-        run: |
-          set -euo pipefail
-          MODULE_DIR="/home/hseai/odoo-stack/addons/project_management"
+                  echo "📦 Current backups in storage:"
+                  ls -lh /home/hseai/odoo-stack/backups/
 
-          echo "📁 Working in: $MODULE_DIR"
+    # ==========================================
+    # Деплой модуля
+    # ==========================================
+    deploy:
+        name: Deploy Module
+        runs-on: self-hosted
+        needs: backup # Ждем успешного завершения бэкапа
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-          # Проверяем что папка существует и это git-репозиторий
-          if [ ! -d "$MODULE_DIR/.git" ]; then
-            echo "❌ $MODULE_DIR is not a git repository!"
-            echo "Run manually: git clone <repo_url> $MODULE_DIR"
-            exit 1
-          fi
+            - name: Update Code and Odoo
+              env:
+                  DB_NAME: ${{ secrets.DB_NAME }}
+                  DB_HOST: db
+                  DB_USER: odoo
+                  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+              run: |
+                  # Переходим в папку с кодом
+                  cd /home/hseai/odoo-stack/addons/project_management
+                  git fetch origin main
+                  git reset --hard origin/main
 
-          cd "$MODULE_DIR"
+                  # Обновляем модуль (БД)
+                  docker exec odoo-stack-odoo-1 odoo \
+                    -d $DB_NAME \
+                    --db_host=$DB_HOST \
+                    --db_user=$DB_USER \
+                    --db_password=$DB_PASSWORD \
+                    -u project_management \
+                    --stop-after-init \
+                    --no-http
 
-          # Диагностика: что сейчас в папке
-          echo "--- Current state ---"
-          echo "Branch: $(git branch --show-current || echo 'detached HEAD')"
-          echo "Commit before: $(git rev-parse --short HEAD)"
-          echo "Remote: $(git remote get-url origin)"
+                  # Рестарт сервиса
+                  docker restart odoo-stack-odoo-1
+                  echo "✅ Deployment finished"
 
-          # Сбрасываем любые локальные изменения и тянем main
-          git fetch origin main
-          git reset --hard origin/main
+    # ==========================================
+    # Проверка после деплоя (внешняя)
+    # ==========================================
+    post-deploy:
+        name: Post-deploy Check
+        runs-on: ubuntu-latest
+        needs: deploy
+        steps:
+            - name: Health check
+              run: |
+                  echo "Waiting 20s for Odoo to warm up..."
+                  sleep 20
 
-          echo "--- After update ---"
-          echo "Commit after: $(git rev-parse --short HEAD)"
-          echo "✅ Code updated"
+                  # Проверяем доступность вашего URL
+                  HTTP_CODE=$(curl -s -L -o /dev/null -w "%{http_code}" https://hseai.smartlilac.com/web/login || echo "000")
 
-      - name: Verify files are visible inside container
-        run: |
-          set -euo pipefail
+                  if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "303" ]; then
+                    echo "✅ Site is accessible (HTTP $HTTP_CODE)"
+                  else
+                    echo "❌ Site returned HTTP $HTTP_CODE"
+                    exit 1
+                  fi
 
-          echo "--- Checking volume mount inside container ---"
-          # Подставь правильный путь — тот что указан в addons-path в odoo.conf
-          docker exec odoo-stack-odoo-1 ls /mnt/extra-addons/project_management/ 2>/dev/null \
-            && echo "✅ Volume mount OK: /mnt/extra-addons" \
-            || docker exec odoo-stack-odoo-1 ls /usr/lib/python3/dist-packages/odoo/addons/project_management/ 2>/dev/null \
-            && echo "✅ Volume mount OK: built-in addons path" \
-            || echo "⚠️  Could not verify path inside container — check addons-path in odoo.conf"
-
-      - name: Update module in Odoo database
-        env:
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_HOST: db
-          DB_USER: odoo
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: |
-          set -euo pipefail
-
-          echo "🔄 Stopping Odoo before update..."
-          docker stop odoo-stack-odoo-1
-
-          echo "🔄 Running odoo -u project_management..."
-
-          # Запускаем одноразовый контейнер для обновления модуля.
-          # Используем те же volumes что и основной контейнер.
-          docker run --rm \
-            --network odoo-stack_default \
-            -v /home/hseai/odoo-stack/addons:/mnt/extra-addons \
-            -v /home/hseai/odoo-stack/config:/etc/odoo \
-            odoo:17 \
-            odoo \
-              -d "$DB_NAME" \
-              --db_host="$DB_HOST" \
-              --db_user="$DB_USER" \
-              --db_password="$DB_PASSWORD" \
-              --addons-path="/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons" \
-              -u project_management \
-              --stop-after-init \
-              --no-http \
-              --log-level=info \
-            2>&1 | tee /tmp/odoo-update.log
-
-          # Odoo часто возвращает exit 0 даже при ошибках —
-          # проверяем лог явно
-          if grep -qE "^[0-9].*ERROR.*project_management" /tmp/odoo-update.log; then
-            echo "❌ Module update failed — errors found:"
-            grep -E "ERROR|WARNING.*project_management" /tmp/odoo-update.log | tail -30
-            exit 1
-          fi
-
-          echo "✅ Module updated successfully"
-
-      - name: Start Odoo
-        # always() — запускаем Odoo даже если обновление упало,
-        # чтобы сервис не оставался лежать
-        if: always()
-        run: |
-          docker start odoo-stack-odoo-1 2>/dev/null || true
-          sleep 3
-          docker restart odoo-stack-odoo-1
-          echo "✅ Odoo started"
-
-      - name: Upload update log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: odoo-update-log
-          path: /tmp/odoo-update.log
-
-  # ==========================================
-  # Проверка после деплоя
-  # ==========================================
-  post-deploy:
-    name: Post-deploy Check
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - name: Health check
-        run: |
-          echo "Waiting 25s for Odoo to warm up..."
-          sleep 25
-
-          HTTP_CODE=$(curl -s -L -o /dev/null -w "%{http_code}" \
-            https://hseai.smartlilac.com/web/login || echo "000")
-
-          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "303" ]; then
-            echo "✅ Site is accessible (HTTP $HTTP_CODE)"
-          else
-            echo "❌ Site returned HTTP $HTTP_CODE"
-            exit 1
-          fi
-
-  # ==========================================
-  # Сигнал тэггеру — только если всё прошло
-  # ==========================================
-  notify-tagger:
-    name: Notify Tag Workflow
-    runs-on: ubuntu-latest
-    needs: post-deploy
-    permissions:
-      actions: write
-      contents: read
-    steps:
-      - name: Trigger tag-release workflow
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run tag-release.yml \
-            --repo "${{ github.repository }}" \
-            --ref main \
-            --field triggered_by_deploy=true
+            - name: Notify on success
+              if: success()
+              run: |
+                  echo "🎉 Deployment completed!"
+                  echo "🌐 URL: https://hseai.smartlilac.com"
