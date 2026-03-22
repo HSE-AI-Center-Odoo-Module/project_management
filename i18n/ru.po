@@ -493,12 +493,12 @@ msgstr "Главная страница"
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage_history__id
 #: model:ir.model.fields,field_description:project_management.field_university_project_type__id
 msgid "ID"
-msgstr "ID"
+msgstr "Идентификатор"
 
 #. module: project_management
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_kanban
 msgid "ID:"
-msgstr "ID:"
+msgstr "Ид.:"
 
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_stage__activity_exception_icon
@@ -1004,7 +1004,7 @@ msgstr "Тип исключительной деятельности в запи
 #. module: project_management
 #: model:ir.model.fields,field_description:project_management.field_university_project_link__url
 msgid "URL"
-msgstr "URL"
+msgstr "Ссылка"
 
 #. module: project_management
 #: model:ir.model,name:project_management.model_university_project_customer
@@ -1233,3 +1233,226 @@ msgstr "Тестирование и приемка"
 #: model:ir.model.fields,field_description:project_management.field_project_task__university_stage_id
 msgid "Этап проекта"
 msgstr "Этап проекта"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__approval_progress
+msgid "% Approved"
+msgstr "% согласовано"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "<b>%(user)s</b> approved checklist item <i>%(item)s</i>."
+msgstr "<b>%(user)s</b> согласовал пункт чеклиста <i>%(item)s</i>."
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab__allowed_user_ids
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_item__allowed_user_ids
+msgid "Allowed Users"
+msgstr "Разрешённые пользователи"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__approval_item_ids
+msgid "Approval Checklist"
+msgstr "Чеклист согласования"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_comment__approval_item_id
+msgid "Approval Item"
+msgstr "Пункт согласования"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__approval_count
+msgid "Approval Items"
+msgstr "Пункты согласования"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_comment.py:0
+msgid "Approval item is required to create a comment."
+msgstr "Для создания комментария требуется пункт согласования."
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_item__is_approved
+msgid "Approved"
+msgstr "Согласовано"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__approval_done_count
+msgid "Approved Items"
+msgstr "Согласованные пункты"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_item__approved_date
+msgid "Approved On"
+msgstr "Дата согласования"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_item__responsible_id
+msgid "Approver"
+msgstr "Согласующий"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab_comment__author_id
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_comment__author_id
+msgid "Author"
+msgstr "Автор"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_item__can_approve
+msgid "Can Approve"
+msgstr "Может согласовать"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_item__name
+msgid "Checklist Item"
+msgstr "Пункт чеклиста"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab_comment__message
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_comment__message
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_item__note
+msgid "Comment"
+msgstr "Комментарий"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_tab_comment.py:0
+#: code:addons/project_management/models/task_approval_comment.py:0
+msgid "Comment must contain text or file."
+msgstr "Комментарий должен содержать текст или файл."
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab__comment_ids
+#: model:ir.model.fields,field_description:project_management.field_university_task_approval_item__comment_ids
+msgid "Comments"
+msgstr "Комментарии"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab__content
+msgid "Content"
+msgstr "Содержимое"
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab__is_current_user_responsible
+msgid "Current User Can Edit Section"
+msgstr "Текущий пользователь может редактировать раздел"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "Only '%(user)s' can approve checklist item '%(item)s'."
+msgstr "Только '%(user)s' может согласовать пункт чеклиста '%(item)s'."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "Only administrator, project manager, or responsible user can create a checklist item."
+msgstr "Только администратор, менеджер проекта или ответственный пользователь может создать пункт чеклиста."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_tab.py:0
+msgid "Only administrator, project manager, or responsible user can create a tab."
+msgstr "Только администратор, менеджер проекта или ответственный пользователь может создать вкладку."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "Only responsible approver '%(user)s' can approve item '%(item)s'."
+msgstr "Только ответственный согласующий '%(user)s' может согласовать пункт '%(item)s'."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_tab_comment.py:0
+#: code:addons/project_management/models/task_approval_comment.py:0
+msgid "Only task assignee, project manager, or administrator can add comments."
+msgstr "Только исполнитель задачи, менеджер проекта или администратор может добавлять комментарии."
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab__responsible_id
+msgid "Responsible"
+msgstr "Ответственный"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_tab.py:0
+msgid "Responsible user '%(user)s' must be an assignee of task '%(task)s'."
+msgstr "Ответственный пользователь '%(user)s' должен быть исполнителем задачи '%(task)s'."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "Responsible user for checklist item '%(item)s' must be an assignee of task '%(task)s'."
+msgstr "Ответственный по пункту чеклиста '%(item)s' должен быть исполнителем задачи '%(task)s'."
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab__name
+msgid "Section Name"
+msgstr "Название раздела"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "Task and Responsible are required to create a checklist item."
+msgstr "Для создания пункта чеклиста требуются задача и ответственный."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_tab.py:0
+msgid "Task and Responsible are required to create a task tab."
+msgstr "Для создания вкладки задачи требуются задача и ответственный."
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_university_task_tab_comment__tab_id
+msgid "Task Tab"
+msgstr "Вкладка задачи"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_tab_comment.py:0
+msgid "Task tab is required to create a comment."
+msgstr "Для создания комментария требуется вкладка задачи."
+
+#. module: project_management
+#: model:ir.model.fields,field_description:project_management.field_project_task__tab_ids
+msgid "Task Tabs"
+msgstr "Вкладки задачи"
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "You cannot delete checklist item '%(item)s'. Only administrator, project manager, or responsible user can delete it."
+msgstr "Нельзя удалить пункт чеклиста '%(item)s'. Это могут сделать только администратор, менеджер проекта или ответственный пользователь."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_tab_comment.py:0
+#: code:addons/project_management/models/task_approval_comment.py:0
+msgid "You cannot delete this comment."
+msgstr "Нельзя удалить этот комментарий."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "You cannot edit checklist item '%(item)s'. Only administrator, project manager, or responsible user can edit it."
+msgstr "Нельзя редактировать пункт чеклиста '%(item)s'. Это могут делать только администратор, менеджер проекта или ответственный пользователь."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_tab_comment.py:0
+#: code:addons/project_management/models/task_approval_comment.py:0
+msgid "You cannot edit this comment."
+msgstr "Нельзя редактировать этот комментарий."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "You do not have access to revoke approval for '%(item)s'."
+msgstr "У вас нет прав отозвать согласование для '%(item)s'."
+
+#. module: project_management
+#. odoo-python
+#: code:addons/project_management/models/task_approval_item.py:0
+msgid "You do not have access to revoke approval."
+msgstr "У вас нет прав для отзыва согласования."
