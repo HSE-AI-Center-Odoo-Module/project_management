@@ -109,6 +109,96 @@
                                     </list>
                                 </field>
                             </page>
+
+                            <page string="Разделы" name="task_custom_tabs">
+                                <field name="tab_ids" context="{'default_task_id': id}">
+                                    <list open_form_view="1">
+                                        <field name="name"/>
+                                        <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.user_ids)]" options="{'no_create': True, 'no_open': True}"/>
+                                    </list>
+                                    <form string="Task Section">
+                                        <field name="is_current_user_responsible" invisible="1"/>
+                                        <notebook>
+                                            <page string="Раздел">
+                                                <group>
+                                                    <field name="name" readonly="not is_current_user_responsible"/>
+                                                    <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.user_ids)]" options="{'no_create': True, 'no_open': True}" readonly="not is_current_user_responsible"/>
+                                                </group>
+                                                <div class="alert alert-warning" role="alert" invisible="is_current_user_responsible">
+                                                    <i class="fa fa-lock me-2" title="Readonly"/>
+                                                    Редактировать может только ответственный, менеджер проекта или администратор.
+                                                </div>
+                                                <field name="content" widget="html" readonly="not is_current_user_responsible" placeholder="Введите текст любой длины..."/>
+                                                <field name="attachment_ids" widget="many2many_binary" readonly="not is_current_user_responsible"/>
+                                            </page>
+                                            <page string="Комментарии">
+                                                <field name="comment_ids" context="{'default_tab_id': id}">
+                                                    <list editable="bottom">
+                                                        <field name="author_id" readonly="1"/>
+                                                        <field name="create_date" readonly="1"/>
+                                                        <field name="message"/>
+                                                        <field name="file_data" widget="binary" filename="file_name"/>
+                                                        <field name="file_name" column_invisible="True"/>
+                                                    </list>
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </form>
+                                </field>
+                            </page>
+
+                            <page string="Согласование" name="task_approval_page">
+                                <group>
+                                    <field name="approval_progress" widget="progressbar" readonly="1"/>
+                                    <label for="approval_done_count" string="Согласовано"/>
+                                    <div class="o_row">
+                                        <field name="approval_done_count" readonly="1"/>
+                                        <span class="mx-1">/</span>
+                                        <field name="approval_count" readonly="1"/>
+                                    </div>
+                                </group>
+                                <field name="approval_item_ids" context="{'default_task_id': id}">
+                                    <list open_form_view="1">
+                                        <field name="name"/>
+                                        <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.user_ids)]" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="is_approved" widget="boolean_toggle" readonly="not can_approve"/>
+                                        <field name="can_approve" column_invisible="True"/>
+                                        <field name="approved_date" optional="show" readonly="1"/>
+                                        <button name="action_approve" type="object" icon="fa-check" string="Подтвердить" class="btn-link" invisible="is_approved or not can_approve"/>
+                                        <button name="action_revoke" type="object" icon="fa-undo" string="Отозвать" class="btn-link" invisible="not is_approved"/>
+                                    </list>
+                                    <form string="Approval Item">
+                                        <field name="can_approve" invisible="1"/>
+                                        <notebook>
+                                            <page string="Пункт">
+                                                <group>
+                                                    <field name="name"/>
+                                                    <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.user_ids)]" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="is_approved" readonly="not can_approve"/>
+                                                    <field name="approved_date" readonly="1"/>
+                                                    <field name="note" widget="html"/>
+                                                    <field name="attachment_ids" widget="many2many_binary"/>
+                                                </group>
+                                                <group>
+                                                    <button name="action_approve" type="object" string="Подтвердить" class="btn btn-primary" invisible="is_approved or not can_approve"/>
+                                                    <button name="action_revoke" type="object" string="Отозвать" class="btn btn-secondary" invisible="not is_approved"/>
+                                                </group>
+                                            </page>
+                                            <page string="Комментарии">
+                                                <field name="comment_ids" context="{'default_approval_item_id': id}">
+                                                    <list editable="bottom">
+                                                        <field name="author_id" readonly="1"/>
+                                                        <field name="create_date" readonly="1"/>
+                                                        <field name="message"/>
+                                                        <field name="file_data" widget="binary" filename="file_name"/>
+                                                        <field name="file_name" column_invisible="True"/>
+                                                    </list>
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </form>
+                                </field>
+                            </page>
                         </notebook>
                     </sheet>
                 </xpath>

@@ -17,6 +17,31 @@ class ProjectTask(models.Model):
         "task_id",
         string="Documents",
     )
+    tab_ids = fields.One2many(
+        "university.task.tab",
+        "task_id",
+        string="Task Tabs",
+    )
+    approval_item_ids = fields.One2many(
+        "university.task.approval.item",
+        "task_id",
+        string="Approval Checklist",
+    )
+    approval_count = fields.Integer(
+        compute="_compute_approval_progress",
+        store=True,
+        string="Approval Items",
+    )
+    approval_done_count = fields.Integer(
+        compute="_compute_approval_progress",
+        store=True,
+        string="Approved Items",
+    )
+    approval_progress = fields.Float(
+        compute="_compute_approval_progress",
+        store=True,
+        string="% Approved",
+    )
 
     is_manager = fields.Boolean(compute="_compute_is_manager")
 
@@ -112,3 +137,12 @@ class ProjectTask(models.Model):
             if project.exists() and project.type_ids:
                 return project.type_ids
         return stages
+
+    @api.depends("approval_item_ids.is_approved")
+    def _compute_approval_progress(self):
+        for task in self:
+            total = len(task.approval_item_ids)
+            done = len(task.approval_item_ids.filtered("is_approved"))
+            task.approval_count = total
+            task.approval_done_count = done
+            task.approval_progress = (done / total * 100.0) if total else 0.0
