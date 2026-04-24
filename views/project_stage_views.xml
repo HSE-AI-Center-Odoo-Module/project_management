@@ -2,6 +2,28 @@
 <odoo>
     <data>
 
+        <!-- ========== PROJECT STAGE - LIST VIEW ========== -->
+        <record id="view_university_project_stage_list" model="ir.ui.view">
+            <field name="name">university.project.stage.list</field>
+            <field name="model">university.project.stage</field>
+            <field name="arch" type="xml">
+                <list string="Project Stages"
+                      decoration-success="status == 'in_progress'"
+                      decoration-muted="status == 'done'"
+                      decoration-danger="status == 'cancel'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" string="Stage Name"/>
+                    <field name="status" widget="badge"
+                           decoration-info="status == 'draft'"
+                           decoration-success="status == 'in_progress'"
+                           decoration-muted="status == 'done'"
+                           decoration-danger="status == 'cancel'"/>
+                    <field name="date_start" widget="date" optional="show"/>
+                    <field name="date_end" widget="date" optional="show"/>
+                </list>
+            </field>
+        </record>
+
         <!-- ========== PROJECT STAGE - FORM VIEW ========== -->
         <record id="view_university_project_stage_form" model="ir.ui.view">
             <field name="name">university.project.stage.form</field>
@@ -9,7 +31,17 @@
             <field name="arch" type="xml">
                 <form string="Project Stage">
                     <header>
-                        <field name="status" widget="statusbar" options="{'clickable': '1'}" readonly="not is_manager"/>
+                        <button name="action_start" string="Start" type="object"
+                            class="btn-primary"
+                            invisible="status != 'draft' or not is_manager"/>
+                        <button name="action_done" string="Complete" type="object"
+                            class="btn-primary"
+                            invisible="status != 'in_progress' or not is_manager"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                            invisible="status not in ('draft', 'in_progress') or not is_manager"/>
+                        <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                            invisible="status != 'cancel' or not is_manager"/>
+                        <field name="status" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -23,9 +55,9 @@
                         <field name="is_manager" invisible="1"/>
 
                         <div class="oe_title">
-                            <label for="name" string="Stage Name" class="oe_edit_only"/>
+                            <label for="name" string="Название этапа" class="oe_edit_only"/>
                             <h1>
-                                <field name="name" placeholder="E.g.: Design" readonly="not is_manager"/>
+                                <field name="name" placeholder="Например: Разработка" readonly="not is_manager"/>
                             </h1>
                         </div>
 
@@ -34,16 +66,21 @@
                                 <field name="project_id" readonly="1" options="{'no_open': True}"/>
                             </group>
                             <group>
-                                <field name="date_start" readonly="not is_manager"/>
-                                <field name="date_end" readonly="not is_manager" decoration-danger="date_end &lt; date_start"/>
+                                <label for="date_start" string="Сроки выполнения"/>
+                                <div class="o_row">
+                                    <field name="date_start" widget="date" placeholder="Начало" readonly="not is_manager"/>
+                                    <i class="fa fa-long-arrow-right mx-2" title="по" role="img" aria-label="по"/>
+                                    <field name="date_end" widget="date" placeholder="Конец" readonly="not is_manager" decoration-danger="date_end &lt; date_start"/>
+                                </div>
                                 <field name="date_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_error_msg" colspan="2"/>
                             </group>
                         </group>
 
                         <notebook>
-                            <page string="Description" name="description">
-                                <field name="description" nolabel="1" placeholder="Add stage description..." readonly="not is_manager"/>
+                            <page string="Описание" name="description">
+                                <field name="description" nolabel="1" placeholder="Добавьте описание этапа..." readonly="not is_manager"/>
                             </page>
+
                             <page string="Attachments" name="university_project_docs">
                                 <field name="document_ids" readonly="not is_manager" context="{'form_view_ref': 'project_management.view_university_project_document_form'}">
                                     <list editable="bottom">
@@ -64,7 +101,8 @@
                                     </list>
                                 </field>
                             </page>
-                            <page string="History" name="history">
+
+                            <page string="История" name="history">
                                 <field name="history_ids" readonly="1" options="{'no_create': True}">
                                     <list create="0" edit="0" delete="0">
                                         <field name="date"/>

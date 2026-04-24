@@ -1,5 +1,5 @@
 ﻿from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 
 class ProjectTask(models.Model):
@@ -137,6 +137,27 @@ class ProjectTask(models.Model):
             if project.exists() and project.type_ids:
                 return project.type_ids
         return stages
+
+    def write(self, vals):
+        if 'stage_id' in vals:
+            is_admin = self.env.user.has_group('project_management.administrator')
+            if not is_admin:
+                for task in self:
+                    is_pm = self.env.user in task.project_id.project_manager_id
+                    is_owner = task.project_id.project_owner_id == self.env.user
+                    if not (is_pm or is_owner):
+                        raise AccessError(_(
+                            "Only project manager or project owner can move task '%(task)s' to another stage.",
+                            task=task.name,
+                        ))
+                    if task.approval_count > 0 and task.approval_done_count < task.approval_count:
+                        raise UserError(_(
+                            "Task '%(task)s' has %(pending)d unapproved item(s). "
+                            "All approvals must be completed before moving to another stage.",
+                            task=task.name,
+                            pending=task.approval_count - task.approval_done_count,
+                        ))
+        return super().write(vals)
 
     @api.depends("approval_item_ids.is_approved")
     def _compute_approval_progress(self):

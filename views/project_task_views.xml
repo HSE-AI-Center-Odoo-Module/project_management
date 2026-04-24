@@ -160,28 +160,26 @@
                                 <field name="approval_item_ids" context="{'default_task_id': id}">
                                     <list open_form_view="1">
                                         <field name="name"/>
-                                        <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.user_ids)]" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="is_approved" widget="boolean_toggle" readonly="not can_approve"/>
+                                        <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.project_member_user_ids)]" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="project_role_display" string="Role" readonly="1"/>
+                                        <field name="is_approved" widget="boolean_toggle" readonly="not can_approve and not can_revoke"/>
                                         <field name="can_approve" column_invisible="True"/>
+                                        <field name="can_revoke" column_invisible="True"/>
                                         <field name="approved_date" optional="show" readonly="1"/>
-                                        <button name="action_approve" type="object" icon="fa-check" string="Подтвердить" class="btn-link" invisible="is_approved or not can_approve"/>
-                                        <button name="action_revoke" type="object" icon="fa-undo" string="Отозвать" class="btn-link" invisible="not is_approved"/>
                                     </list>
                                     <form string="Approval Item">
                                         <field name="can_approve" invisible="1"/>
+                                        <field name="can_revoke" invisible="1"/>
                                         <notebook>
                                             <page string="Пункт">
                                                 <group>
                                                     <field name="name"/>
-                                                    <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.user_ids)]" options="{'no_create': True, 'no_open': True}"/>
-                                                    <field name="is_approved" readonly="not can_approve"/>
+                                                    <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.project_member_user_ids)]" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="project_role_display" string="Роль в проекте" readonly="1"/>
+                                                    <field name="is_approved" readonly="not can_approve and not can_revoke"/>
                                                     <field name="approved_date" readonly="1"/>
                                                     <field name="note" widget="html"/>
                                                     <field name="attachment_ids" widget="many2many_binary"/>
-                                                </group>
-                                                <group>
-                                                    <button name="action_approve" type="object" string="Подтвердить" class="btn btn-primary" invisible="is_approved or not can_approve"/>
-                                                    <button name="action_revoke" type="object" string="Отозвать" class="btn btn-secondary" invisible="not is_approved"/>
                                                 </group>
                                             </page>
                                             <page string="Комментарии">
