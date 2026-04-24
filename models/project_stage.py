@@ -2,7 +2,7 @@
 Defines project stages/milestones with tracking.
 """
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class UniversityProjectStage(models.Model):
@@ -11,6 +11,12 @@ class UniversityProjectStage(models.Model):
     _description = 'Project Stage'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'sequence'
+
+    _TRANSITIONS_PM = {
+        'draft':       {'in_progress', 'cancel'},
+        'in_progress': {'done', 'cancel'},
+        'cancel':      {'draft'},
+    }
 
     # ========== BASIC FIELDS ==========
     name = fields.Char(
@@ -57,9 +63,26 @@ class UniversityProjectStage(models.Model):
 
     # ========== COMPUTED FIELDS ==========
     is_manager = fields.Boolean(
-        related="project_id.is_manager",
-        readonly=True
+        compute="_compute_is_manager",
+        store=False,
     )
+
+    @api.depends('project_id', 'project_id.project_manager_id')
+    @api.depends_context('uid', 'default_project_id')
+    def _compute_is_manager(self):
+        is_admin = self.env.user.has_group('project_management.administrator')
+        for rec in self:
+            project = rec.project_id
+            if not project:
+                ctx_pid = self.env.context.get('default_project_id')
+                if ctx_pid:
+                    project = self.env['project.project'].browse(ctx_pid)
+            if is_admin:
+                rec.is_manager = True
+            elif project:
+                rec.is_manager = self.env.user in project.project_manager_id
+            else:
+                rec.is_manager = False
 
     # ========== COMPUTED METHODS ==========
     @api.depends('date_start', 'date_end')
@@ -82,6 +105,18 @@ class UniversityProjectStage(models.Model):
                 raise ValidationError(_("End Date cannot be earlier than Start Date."))
 
     # ========== ACTIONS ==========
+    def action_start(self):
+        return self.write({'status': 'in_progress'})
+
+    def action_done(self):
+        return self.write({'status': 'done'})
+
+    def action_cancel(self):
+        return self.write({'status': 'cancel'})
+
+    def action_reset_to_draft(self):
+        return self.write({'status': 'draft'})
+
     def action_view_tasks(self):
         self.ensure_one()
         return self.project_id._build_task_board_action(
@@ -91,6 +126,40 @@ class UniversityProjectStage(models.Model):
 
     # ========== METHODS ==========
     def write(self, vals):
+        # --- STATE MACHINE VALIDATION ---
+        if 'status' in vals:
+            new_status = vals['status']
+            is_admin = self.env.user.has_group('project_management.administrator')
+            if not is_admin:
+                labels = dict(self._fields['status'].selection)
+                for rec in self:
+                    old_status = rec.status
+                    if old_status == new_status:
+                        continue
+                    allowed = self._TRANSITIONS_PM.get(old_status, set())
+                    if new_status not in allowed:
+                        raise UserError(_(
+                            "Transition from '%(from)s' to '%(to)s' is not allowed.",
+                            **{'from': labels.get(old_status, old_status),
+                               'to': labels.get(new_status, new_status)}
+                        ))
+            # --- APPROVAL GATE: status → done ---
+            if new_status == 'done':
+                for rec in self:
+                    if rec.status == 'done':
+                        continue
+                    blocked = self.env['project.task'].search([
+                        ('university_stage_id', '=', rec.id),
+                        ('approval_count', '>', 0),
+                    ]).filtered(lambda t: t.approval_done_count < t.approval_count)
+                    if blocked:
+                        raise UserError(_(
+                            "Cannot complete stage '%(stage)s': %(count)d task(s) have unapproved items: %(tasks)s",
+                            stage=rec.name,
+                            count=len(blocked),
+                            tasks=', '.join(blocked.mapped('name')),
+                        ))
+
         # Track selected field changes in history.
         tracked_fields = {
             'name': 'Name',
