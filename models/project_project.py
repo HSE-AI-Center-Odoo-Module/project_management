@@ -2,13 +2,23 @@
 Main project model with team, documents, links, and tracking.
 """
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class Project(models.Model):
     """Extended project with university features"""
     _inherit = "project.project"
-    _MANAGER_ROLE_CODE = "manager"
+    _MANAGER_ROLE_CODE = "manager"           # used by _inverse (always creates with this role)
+    _MANAGER_ROLE_CODES = ("manager", "project_lead")  # used by _compute (elevation)
+
+    _TRANSITIONS_PM = {
+        'draft':  {'active'},
+        'active': {'done', 'cancel'},
+    }
+    _TRANSITIONS_ADMIN_ONLY = {
+        'done':   {'active'},
+        'cancel': {'active'},
+    }
 
     # ========== METADATA ==========
     name_en = fields.Char(string="Project Name (EN)")
@@ -20,7 +30,8 @@ class Project(models.Model):
             ('cancel', 'Cancelled')
         ],
         string="Status",
-        default='draft'
+        default='draft',
+        tracking=True,
     )
 
     # ========== DATES ==========
@@ -79,6 +90,10 @@ class Project(models.Model):
         string="Is current user a manager?",
         store=False
     )
+    is_admin = fields.Boolean(
+        compute="_compute_is_admin",
+        store=False,
+    )
 
     # ========== RELATIONS - CONTENT ==========
     link_ids = fields.One2many(
@@ -104,10 +119,10 @@ class Project(models.Model):
 
     @api.depends('member_ids.user_id', 'member_ids.role_id.code')
     def _compute_project_manager_id(self):
-        """Collect users with 'manager' role"""
+        """Collect users with 'manager' or 'project_lead' role"""
         for project in self:
             managers = project.member_ids.filtered(
-                lambda m: m.role_code == self._MANAGER_ROLE_CODE
+                lambda m: m.role_code in self._MANAGER_ROLE_CODES
             ).mapped('user_id')
             project.project_manager_id = managers
 
@@ -136,7 +151,14 @@ class Project(models.Model):
                 if member.role_id != manager_role:
                     member.role_id = manager_role
 
+    @api.depends_context('uid')
+    def _compute_is_admin(self):
+        is_admin = self.env.user.has_group('project_management.administrator')
+        for project in self:
+            project.is_admin = is_admin
+
     @api.depends('project_manager_id')
+    @api.depends_context('uid')
     def _compute_user_is_manager(self):
         """Check if current user is manager"""
         is_admin = self.env.user.has_group('project_management.administrator')
@@ -181,6 +203,26 @@ class Project(models.Model):
         
         return projects
 
+    # ========== STATE MACHINE ==========
+    def write(self, vals):
+        if 'project_status' in vals:
+            new_status = vals['project_status']
+            is_admin = self.env.user.has_group('project_management.administrator')
+            if not is_admin:
+                labels = dict(self._fields['project_status'].selection)
+                for rec in self:
+                    old_status = rec.project_status
+                    if old_status == new_status:
+                        continue
+                    allowed = self._TRANSITIONS_PM.get(old_status, set())
+                    if new_status not in allowed:
+                        raise UserError(_(
+                            "Transition from '%(from)s' to '%(to)s' is not allowed.",
+                            **{'from': labels.get(old_status, old_status),
+                               'to': labels.get(new_status, new_status)}
+                        ))
+        return super().write(vals)
+
     # ========== VALIDATIONS ==========
     @api.constrains('project_date_start', 'project_date_end')
     def _check_dates(self):
@@ -191,15 +233,32 @@ class Project(models.Model):
                 raise ValidationError(_("End Date cannot be earlier than Start Date."))
 
     # ========== ACTIONS ==========
+    def action_start(self):
+        return self.write({'project_status': 'active'})
+
+    def action_done(self):
+        return self.write({'project_status': 'done'})
+
+    def action_cancel(self):
+        return self.write({'project_status': 'cancel'})
+
+    def action_resume(self):
+        return self.write({'project_status': 'active'})
+
     def action_view_stages(self):
         """Open project stages"""
         self.ensure_one()
-
+        list_view = self.env.ref('project_management.view_university_project_stage_list').id
+        form_view = self.env.ref('project_management.view_university_project_stage_form').id
         return {
             'type': 'ir.actions.act_window',
             'name': 'Project Stages',
             'res_model': 'university.project.stage',
             'view_mode': 'list,form',
+            'views': [
+                (list_view, 'list'),
+                (form_view, 'form'),
+            ],
             'domain': [('project_id', '=', self.id)],
             'context': {
                 'default_project_id': self.id,

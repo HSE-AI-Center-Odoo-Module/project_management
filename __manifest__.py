@@ -34,6 +34,7 @@
         "views/project_users_view.xml",
         "views/project_stage_sync_wizard_views.xml",
         "views/project_document_views.xml",
+        "views/employee_profile_views.xml",
         "views/menus.xml",
     ],
     "application": True,

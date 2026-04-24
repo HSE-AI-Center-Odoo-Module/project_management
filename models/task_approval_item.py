@@ -17,9 +17,13 @@ class UniversityTaskApprovalItem(models.Model):
         ondelete="restrict",
     )
     allowed_user_ids = fields.Many2many(
-        related="task_id.user_ids",
+        related="task_id.project_id.member_user_ids",
         string="Allowed Users",
         readonly=True,
+    )
+    project_role_display = fields.Char(
+        compute="_compute_project_role_display",
+        string="Role in Project",
     )
     is_approved = fields.Boolean(string="Approved", default=False)
     approved_date = fields.Datetime(string="Approved On", readonly=True)
@@ -37,6 +41,19 @@ class UniversityTaskApprovalItem(models.Model):
         string="Comments",
     )
     can_approve = fields.Boolean(compute="_compute_can_approve", string="Can Approve")
+    can_revoke = fields.Boolean(compute="_compute_can_revoke", string="Can Revoke")
+
+    @api.depends('responsible_id', 'task_id', 'task_id.project_id')
+    def _compute_project_role_display(self):
+        for rec in self:
+            if rec.responsible_id and rec.task_id and rec.task_id.project_id:
+                member = self.env['university.project.member'].search([
+                    ('project_id', '=', rec.task_id.project_id.id),
+                    ('user_id', '=', rec.responsible_id.id),
+                ], limit=1)
+                rec.project_role_display = member.role_id.name if member else ''
+            else:
+                rec.project_role_display = ''
 
     @api.depends("responsible_id", "task_id.project_id.project_manager_id", "is_approved")
     def _compute_can_approve(self):
@@ -48,14 +65,15 @@ class UniversityTaskApprovalItem(models.Model):
                 not rec.is_approved and (rec.responsible_id == user or is_project_manager or is_admin)
             )
 
-    @api.constrains("responsible_id", "task_id")
-    def _check_responsible_is_task_assignee(self):
+    @api.depends("responsible_id", "task_id.project_id.project_manager_id", "is_approved")
+    def _compute_can_revoke(self):
+        user = self.env.user
+        is_admin = user.has_group("project_management.administrator")
         for rec in self:
-            if rec.task_id and rec.responsible_id and rec.responsible_id not in rec.task_id.user_ids:
-                raise ValidationError(
-                    _("Responsible user for checklist item '%(item)s' must be an assignee of task '%(task)s'.")
-                    % {"item": rec.name, "task": rec.task_id.name}
-                )
+            is_project_manager = bool(rec.task_id and user in rec.task_id.project_id.project_manager_id)
+            rec.can_revoke = bool(
+                rec.is_approved and (rec.responsible_id == user or is_project_manager or is_admin)
+            )
 
     def _can_user_edit_record(self, user):
         self.ensure_one()

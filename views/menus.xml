@@ -23,6 +23,8 @@
         <!-- Configuration: System -->
         <menuitem id="menu_university_users" name="Users" parent="menu_university_configuration" action="action_university_users" sequence="40"/>
 
+        <menuitem id="menu_university_employee_profiles" name="Employee Profiles" parent="menu_university_configuration" action="action_employee_profiles" sequence="45" groups="project_management.administrator"/>
+
         <!-- Configuration: Utilities -->
         <menuitem id="menu_university_utilities" name="Utilities" parent="menu_university_configuration" sequence="50"/>
 
