@@ -180,6 +180,53 @@
             <field name="domain_force">[(1, '=', 1)]</field>
         </record>
 
+        <!-- ===== EMPLOYEE PROFILE RULES ===== -->
+
+        <!-- Employee: read own profile -->
+        <record id="rule_employee_profile_read_own" model="ir.rule">
+            <field name="name">Employee Profile: Read Own</field>
+            <field name="model_id" ref="model_university_employee_profile"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Employee (as manager/lead): read profiles of members in managed projects.
+             Same group + same perm_read = Odoo OR's this with rule_employee_profile_read_own. -->
+        <record id="rule_employee_profile_read_as_manager" model="ir.rule">
+            <field name="name">Employee Profile: Manager Reads Team Members</field>
+            <field name="model_id" ref="model_university_employee_profile"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('user_id.project_member_ids.project_id.project_manager_id', 'in', [user.id])]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Employee: write/create own profile only -->
+        <record id="rule_employee_profile_write_own" model="ir.rule">
+            <field name="name">Employee Profile: Write Own Only</field>
+            <field name="model_id" ref="model_university_employee_profile"/>
+            <field name="groups" eval="[(4, ref('project_management.employee'))]"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Admin: unrestricted -->
+        <record id="rule_employee_profile_admin" model="ir.rule">
+            <field name="name">Employee Profile: Admin Unrestricted</field>
+            <field name="model_id" ref="model_university_employee_profile"/>
+            <field name="groups" eval="[(4, ref('project_management.administrator'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
         <function name="write" model="ir.rule">
             <function name="search" model="ir.rule">
                 <value eval="[('id', '=', ref('project.project_public_members_rule'))]"/>

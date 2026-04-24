@@ -8,7 +8,8 @@ from odoo.exceptions import ValidationError
 class Project(models.Model):
     """Extended project with university features"""
     _inherit = "project.project"
-    _MANAGER_ROLE_CODE = "manager"
+    _MANAGER_ROLE_CODE = "manager"           # used by _inverse (always creates with this role)
+    _MANAGER_ROLE_CODES = ("manager", "project_lead")  # used by _compute (elevation)
 
     # ========== METADATA ==========
     name_en = fields.Char(string="Project Name (EN)")
@@ -104,10 +105,10 @@ class Project(models.Model):
 
     @api.depends('member_ids.user_id', 'member_ids.role_id.code')
     def _compute_project_manager_id(self):
-        """Collect users with 'manager' role"""
+        """Collect users with 'manager' or 'project_lead' role"""
         for project in self:
             managers = project.member_ids.filtered(
-                lambda m: m.role_code == self._MANAGER_ROLE_CODE
+                lambda m: m.role_code in self._MANAGER_ROLE_CODES
             ).mapped('user_id')
             project.project_manager_id = managers
 

@@ -27,6 +27,10 @@ from . import task_approval_comment
 from . import project_document
 from . import project_link
 
+# ===== EMPLOYEE PROFILE =====
+from . import employee_profile
+from . import employee_certification
+
 # ===== SYSTEM EXTENSIONS =====
 # Extended Odoo system models
 from . import res_users
