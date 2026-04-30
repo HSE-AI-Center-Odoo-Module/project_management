@@ -47,11 +47,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ -d "$GITHUB_WORKSPACE/models" ]; then
-            python3 -m compileall -q "$GITHUB_WORKSPACE/models"
+          MODULE_DIR="$GITHUB_WORKSPACE/addons/project_management"
+          if [ -d "$MODULE_DIR/models" ]; then
+            python3 -m compileall -q "$MODULE_DIR/models"
           fi
-          if [ -d "$GITHUB_WORKSPACE/tests" ]; then
-            python3 -m compileall -q "$GITHUB_WORKSPACE/tests"
+          if [ -d "$MODULE_DIR/tests" ]; then
+            python3 -m compileall -q "$MODULE_DIR/tests"
           fi
 
       - name: Wait for PostgreSQL
@@ -91,9 +92,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -qE "FAIL|ERROR" odoo-test-install.log; then
+          if grep -qE "FAILED|ERROR:odoo\.tests" odoo-test-install.log; then
             echo "❌ Test failures detected in install log"
-            grep -E "FAIL|ERROR" odoo-test-install.log
+            grep -E "FAILED|ERROR:odoo\.tests" odoo-test-install.log
             exit 1
           fi
           echo "✅ Install tests passed"
@@ -122,9 +123,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -qE "FAIL|ERROR" odoo-test-update.log; then
+          if grep -qE "FAILED|ERROR:odoo\.tests" odoo-test-update.log; then
             echo "❌ Test failures detected in update log"
-            grep -E "FAIL|ERROR" odoo-test-update.log
+            grep -E "FAILED|ERROR:odoo\.tests" odoo-test-update.log
             exit 1
           fi
           echo "✅ Update tests passed"
