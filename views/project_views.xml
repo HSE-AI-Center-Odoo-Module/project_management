@@ -210,17 +210,17 @@
                                 <!-- BLOCK 9: RESOURCES -->
                                 <group string="Ресурсы и ссылки">
                                     <group>
-                                        <field name="link_repo" readonly="not is_manager"/>
-                                        <field name="link_docs" readonly="not is_manager"/>
-                                        <field name="link_design" readonly="not is_manager"/>
-                                        <field name="link_chat" readonly="not is_manager"/>
-                                        <field name="link_meeting" readonly="not is_manager"/>
+                                        <field name="link_repo" widget="url" readonly="not is_manager"/>
+                                        <field name="link_docs" widget="url" readonly="not is_manager"/>
+                                        <field name="link_design" widget="url" readonly="not is_manager"/>
+                                        <field name="link_chat" widget="url" readonly="not is_manager"/>
+                                        <field name="link_meeting" widget="url" readonly="not is_manager"/>
                                     </group>
                                     <field name="link_ids" readonly="not is_manager"
                                            context="{'default_project_id': id}">
                                         <list editable="bottom">
                                             <field name="name"/>
-                                            <field name="url"/>
+                                            <field name="url" widget="url"/>
                                         </list>
                                     </field>
                                 </group>

@@ -15,6 +15,7 @@ class UniversityProjectStage(models.Model):
     _TRANSITIONS_PM = {
         'draft':       {'in_progress', 'cancel'},
         'in_progress': {'done', 'cancel'},
+        'done':        {'in_progress'},
         'cancel':      {'draft'},
     }
 
@@ -59,6 +60,11 @@ class UniversityProjectStage(models.Model):
         'university.project.stage.history',
         'stage_id',
         string="History Log"
+    )
+    comment_ids = fields.One2many(
+        "university.project.comment",
+        "stage_id",
+        string="Комментарии",
     )
 
     # ========== COMPUTED FIELDS ==========

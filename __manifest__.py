@@ -41,6 +41,16 @@
         "views/menus.xml",
 
     ],
+    "assets": {
+        "web.assets_backend": [
+            "project_management/static/src/xml/chatter_templates.xml",
+            "project_management/static/src/xml/comment_thread.xml",
+            "project_management/static/src/xml/priority_widget.xml",
+            "project_management/static/src/js/comment_widget.js",
+            "project_management/static/src/js/priority_widget.js",
+            "project_management/static/src/css/comment_thread.css",
+        ],
+    },
     "application": True,
     "installable": True,
 }

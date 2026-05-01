@@ -98,6 +98,7 @@ class TestEmployeeProfile(TransactionCase):
 
     def test_manager_can_read_team_member_profile(self):
         self.Profile.sudo().create({"user_id": self.user_employee.id, "position": "Dev"})
+        self.env.flush_all()
         result = self.Profile.with_user(self.user_pm).search(
             [("user_id", "=", self.user_employee.id)]
         )
