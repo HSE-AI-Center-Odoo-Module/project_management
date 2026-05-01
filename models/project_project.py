@@ -54,7 +54,7 @@ class Project(models.Model):
     )
     custom_customer_id = fields.Many2one(
         'university.project.customer',
-        string='Customer',
+        string='Заказчик',
         tracking=True
     )
 
@@ -93,6 +93,107 @@ class Project(models.Model):
     is_admin = fields.Boolean(
         compute="_compute_is_admin",
         store=False,
+    )
+
+    # ========== GENERAL INFO ==========
+    division_id = fields.Many2one(
+        'university.project.division',
+        string='Подразделение',
+        tracking=True,
+    )
+    division_code = fields.Char(
+        string='Код подразделения',
+        related='division_id.code',
+        readonly=True,
+        store=False,
+    )
+    division_name = fields.Char(
+        string='Наименование подразделения',
+        related='division_id.name',
+        readonly=True,
+        store=False,
+    )
+    contact_info = fields.Char(string='Контактная информация')
+    budget = fields.Monetary(string='Бюджет', currency_field='currency_id')
+    currency_id = fields.Many2one(
+        'res.currency', string='Валюта',
+        default=lambda self: self.env.ref('base.RUB', raise_if_not_found=False),
+    )
+
+    # ========== CLASSIFIERS ==========
+    oecd_direction = fields.Char(string='Научное направление (OECD)')
+    grnti_code = fields.Char(string='Код ГРНТИ')
+    priority_ntr = fields.Text(
+        string='Приоритетные направления НТР РФ',
+    )
+    critical_tech = fields.Text(string='Критические технологии')
+    cross_tech = fields.Text(string='Сквозные технологии')
+    big_challenges = fields.Text(string='Большие вызовы (СНТР РФ)')
+    ntr_priorities = fields.Text(string='Приоритеты НТР РФ')
+    national_projects = fields.Text(string='Мероприятия национальных проектов')
+    keywords_ru = fields.Text(string='Ключевые слова (RU)')
+    keywords_en = fields.Text(string='Keywords (EN)')
+
+    # ========== DESCRIPTION ==========
+    project_goal = fields.Html(string='Цель проекта')
+    project_justification = fields.Html(string='Обоснование (потребности, проблемы, решения)')
+    objective_ids = fields.One2many(
+        'university.project.objective', 'project_id', string='Задачи проекта',
+    )
+
+    # ========== PARTNERS ==========
+    partner_ids = fields.One2many(
+        'university.project.partner', 'project_id', string='Партнёры',
+    )
+
+    # ========== RESULTS ==========
+    trl_planned = fields.Many2one('university.project.trl', string='УГТ плановый', tracking=True)
+    trl_actual = fields.Many2one('university.project.trl', string='УГТ фактический', tracking=True)
+    trl_justification = fields.Text(string='Обоснование УГТ')
+    result_ids = fields.One2many(
+        'university.project.result', 'project_id', string='Результаты проекта',
+    )
+    result_requirement_ids = fields.One2many(
+        'university.project.result', 'project_id', string='Требования к результатам',
+    )
+    indicator_ids = fields.One2many(
+        'university.project.indicator', 'project_id', string='Показатели',
+    )
+
+    # ========== EFFECTS ==========
+    effect_hse = fields.Html(string='Эффект на уровне НИУ ВШЭ')
+    effect_industry = fields.Html(string='Эффект на отраслевом уровне')
+    effect_rf = fields.Html(string='Эффект на уровне РФ')
+
+    # ========== REQUIREMENTS ==========
+    reporting_requirements = fields.Html(string='Требования к отчётности')
+    other_requirements = fields.Html(string='Прочие требования')
+
+    # ========== SIGNATORIES ==========
+    signatory_ids = fields.One2many(
+        'university.project.signatory', 'project_id', string='Подписанты',
+    )
+
+    # ========== PROJECT RELATIONS ==========
+    predecessor_project_ids = fields.Many2many(
+        'project.project',
+        'project_predecessor_rel', 'project_id', 'predecessor_id',
+        string='Проекты-предшественники',
+    )
+    customer_project_ids = fields.Many2many(
+        'project.project',
+        'project_customer_rel', 'project_id', 'customer_id',
+        string='Проекты-заказчики',
+    )
+    executor_project_ids = fields.Many2many(
+        'project.project',
+        'project_executor_rel', 'project_id', 'executor_id',
+        string='Проекты-исполнители',
+    )
+    competitor_project_ids = fields.Many2many(
+        'project.project',
+        'project_competitor_rel', 'project_id', 'competitor_id',
+        string='Проекты-конкуренты',
     )
 
     # ========== RELATIONS - CONTENT ==========

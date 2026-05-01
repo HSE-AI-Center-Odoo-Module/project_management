@@ -200,7 +200,7 @@ class UniversityProjectStage(models.Model):
 
             # Persist history entry if there were changes.
             if changes:
-                self.env['university.project.stage.history'].create({
+                self.env['university.project.stage.history'].sudo().create({
                     'stage_id': rec.id,
                     'name': " | ".join(changes),
                     'user_id': self.env.user.id,
