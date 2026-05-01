@@ -61,6 +61,11 @@ class UniversityProjectStage(models.Model):
         'stage_id',
         string="History Log"
     )
+    comment_ids = fields.One2many(
+        "university.project.comment",
+        "stage_id",
+        string="Комментарии",
+    )
 
     # ========== COMPUTED FIELDS ==========
     is_manager = fields.Boolean(

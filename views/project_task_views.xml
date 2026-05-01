@@ -273,6 +273,14 @@
                                 </field>
                             </page>
 
+                            <!-- ========== TAB: COMMENTS ========== -->
+                            <page string="Комментарии" name="task_comments">
+                                <field name="comment_ids"
+                                       widget="comment_thread"
+                                       context="{'default_task_id': id}"
+                                       nolabel="1"/>
+                            </page>
+
                         </notebook>
                     </sheet>
 

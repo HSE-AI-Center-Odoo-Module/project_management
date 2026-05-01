@@ -27,6 +27,11 @@ class ProjectTask(models.Model):
         "task_id",
         string="Approval Checklist",
     )
+    comment_ids = fields.One2many(
+        "university.project.comment",
+        "task_id",
+        string="Комментарии",
+    )
     approval_count = fields.Integer(
         compute="_compute_approval_progress",
         store=True,

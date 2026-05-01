@@ -84,6 +84,14 @@
                                 <field name="description" nolabel="1" placeholder="Добавьте описание этапа..." readonly="not is_manager"/>
                             </page>
 
+                            <!-- ========== TAB: COMMENTS ========== -->
+                            <page string="Комментарии" name="stage_comments">
+                                <field name="comment_ids"
+                                       widget="comment_thread"
+                                       context="{'default_stage_id': id}"
+                                       nolabel="1"/>
+                            </page>
+
                             <page string="Attachments" name="university_project_docs">
                                 <field name="document_ids" readonly="not is_manager" context="{'form_view_ref': 'project_management.view_university_project_document_form'}">
                                     <list editable="bottom">
