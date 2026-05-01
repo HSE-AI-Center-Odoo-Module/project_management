@@ -15,6 +15,7 @@ class UniversityProjectStage(models.Model):
     _TRANSITIONS_PM = {
         'draft':       {'in_progress', 'cancel'},
         'in_progress': {'done', 'cancel'},
+        'done':        {'in_progress'},
         'cancel':      {'draft'},
     }
 

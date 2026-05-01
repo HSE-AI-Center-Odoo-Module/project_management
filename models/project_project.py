@@ -35,8 +35,8 @@ class Project(models.Model):
     )
 
     # ========== DATES ==========
-    project_date_start = fields.Date(string="Start Date")
-    project_date_end = fields.Date(string="End Date")
+    project_date_start = fields.Date(string="Start Date", tracking=True)
+    project_date_end = fields.Date(string="End Date", tracking=True)
     date_error_msg = fields.Char(compute="_compute_date_error_msg")
 
     # ========== EXTERNAL LINKS ==========
@@ -114,7 +114,7 @@ class Project(models.Model):
         store=False,
     )
     contact_info = fields.Char(string='Контактная информация')
-    budget = fields.Monetary(string='Бюджет', currency_field='currency_id')
+    budget = fields.Monetary(string='Бюджет', currency_field='currency_id', tracking=True)
     currency_id = fields.Many2one(
         'res.currency', string='Валюта',
         default=lambda self: self.env.ref('base.RUB', raise_if_not_found=False),

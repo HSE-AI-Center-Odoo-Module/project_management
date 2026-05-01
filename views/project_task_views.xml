@@ -45,52 +45,94 @@
 
         <!-- ========== PROJECT TASK - FORM VIEW ========== -->
 
-        <record id="view_task_form2_inherited_university_v2" model="ir.ui.view">
-            <field name="name">project.task.form.university.v2</field>
+        <record id="view_task_form_university" model="ir.ui.view">
+            <field name="name">project.task.form.university</field>
             <field name="model">project.task</field>
-            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="priority">100</field>
             <field name="arch" type="xml">
+                <form string="Задача" duplicate="false">
 
-                <xpath expr="//sheet" position="replace">
+                    <field name="is_manager" invisible="1"/>
+
+                    <!-- ===== HEADER ===== -->
+                    <header>
+                        <field name="university_stage_id"
+                               widget="statusbar"
+                               domain="[('project_id', '=', project_id)]"
+                               options="{'clickable': '1', 'no_create': True}"/>
+                    </header>
+
                     <sheet>
-                        <div class="oe_button_box" name="button_box"/>
-                        <field name="is_manager" invisible="1"/>
 
+                        <!-- ===== BUTTON BOX ===== -->
+                        <div class="oe_button_box" name="button_box"/>
+
+                        <!-- ===== TITLE ===== -->
                         <div class="oe_title">
-                            <label for="name" string="Название задачи" class="oe_edit_only"/>
+                            <label for="name" string="Название задачи"/>
                             <h1>
-                                <field name="name" placeholder="Например: Разработка ТЗ" readonly="not is_manager"/>
+                                <field name="name"
+                                       placeholder="Например: Разработка ТЗ"
+                                       readonly="not is_manager"/>
                             </h1>
                         </div>
 
+                        <!-- ===== MAIN FIELDS ===== -->
                         <group>
-                            <group name="left_side">
-                                <field name="project_id" readonly="1" options="{'no_open': True}"/>
-                                <field name="university_stage_id" domain="[('project_id', '=', project_id)]" options="{'no_create': True, 'no_open': True}" readonly="not is_manager"/>
-                                <field name="user_ids" widget="many2many_avatar_user" domain="[('id', 'in', project_member_user_ids)]" options="{'no_create': True, 'no_open': True}" readonly="not is_manager"/>
+                            <group>
+                                <field name="project_id" readonly="1"
+                                       options="{'no_open': True}"/>
+                                <field name="university_stage_id"
+                                       domain="[('project_id', '=', project_id)]"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       readonly="not is_manager"/>
+                                <field name="user_ids"
+                                       widget="many2many_avatar_user"
+                                       domain="[('id', 'in', project_member_user_ids)]"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       readonly="not is_manager"/>
                                 <field name="project_member_user_ids" invisible="1"/>
+                                <field name="tag_ids"
+                                       widget="many2many_tags"
+                                       options="{'color_field': 'color'}"
+                                       readonly="not is_manager"/>
                             </group>
-
-                            <group name="right_side">
+                            <group>
                                 <label for="date_start" string="Сроки выполнения"/>
                                 <div class="o_row">
-                                    <field name="date_start" widget="date" placeholder="Начало" readonly="not is_manager"/>
-                                    <i class="fa fa-long-arrow-right mx-2" title="по" role="img" aria-label="по"/>
-                                    <field name="date_end" widget="date" placeholder="Конец" readonly="not is_manager" decoration-danger="date_stage_error_msg"/>
+                                    <field name="date_start" widget="date"
+                                           placeholder="Начало"
+                                           readonly="not is_manager"/>
+                                    <i class="fa fa-long-arrow-right mx-2" title="по"
+                                       role="img" aria-label="по"/>
+                                    <field name="date_end" widget="date"
+                                           placeholder="Конец"
+                                           readonly="not is_manager"
+                                           decoration-danger="date_stage_error_msg"/>
                                 </div>
-                                <field name="date_stage_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_stage_error_msg"/>
-                                <field name="priority" widget="priority" readonly="not is_manager"/>
-                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="not is_manager"/>
+                                <field name="date_stage_error_msg" nolabel="1"
+                                       class="text-danger fw-bold"
+                                       invisible="not date_stage_error_msg"/>
+                                <field name="priority" widget="priority"
+                                       readonly="not is_manager"/>
                             </group>
                         </group>
 
+                        <!-- ===== TABS ===== -->
                         <notebook>
+
+                            <!-- ========== TAB: DESCRIPTION ========== -->
                             <page string="Описание" name="description_page">
-                                <field name="description" placeholder="Добавьте описание задачи..." readonly="not is_manager"/>
+                                <field name="description"
+                                       placeholder="Добавьте описание задачи..."
+                                       readonly="not is_manager"
+                                       class="border rounded p-2"/>
                             </page>
 
-                            <page string="Attachments" name="university_project_docs">
-                                <field name="document_ids" readonly="not is_manager" context="{'form_view_ref': 'project_management.view_university_project_document_form'}">
+                            <!-- ========== TAB: DOCUMENTS ========== -->
+                            <page string="Документы" name="university_project_docs">
+                                <field name="document_ids" readonly="not is_manager"
+                                       context="{'form_view_ref': 'project_management.view_university_project_document_form'}">
                                     <list editable="bottom">
                                         <field name="name"/>
                                         <field name="version_label" readonly="1"/>
@@ -98,46 +140,61 @@
                                         <field name="file_name" column_invisible="True"/>
                                         <field name="uploaded_by" readonly="1"/>
                                         <field name="uploaded_at" readonly="1"/>
-                                        <button
-                                            type="object"
-                                            name="action_create_new_version"
-                                            string="New Version"
-                                            icon="fa-files-o"
-                                            class="btn-link"
-                                            invisible="not id or not is_latest_version"/>
+                                        <button type="object"
+                                                name="action_create_new_version"
+                                                string="Новая версия"
+                                                icon="fa-files-o"
+                                                class="btn-link"
+                                                invisible="not id or not is_latest_version"/>
                                         <field name="is_latest_version" column_invisible="True"/>
                                     </list>
                                 </field>
                             </page>
 
+                            <!-- ========== TAB: SECTIONS ========== -->
                             <page string="Разделы" name="task_custom_tabs">
                                 <field name="tab_ids" context="{'default_task_id': id}">
                                     <list open_form_view="1">
                                         <field name="name"/>
-                                        <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.user_ids)]" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="responsible_id"
+                                               widget="many2one_avatar_user"
+                                               domain="[('id', 'in', parent.user_ids)]"
+                                               options="{'no_create': True, 'no_open': True}"/>
                                     </list>
-                                    <form string="Task Section">
+                                    <form string="Раздел задачи">
                                         <field name="is_current_user_responsible" invisible="1"/>
                                         <notebook>
                                             <page string="Раздел">
                                                 <group>
-                                                    <field name="name" readonly="not is_current_user_responsible"/>
-                                                    <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.user_ids)]" options="{'no_create': True, 'no_open': True}" readonly="not is_current_user_responsible"/>
+                                                    <field name="name"
+                                                           readonly="not is_current_user_responsible"/>
+                                                    <field name="responsible_id"
+                                                           widget="many2one_avatar_user"
+                                                           domain="[('id', 'in', parent.user_ids)]"
+                                                           options="{'no_create': True, 'no_open': True}"
+                                                           readonly="not is_current_user_responsible"/>
                                                 </group>
-                                                <div class="alert alert-warning" role="alert" invisible="is_current_user_responsible">
+                                                <div class="alert alert-warning" role="alert"
+                                                     invisible="is_current_user_responsible">
                                                     <i class="fa fa-lock me-2" title="Readonly"/>
                                                     Редактировать может только ответственный, менеджер проекта или администратор.
                                                 </div>
-                                                <field name="content" widget="html" readonly="not is_current_user_responsible" placeholder="Введите текст любой длины..."/>
-                                                <field name="attachment_ids" widget="many2many_binary" readonly="not is_current_user_responsible"/>
+                                                <field name="content" widget="html"
+                                                       readonly="not is_current_user_responsible"
+                                                       placeholder="Введите текст любой длины..."/>
+                                                <field name="attachment_ids"
+                                                       widget="many2many_binary"
+                                                       readonly="not is_current_user_responsible"/>
                                             </page>
                                             <page string="Комментарии">
-                                                <field name="comment_ids" context="{'default_tab_id': id}">
+                                                <field name="comment_ids"
+                                                       context="{'default_tab_id': id}">
                                                     <list editable="bottom">
                                                         <field name="author_id" readonly="1"/>
                                                         <field name="create_date" readonly="1"/>
                                                         <field name="message"/>
-                                                        <field name="file_data" widget="binary" filename="file_name"/>
+                                                        <field name="file_data" widget="binary"
+                                                               filename="file_name"/>
                                                         <field name="file_name" column_invisible="True"/>
                                                     </list>
                                                 </field>
@@ -147,9 +204,11 @@
                                 </field>
                             </page>
 
+                            <!-- ========== TAB: APPROVAL ========== -->
                             <page string="Согласование" name="task_approval_page">
                                 <group>
-                                    <field name="approval_progress" widget="progressbar" readonly="1"/>
+                                    <field name="approval_progress"
+                                           widget="progressbar" readonly="1"/>
                                     <label for="approval_done_count" string="Согласовано"/>
                                     <div class="o_row">
                                         <field name="approval_done_count" readonly="1"/>
@@ -157,38 +216,54 @@
                                         <field name="approval_count" readonly="1"/>
                                     </div>
                                 </group>
-                                <field name="approval_item_ids" context="{'default_task_id': id}">
+                                <field name="approval_item_ids"
+                                       context="{'default_task_id': id}">
                                     <list open_form_view="1">
                                         <field name="name"/>
-                                        <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.project_member_user_ids)]" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="project_role_display" string="Role" readonly="1"/>
-                                        <field name="is_approved" widget="boolean_toggle" readonly="not can_approve and not can_revoke"/>
+                                        <field name="responsible_id"
+                                               widget="many2one_avatar_user"
+                                               domain="[('id', 'in', parent.project_member_user_ids)]"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="project_role_display"
+                                               string="Роль" readonly="1"/>
+                                        <field name="is_approved"
+                                               widget="boolean_toggle"
+                                               readonly="not can_approve and not can_revoke"/>
                                         <field name="can_approve" column_invisible="True"/>
                                         <field name="can_revoke" column_invisible="True"/>
                                         <field name="approved_date" optional="show" readonly="1"/>
                                     </list>
-                                    <form string="Approval Item">
+                                    <form string="Пункт согласования">
                                         <field name="can_approve" invisible="1"/>
                                         <field name="can_revoke" invisible="1"/>
                                         <notebook>
                                             <page string="Пункт">
                                                 <group>
                                                     <field name="name"/>
-                                                    <field name="responsible_id" widget="many2one_avatar_user" domain="[('id', 'in', parent.project_member_user_ids)]" options="{'no_create': True, 'no_open': True}"/>
-                                                    <field name="project_role_display" string="Роль в проекте" readonly="1"/>
-                                                    <field name="is_approved" readonly="not can_approve and not can_revoke"/>
+                                                    <field name="responsible_id"
+                                                           widget="many2one_avatar_user"
+                                                           domain="[('id', 'in', parent.project_member_user_ids)]"
+                                                           options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="project_role_display"
+                                                           string="Роль в проекте" readonly="1"/>
+                                                    <field name="is_approved"
+                                                           readonly="not can_approve and not can_revoke"/>
                                                     <field name="approved_date" readonly="1"/>
-                                                    <field name="note" widget="html"/>
-                                                    <field name="attachment_ids" widget="many2many_binary"/>
+                                                    <field name="note" widget="html"
+                                                           class="border rounded p-2"/>
+                                                    <field name="attachment_ids"
+                                                           widget="many2many_binary"/>
                                                 </group>
                                             </page>
                                             <page string="Комментарии">
-                                                <field name="comment_ids" context="{'default_approval_item_id': id}">
+                                                <field name="comment_ids"
+                                                       context="{'default_approval_item_id': id}">
                                                     <list editable="bottom">
                                                         <field name="author_id" readonly="1"/>
                                                         <field name="create_date" readonly="1"/>
                                                         <field name="message"/>
-                                                        <field name="file_data" widget="binary" filename="file_name"/>
+                                                        <field name="file_data" widget="binary"
+                                                               filename="file_name"/>
                                                         <field name="file_name" column_invisible="True"/>
                                                     </list>
                                                 </field>
@@ -197,9 +272,13 @@
                                     </form>
                                 </field>
                             </page>
+
                         </notebook>
                     </sheet>
-                </xpath>
+
+                    <chatter/>
+
+                </form>
             </field>
         </record>
 

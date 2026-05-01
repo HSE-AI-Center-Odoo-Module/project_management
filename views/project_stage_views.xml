@@ -41,6 +41,9 @@
                             invisible="status not in ('draft', 'in_progress') or not is_manager"/>
                         <button name="action_reset_to_draft" string="Reset to Draft" type="object"
                             invisible="status != 'cancel' or not is_manager"/>
+                        <button name="action_start" string="Вернуть в работу" type="object"
+                            class="btn-primary"
+                            invisible="status != 'done' or not is_manager"/>
                         <field name="status" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
@@ -102,17 +105,11 @@
                                 </field>
                             </page>
 
-                            <page string="История" name="history">
-                                <field name="history_ids" readonly="1" options="{'no_create': True}">
-                                    <list create="0" edit="0" delete="0">
-                                        <field name="date"/>
-                                        <field name="user_id" widget="many2one_avatar_user"/>
-                                        <field name="name"/>
-                                    </list>
-                                </field>
-                            </page>
                         </notebook>
                     </sheet>
+
+                    <chatter/>
+
                 </form>
             </field>
         </record>

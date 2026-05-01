@@ -41,6 +41,11 @@
         "views/menus.xml",
 
     ],
+    "assets": {
+        "web.assets_backend": [
+            "project_management/static/src/xml/chatter_templates.xml",
+        ],
+    },
     "application": True,
     "installable": True,
 }

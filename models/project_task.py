@@ -5,8 +5,8 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
-    date_start = fields.Date(string="Дата начала")
-    date_end = fields.Date(string="Дата конца")
+    date_start = fields.Date(string="Дата начала", tracking=True)
+    date_end = fields.Date(string="Дата конца", tracking=True)
     date_stage_error_msg = fields.Char(
         string="Date validation message",
         compute="_compute_date_stage_error_msg",
@@ -66,6 +66,7 @@ class ProjectTask(models.Model):
         ],
         default="0",
         string="Priority",
+        tracking=True,
     )
 
     stage_id = fields.Many2one(
