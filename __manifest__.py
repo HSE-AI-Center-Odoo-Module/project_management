@@ -22,8 +22,11 @@
         "data/russian_default.xml",
         "data/project_type_data.xml",
         "data/project_task_phases_data.xml",
+        "data/project_trl_data.xml",
 
         # Views
+        "views/project_division_views.xml",
+        "views/project_trl_views.xml",
         "views/project_task_views.xml",
         "views/project_stage_views.xml",
         "views/project_views.xml",
@@ -36,6 +39,7 @@
         "views/project_document_views.xml",
         "views/employee_profile_views.xml",
         "views/menus.xml",
+
     ],
     "application": True,
     "installable": True,

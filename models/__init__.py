@@ -3,6 +3,15 @@
 from . import project_role
 from . import project_type
 from . import project_customer
+from . import project_trl
+
+# ===== PROJECT PASSPORT SUB-MODELS =====
+from . import project_division
+from . import project_partner
+from . import project_objective
+from . import project_result
+from . import project_indicator
+from . import project_signatory
 
 # ===== MAIN PROJECT MODEL =====
 # Core project model with all extensions
