@@ -27,7 +27,7 @@
                                     </div>
                                     <div class="o_kanban_record_bottom">
                                         <div class="oe_kanban_bottom_left">
-                                            <field name="priority" widget="priority"/>
+                                            <field name="priority" widget="priority_badge"/>
                                         </div>
                                         <div class="oe_kanban_bottom_right">
                                             <field name="user_ids" widget="many2many_avatar_user"/>
@@ -107,7 +107,7 @@
                                 <field name="date_stage_error_msg" nolabel="1"
                                        class="text-danger fw-bold"
                                        invisible="not date_stage_error_msg"/>
-                                <field name="priority" widget="priority"
+                                <field name="priority" widget="priority_badge"
                                        readonly="not is_manager"/>
                                 <field name="tag_ids"
                                        widget="many2many_tags"
