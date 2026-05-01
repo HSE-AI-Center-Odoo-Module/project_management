@@ -103,3 +103,15 @@
     resize: none;
     font-size: 0.9rem;
 }
+
+/* ===== KANBAN CARD ===== */
+.pm-kanban-card {
+    min-height: 80px;
+}
+
+.pm-kanban-card .o_kanban_record_title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
