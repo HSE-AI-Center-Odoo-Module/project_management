@@ -387,6 +387,7 @@ class Project(models.Model):
     def _build_task_board_action(self, project_id, action_name):
         self.ensure_one()
         kanban_view = self.env.ref('project_management.view_university_task_kanban_custom').id
+        form_view = self.env.ref('project_management.view_task_form_university').id
         return {
             'type': 'ir.actions.act_window',
             'name': action_name,
@@ -395,7 +396,7 @@ class Project(models.Model):
             'views': [
                 (kanban_view, 'kanban'),
                 (False, 'list'),
-                (False, 'form'),
+                (form_view, 'form'),
             ],
             'domain': self._task_board_domain(project_id),
             'context': {

@@ -12,8 +12,7 @@
                     <field name="priority"/>
                     <field name="user_ids"/>
                     <field name="name"/>
-                    <field name="stage_id" options="{'no_create': True, 'no_open': True}"/>
-                    <field name="university_stage_id" options="{'no_create': True, 'no_open': True}" readonly="not is_manager"/>
+                    <field name="university_stage_id"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
@@ -56,9 +55,8 @@
 
                     <!-- ===== HEADER ===== -->
                     <header>
-                        <field name="university_stage_id"
+                        <field name="stage_id"
                                widget="statusbar"
-                               domain="[('project_id', '=', project_id)]"
                                options="{'clickable': '1', 'no_create': True}"/>
                     </header>
 
@@ -92,10 +90,6 @@
                                        options="{'no_create': True, 'no_open': True}"
                                        readonly="not is_manager"/>
                                 <field name="project_member_user_ids" invisible="1"/>
-                                <field name="tag_ids"
-                                       widget="many2many_tags"
-                                       options="{'color_field': 'color'}"
-                                       readonly="not is_manager"/>
                             </group>
                             <group>
                                 <label for="date_start" string="Сроки выполнения"/>
@@ -114,6 +108,10 @@
                                        class="text-danger fw-bold"
                                        invisible="not date_stage_error_msg"/>
                                 <field name="priority" widget="priority"
+                                       readonly="not is_manager"/>
+                                <field name="tag_ids"
+                                       widget="many2many_tags"
+                                       options="{'color_field': 'color'}"
                                        readonly="not is_manager"/>
                             </group>
                         </group>
