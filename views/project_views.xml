@@ -2,189 +2,299 @@
 <odoo>
     <data>
 
-        <!-- ========== PROJECT - FORM VIEW INHERITANCE ========== -->
-        <record id="view_project_form_inherit_university" model="ir.ui.view">
-            <field name="name">project.project.form.university.inherit</field>
+        <!-- ========== PROJECT - CUSTOM STANDALONE FORM VIEW ========== -->
+        <record id="view_project_form_university" model="ir.ui.view">
+            <field name="name">project.project.form.university</field>
             <field name="model">project.project</field>
-            <field name="inherit_id" ref="project.edit_project"/>
-            <field name="priority">10</field>
+            <field name="priority">100</field>
             <field name="arch" type="xml">
+                <form string="Проект" create="0">
 
-                <!-- ===== INITIALIZATION ===== -->
-                <xpath expr="//form//sheet" position="inside">
                     <field name="is_manager" invisible="1"/>
                     <field name="is_admin" invisible="1"/>
-                </xpath>
 
-                <!-- ===== STATUS HEADER ===== -->
-                <xpath expr="//sheet" position="before">
+                    <!-- ===== HEADER ===== -->
                     <header>
-                        <button name="action_start" string="Start Project" type="object"
+                        <button name="action_start" string="Запустить" type="object"
                             class="btn-primary"
                             invisible="project_status != 'draft' or not is_manager"/>
-                        <button name="action_done" string="Mark as Done" type="object"
+                        <button name="action_done" string="Завершить" type="object"
                             class="btn-primary"
                             invisible="project_status != 'active' or not is_manager"/>
-                        <button name="action_cancel" string="Cancel" type="object"
+                        <button name="action_cancel" string="Отменить" type="object"
                             invisible="project_status != 'active' or not is_manager"/>
-                        <button name="action_resume" string="Resume" type="object"
+                        <button name="action_resume" string="Возобновить" type="object"
                             class="btn-warning"
                             invisible="project_status not in ('done', 'cancel') or not is_admin"/>
                         <field name="project_status" widget="statusbar"
                             statusbar_visible="draft,active,done,cancel"
                             readonly="not is_admin"/>
                     </header>
-                </xpath>
 
-                <!-- ===== READONLY RESTRICTIONS ===== -->
-                <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="attributes">
-                    <attribute name="readonly">not is_manager</attribute>
-                </xpath>
+                    <sheet>
 
-                <xpath expr="//field[@name='description']" position="attributes">
-                    <attribute name="readonly">not is_manager</attribute>
-                    <attribute name="force_save">1</attribute>
-                </xpath>
+                        <!-- ===== BUTTON BOX ===== -->
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="action_view_stages" icon="fa-list-ul">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Этапы</span>
+                                </div>
+                            </button>
+                            <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Задачи</span>
+                                </div>
+                            </button>
+                        </div>
 
-                <!-- ===== DISABLE FORM CREATION ===== -->
-                <xpath expr="//form" position="attributes">
-                    <attribute name="create">0</attribute>
-                </xpath>
+                        <!-- ===== TITLE ===== -->
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" string="Название (RU)"
+                                       readonly="not is_manager"
+                                       placeholder="Название проекта"/>
+                            </h1>
+                        </div>
 
-                <!-- ===== HIDE STANDARD ELEMENTS ===== -->
-                <xpath expr="//button[@name='action_open_share_project_wizard']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+                        <!-- ===== TABS ===== -->
+                        <notebook>
 
-                <xpath expr="//page[@name='settings']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+                            <!-- ========== TAB: PASSPORT ========== -->
+                            <page string="Паспорт" name="university_project_passport">
 
-                <xpath expr="//group[field[@name='label_tasks']]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='partner_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='tag_ids']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='user_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='date_start']" position="replace"/>
+                                <!-- BLOCK 1: GENERAL INFO -->
+                                <group string="Общие сведения">
+                                    <group>
+                                        <field name="name" string="Название (RU)" readonly="not is_manager"/>
+                                        <field name="name_en" string="Название (EN)" readonly="not is_manager"/>
+                                        <field name="project_manager_id" widget="many2many_tags_avatar" readonly="not is_manager"/>
+                                        <field name="contact_info" readonly="not is_manager"/>
+                                        <field name="project_status" readonly="1"/>
+                                        <field name="project_type_id" readonly="not is_manager"/>
+                                        <field name="custom_customer_id" readonly="not is_manager"/>
+                                    </group>
+                                    <group>
+                                        <group string="Сроки и бюджет">
+                                            <field name="project_date_start" readonly="not is_manager"/>
+                                            <field name="project_date_end" readonly="not is_manager"/>
+                                            <field name="date_error_msg" nolabel="1"
+                                                   class="text-danger fw-bold"
+                                                   invisible="not date_error_msg" colspan="2"/>
+                                            <field name="budget" readonly="not is_manager"/>
+                                            <field name="currency_id" readonly="not is_manager"
+                                                   groups="base.group_multi_currency"/>
+                                        </group>
+                                    </group>
+                                    <group string="Подразделение" colspan="2">
+                                        <group>
+                                            <field name="division_id" readonly="not is_manager"/>
+                                            <field name="division_code" readonly="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="division_name" readonly="1"/>
+                                        </group>
+                                    </group>
+                                </group>
 
-                <!-- ===== REPLACE BUTTON BOX ===== -->
-                <xpath expr="//div[@name='button_box']" position="replace">
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" type="object" name="action_view_stages" icon="fa-list-ul">
-                            <div class="o_field_widget o_stat_info">
-                                <span class="o_stat_text">Stages</span>
-                            </div>
-                        </button>
-                        <button class="oe_stat_button" type="object" name="action_view_tasks" icon="fa-tasks">
-                            <div class="o_field_widget o_stat_info">
-                                <span class="o_stat_text">Tasks</span>
-                            </div>
-                        </button>
-                    </div>
-                </xpath>
+                                <!-- BLOCK 2: CLASSIFIERS -->
+                                <group string="Классификаторы">
+                                    <group>
+                                        <field name="oecd_direction" readonly="not is_manager"/>
+                                        <field name="grnti_code" readonly="not is_manager"/>
+                                        <field name="tag_ids" widget="many2many_tags"
+                                               readonly="not is_manager" string="Теги"/>
+                                        <field name="keywords_ru" readonly="not is_manager"/>
+                                        <field name="keywords_en" readonly="not is_manager"/>
+                                    </group>
+                                    <group string="Соответствие приоритетам">
+                                        <field name="priority_ntr" readonly="not is_manager" nolabel="1"
+                                               placeholder="Приоритетные направления НТР РФ"/>
+                                        <field name="critical_tech" readonly="not is_manager" nolabel="1"
+                                               placeholder="Критические технологии"/>
+                                        <field name="cross_tech" readonly="not is_manager" nolabel="1"
+                                               placeholder="Сквозные технологии"/>
+                                        <field name="big_challenges" readonly="not is_manager" nolabel="1"
+                                               placeholder="Большие вызовы (СНТР РФ)"/>
+                                        <field name="ntr_priorities" readonly="not is_manager" nolabel="1"
+                                               placeholder="Приоритеты НТР РФ"/>
+                                        <field name="national_projects" readonly="not is_manager" nolabel="1"
+                                               placeholder="Мероприятия нацпроектов"/>
+                                    </group>
+                                </group>
 
-                <!-- ===== ADD CUSTOM PAGES ===== -->
-                <xpath expr="//notebook/page[1]" position="before">
+                                <!-- BLOCK 3: PARTNERS -->
+                                <field name="partner_ids" readonly="not is_manager"
+                                       string="Партнёры"
+                                       context="{'default_project_id': id}">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="country_id"/>
+                                        <field name="consortium"/>
+                                        <field name="role"/>
+                                        <field name="funding"/>
+                                        <field name="currency_id" optional="hide"/>
+                                    </list>
+                                </field>
 
-                    <!-- ===== PROJECT PASSPORT PAGE ===== -->
-                    <page string="Project Passport" name="university_project_passport">
-                        <group>
-                            <group string="Basic Information" col="2">
-                                <field name="name" string="Project Name (RU)" readonly="not is_manager"/>
-                                <field name="name_en" string="Project Name (EN)" readonly="not is_manager"/>
-                                <field name="project_manager_id" widget="many2many_tags_avatar" readonly="not is_manager"/>
-                                <field name="project_type_id" readonly="not is_manager"/>
-                                <field name="project_status" readonly="1"/>
-                                <field name="custom_customer_id" readonly="not is_manager"/>
-                                <field name="tag_ids" widget="many2many_tags" readonly="not is_manager"/>
-                            </group>
-                            <group string="Dates">
-                                <field name="project_date_start" readonly="not is_manager"/>
-                                <field name="project_date_end" readonly="not is_manager"/>
-                            </group>
-                        </group>
+                                <!-- BLOCK 4: RESULTS -->
+                                <group string="Результаты">
+                                    <group string="УГТ (Уровень готовности технологий)">
+                                        <field name="trl_planned" readonly="not is_manager"/>
+                                        <field name="trl_actual" readonly="not is_manager"/>
+                                        <field name="trl_justification" readonly="not is_manager"/>
+                                    </group>
+                                </group>
+                                <field name="result_ids" readonly="not is_manager"
+                                       string="Научно-технические и образовательные результаты"
+                                       context="{'default_project_id': id}">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="result_type"/>
+                                        <field name="name"/>
+                                        <field name="planned_value"/>
+                                        <field name="actual_value"/>
+                                    </list>
+                                </field>
 
-                        <group string="Resources" col="2">
-                            <field name="link_repo" readonly="not is_manager"/>
-                            <field name="link_docs" readonly="not is_manager"/>
-                            <field name="link_design" readonly="not is_manager"/>
-                            <field name="link_chat" readonly="not is_manager"/>
-                            <field name="link_meeting" readonly="not is_manager"/>
-                            <field name="link_ids" readonly="not is_manager" context="{'default_project_id': id}">
-                                <list editable="bottom">
-                                    <field name="name"/>
-                                    <field name="url"/>
-                                </list>
-                            </field>
-                        </group>
-                    </page>
+                                <!-- BLOCK 5: INDICATORS -->
+                                <field name="indicator_ids" readonly="not is_manager"
+                                       string="Показатели"
+                                       context="{'default_project_id': id}">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="unit"/>
+                                        <field name="method" optional="show"/>
+                                        <field name="planned_value"/>
+                                        <field name="actual_value"/>
+                                        <field name="justification_doc" optional="hide"/>
+                                    </list>
+                                </field>
 
-                    <!-- ===== TEAM PAGE ===== -->
-                    <page string="Team" name="university_project_team">
-                        <field name="member_ids" readonly="not is_manager" context="{'default_project_id': id}">
-                            <list editable="bottom">
-                                <field name="user_id"/>
-                                <field name="role_id"/>
-                                <field name="degree" readonly="1" optional="show"/>
-                                <field name="academic_direction" readonly="1" optional="show"/>
-                                <field name="role_code" column_invisible="True"/>
-                                <field name="is_current_user" column_invisible="True"/>
-                                <button
-                                    type="object"
-                                    name="action_open_employee_profile"
-                                    string="Профиль"
-                                    icon="fa-user"
-                                    class="btn-link"
-                                    invisible="not is_manager and not is_current_user"/>
-                            </list>
-                        </field>
-                    </page>
+                                <!-- BLOCK 6: EFFECTS -->
+                                <group string="Эффекты">
+                                    <group string="На уровне НИУ ВШЭ">
+                                        <field name="effect_hse" readonly="not is_manager" nolabel="1" colspan="2" class="border rounded p-2"/>
+                                    </group>
+                                    <group string="На отраслевом уровне">
+                                        <field name="effect_industry" readonly="not is_manager" nolabel="1" colspan="2" class="border rounded p-2"/>
+                                    </group>
+                                    <group string="На уровне РФ">
+                                        <field name="effect_rf" readonly="not is_manager" nolabel="1" colspan="2" class="border rounded p-2"/>
+                                    </group>
+                                </group>
 
-                    <!-- ===== ATTACHMENTS PAGE ===== -->
-                    <page string="Attachments" name="university_project_docs">
-                        <field name="document_ids" readonly="not is_manager" context="{'form_view_ref': 'project_management.view_university_project_document_form'}">
-                            <list editable="bottom">
-                                <field name="name"/>
-                                <field name="version_label" readonly="1"/>
-                                <field name="file_data" widget="binary" filename="file_name"/>
-                                <field name="file_name" column_invisible="True"/>
-                                <field name="uploaded_by" readonly="1"/>
-                                <field name="uploaded_at" readonly="1"/>
-                                <button
-                                    type="object"
-                                    name="action_create_new_version"
-                                    string="New Version"
-                                    icon="fa-files-o"
-                                    class="btn-link"
-                                    invisible="not id or not is_latest_version"/>
-                                <field name="is_latest_version" column_invisible="True"/>
-                            </list>
-                        </field>
-                    </page>
-                </xpath>
+                                <!-- BLOCK 7: REQUIREMENTS -->
+                                <group string="Требования к отчётности">
+                                    <field name="reporting_requirements" readonly="not is_manager" nolabel="1" colspan="2" class="border rounded p-2"/>
+                                </group>
+                                <group string="Прочие требования">
+                                    <field name="other_requirements" readonly="not is_manager" nolabel="1" colspan="2" class="border rounded p-2"/>
+                                </group>
 
-                <!-- ===== DATE VALIDATION MESSAGE ===== -->
-                <xpath expr="//field[@name='project_date_end']" position="after">
-                    <field name="date_error_msg" nolabel="1" class="text-danger fw-bold" invisible="not date_error_msg" colspan="2"/>
-                </xpath>
+                                <!-- BLOCK 8: SIGNATORIES -->
+                                <field name="signatory_ids" readonly="not is_manager"
+                                       string="Подписанты"
+                                       context="{'default_project_id': id}">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="user_id"/>
+                                        <field name="position"/>
+                                        <field name="sign_type"/>
+                                        <field name="from_partner"/>
+                                    </list>
+                                </field>
 
-                <!-- ===== DATE FIELD ATTRIBUTES ===== -->
-                <xpath expr="//field[@name='project_date_start']" position="attributes">
-                    <attribute name="on_change">1</attribute>
-                </xpath>
+                                <!-- BLOCK 9: RESOURCES -->
+                                <group string="Ресурсы и ссылки">
+                                    <group>
+                                        <field name="link_repo" readonly="not is_manager"/>
+                                        <field name="link_docs" readonly="not is_manager"/>
+                                        <field name="link_design" readonly="not is_manager"/>
+                                        <field name="link_chat" readonly="not is_manager"/>
+                                        <field name="link_meeting" readonly="not is_manager"/>
+                                    </group>
+                                    <field name="link_ids" readonly="not is_manager"
+                                           context="{'default_project_id': id}">
+                                        <list editable="bottom">
+                                            <field name="name"/>
+                                            <field name="url"/>
+                                        </list>
+                                    </field>
+                                </group>
 
-                <xpath expr="//field[@name='project_date_end']" position="attributes">
-                    <attribute name="on_change">1</attribute>
-                    <attribute name="decoration-danger">project_date_end &lt; project_date_start</attribute>
-                </xpath>
+                            </page>
 
+                            <!-- ========== TAB: DESCRIPTION ========== -->
+                            <page string="Описание" name="university_project_description">
+                                <group string="Цель проекта">
+                                    <field name="project_goal" readonly="not is_manager" nolabel="1" colspan="2" class="border rounded p-2"/>
+                                </group>
+                                <field name="objective_ids" readonly="not is_manager"
+                                       string="Задачи проекта"
+                                       context="{'default_project_id': id}">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </list>
+                                </field>
+                                <group string="Обоснование">
+                                    <field name="project_justification" readonly="not is_manager" nolabel="1" colspan="2" class="border rounded p-2"/>
+                                </group>
+                            </page>
+
+                            <!-- ========== TAB: TEAM ========== -->
+                            <page string="Команда" name="university_project_team">
+                                <field name="member_ids" readonly="not is_manager"
+                                       context="{'default_project_id': id}">
+                                    <list editable="bottom">
+                                        <field name="user_id"/>
+                                        <field name="role_id"/>
+                                        <field name="degree" readonly="1" optional="show"/>
+                                        <field name="academic_direction" readonly="1" optional="show"/>
+                                        <field name="role_code" column_invisible="True"/>
+                                        <field name="is_current_user" column_invisible="True"/>
+                                        <button type="object"
+                                            name="action_open_employee_profile"
+                                            string="Профиль"
+                                            icon="fa-user"
+                                            class="btn-link"
+                                            invisible="not is_manager and not is_current_user"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <!-- ========== TAB: DOCUMENTS ========== -->
+                            <page string="Документы" name="university_project_docs">
+                                <field name="document_ids" readonly="not is_manager"
+                                       context="{'form_view_ref': 'project_management.view_university_project_document_form'}">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="version_label" readonly="1"/>
+                                        <field name="file_data" widget="binary" filename="file_name"/>
+                                        <field name="file_name" column_invisible="True"/>
+                                        <field name="uploaded_by" readonly="1"/>
+                                        <field name="uploaded_at" readonly="1"/>
+                                        <button type="object"
+                                            name="action_create_new_version"
+                                            string="Новая версия"
+                                            icon="fa-files-o"
+                                            class="btn-link"
+                                            invisible="not id or not is_latest_version"/>
+                                        <field name="is_latest_version" column_invisible="True"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+
+                    <chatter reload_on_follower="True"/>
+
+                </form>
             </field>
         </record>
 

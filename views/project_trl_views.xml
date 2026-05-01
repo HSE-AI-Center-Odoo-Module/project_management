@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_university_trl_list" model="ir.ui.view">
+            <field name="name">university.project.trl.list</field>
+            <field name="model">university.project.trl</field>
+            <field name="arch" type="xml">
+                <list string="Уровни готовности технологий" editable="bottom">
+                    <field name="level" string="Уровень"/>
+                    <field name="name" string="Описание"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_university_trl_form" model="ir.ui.view">
+            <field name="name">university.project.trl.form</field>
+            <field name="model">university.project.trl</field>
+            <field name="arch" type="xml">
+                <form string="Уровень готовности технологии">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Описание уровня"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="level" string="Уровень (1–9)"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_university_project_trl" model="ir.actions.act_window">
+            <field name="name">УГТ (Уровни готовности технологий)</field>
+            <field name="res_model">university.project.trl</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

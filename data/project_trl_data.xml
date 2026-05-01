@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="trl_1" model="university.project.trl">
+            <field name="level">1</field>
+            <field name="name">Базовые принципы наблюдаются и описаны</field>
+        </record>
+
+        <record id="trl_2" model="university.project.trl">
+            <field name="level">2</field>
+            <field name="name">Технологическая концепция сформулирована</field>
+        </record>
+
+        <record id="trl_3" model="university.project.trl">
+            <field name="level">3</field>
+            <field name="name">Экспериментальное подтверждение концепции</field>
+        </record>
+
+        <record id="trl_4" model="university.project.trl">
+            <field name="level">4</field>
+            <field name="name">Валидация технологии в лабораторных условиях</field>
+        </record>
+
+        <record id="trl_5" model="university.project.trl">
+            <field name="level">5</field>
+            <field name="name">Валидация в близких к реальным условиях</field>
+        </record>
+
+        <record id="trl_6" model="university.project.trl">
+            <field name="level">6</field>
+            <field name="name">Демонстрация прототипа в реальных условиях</field>
+        </record>
+
+        <record id="trl_7" model="university.project.trl">
+            <field name="level">7</field>
+            <field name="name">Демонстрация системы в реальных условиях</field>
+        </record>
+
+        <record id="trl_8" model="university.project.trl">
+            <field name="level">8</field>
+            <field name="name">Система завершена и квалифицирована</field>
+        </record>
+
+        <record id="trl_9" model="university.project.trl">
+            <field name="level">9</field>
+            <field name="name">Реальная система апробирована в рабочих условиях</field>
+        </record>
+
+    </data>
+</odoo>
