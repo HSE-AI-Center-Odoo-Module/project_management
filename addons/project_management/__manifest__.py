@@ -40,6 +40,9 @@
         "views/employee_profile_views.xml",
         "views/menus.xml",
 
+        # Setup — must be last (references actions and groups defined above)
+        "data/admin_setup.xml",
+
     ],
     "assets": {
         "web.assets_backend": [

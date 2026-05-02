@@ -52,6 +52,23 @@ package.json
 /share/
 /src/
 
-# Python Virtual Environments
+# python Virtual Environments
 venv/
 .venv/
+
+# secrets
+.env
+.env.dev
+.env.prod
+.env.local
+
+# logs
+*.log
+
+# backups
+*.sql.gz
+*.dump
+
+# OS
+.DS_Store
+Thumbs.db

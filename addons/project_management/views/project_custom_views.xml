@@ -8,7 +8,7 @@
             <field name="model">project.project</field>
             <field name="priority">50</field>
             <field name="arch" type="xml">
-                <list string="University Projects" decoration-danger="project_status=='cancel'" decoration-muted="project_status=='done'" decoration-success="project_status=='active'">
+                <list string="Центр ИИ" decoration-danger="project_status=='cancel'" decoration-muted="project_status=='done'" decoration-success="project_status=='active'">
                     <field name="id" optional="hide"/>
                     <field name="name" string="Project Name"/>
                     <field name="name_en" optional="show"/>
@@ -105,7 +105,7 @@
 
     <!-- ========== PROJECT - ACTION ========== -->
     <record id="action_university_project_all" model="ir.actions.act_window">
-        <field name="name">University Projects</field>
+        <field name="name">Центр ИИ</field>
         <field name="res_model">project.project</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="search_view_id" ref="project.view_project_project_filter"/>
