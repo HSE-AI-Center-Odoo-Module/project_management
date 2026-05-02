@@ -21,6 +21,7 @@ from . import project_project
 # Team and organizational structure
 from . import project_member
 from . import project_stage
+from . import project_comment
 
 # ===== PROJECT TASKS =====
 # Task management

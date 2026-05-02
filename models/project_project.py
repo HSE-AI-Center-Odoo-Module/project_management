@@ -35,8 +35,8 @@ class Project(models.Model):
     )
 
     # ========== DATES ==========
-    project_date_start = fields.Date(string="Start Date")
-    project_date_end = fields.Date(string="End Date")
+    project_date_start = fields.Date(string="Start Date", tracking=True)
+    project_date_end = fields.Date(string="End Date", tracking=True)
     date_error_msg = fields.Char(compute="_compute_date_error_msg")
 
     # ========== EXTERNAL LINKS ==========
@@ -114,7 +114,7 @@ class Project(models.Model):
         store=False,
     )
     contact_info = fields.Char(string='Контактная информация')
-    budget = fields.Monetary(string='Бюджет', currency_field='currency_id')
+    budget = fields.Monetary(string='Бюджет', currency_field='currency_id', tracking=True)
     currency_id = fields.Many2one(
         'res.currency', string='Валюта',
         default=lambda self: self.env.ref('base.RUB', raise_if_not_found=False),
@@ -387,6 +387,7 @@ class Project(models.Model):
     def _build_task_board_action(self, project_id, action_name):
         self.ensure_one()
         kanban_view = self.env.ref('project_management.view_university_task_kanban_custom').id
+        form_view = self.env.ref('project_management.view_task_form_university').id
         return {
             'type': 'ir.actions.act_window',
             'name': action_name,
@@ -395,7 +396,7 @@ class Project(models.Model):
             'views': [
                 (kanban_view, 'kanban'),
                 (False, 'list'),
-                (False, 'form'),
+                (form_view, 'form'),
             ],
             'domain': self._task_board_domain(project_id),
             'context': {

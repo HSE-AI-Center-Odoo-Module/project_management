@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="project_management.hide_chatter_header"
+       t-inherit="mail.Chatter"
+       t-inherit-mode="extension">
+
+        <xpath expr="//div[contains(@class, 'o-mail-Chatter-topbar')]"
+               position="replace">
+            <div class="o-mail-Chatter-topbar d-flex justify-content-center align-items-center py-3">
+                <h2 class="mb-0 fw-bold text-center" style="font-size: 1.5rem; color: #333;">
+                    История изменений
+                </h2>
+            </div>
+        </xpath>
+
+    </t>
+</templates>

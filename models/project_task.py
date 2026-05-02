@@ -5,8 +5,8 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
-    date_start = fields.Date(string="Дата начала")
-    date_end = fields.Date(string="Дата конца")
+    date_start = fields.Date(string="Дата начала", tracking=True)
+    date_end = fields.Date(string="Дата конца", tracking=True)
     date_stage_error_msg = fields.Char(
         string="Date validation message",
         compute="_compute_date_stage_error_msg",
@@ -27,6 +27,11 @@ class ProjectTask(models.Model):
         "task_id",
         string="Approval Checklist",
     )
+    comment_ids = fields.One2many(
+        "university.project.comment",
+        "task_id",
+        string="Комментарии",
+    )
     approval_count = fields.Integer(
         compute="_compute_approval_progress",
         store=True,
@@ -44,6 +49,23 @@ class ProjectTask(models.Model):
     )
 
     is_manager = fields.Boolean(compute="_compute_is_manager")
+    has_approval = fields.Boolean(string="Согласование", default=False)
+
+    comment_count = fields.Integer(
+        compute="_compute_comment_count",
+        store=True,
+        string="Комментариев",
+    )
+    last_activity_date = fields.Datetime(
+        compute="_compute_last_activity",
+        store=True,
+        string="Последняя активность",
+    )
+    last_activity_by_manager = fields.Boolean(
+        compute="_compute_last_activity",
+        store=True,
+        string="Последний — менеджер",
+    )
 
     university_stage_id = fields.Many2one(
         "university.project.stage",
@@ -66,6 +88,7 @@ class ProjectTask(models.Model):
         ],
         default="0",
         string="Priority",
+        tracking=True,
     )
 
     stage_id = fields.Many2one(
@@ -167,3 +190,41 @@ class ProjectTask(models.Model):
             task.approval_count = total
             task.approval_done_count = done
             task.approval_progress = (done / total * 100.0) if total else 0.0
+
+    @api.depends("comment_ids")
+    def _compute_comment_count(self):
+        for task in self:
+            task.comment_count = len(task.comment_ids)
+
+    @api.depends(
+        "comment_ids", "comment_ids.author_id", "comment_ids.create_date",
+        "document_ids", "document_ids.uploaded_by", "document_ids.uploaded_at",
+        "write_uid", "write_date",
+    )
+    def _compute_last_activity(self):
+        def _is_manager(user, task):
+            if not user:
+                return False
+            if user.has_group("project_management.administrator"):
+                return True
+            return bool(task.project_id) and user in task.project_id.project_manager_id
+
+        for task in self:
+            # Собираем все события: (дата, пользователь)
+            events = []
+
+            for comment in task.comment_ids:
+                if comment.create_date and comment.author_id:
+                    events.append((comment.create_date, comment.author_id))
+
+            for doc in task.document_ids:
+                if doc.uploaded_at and doc.uploaded_by:
+                    events.append((doc.uploaded_at, doc.uploaded_by))
+
+            if events:
+                latest_date, latest_user = max(events, key=lambda e: e[0])
+                task.last_activity_date = latest_date
+                task.last_activity_by_manager = _is_manager(latest_user, task)
+            else:
+                task.last_activity_date = task.write_date
+                task.last_activity_by_manager = _is_manager(task.write_uid, task)

@@ -157,6 +157,20 @@ class UniversityTaskApprovalItem(models.Model):
                         "res_id": rec.id,
                     }
                 )
+        if "is_approved" in vals:
+            for rec in self:
+                if vals["is_approved"]:
+                    rec.task_id.message_post(
+                        body=_("<b>%(user)s</b> согласовал(а) пункт <i>%(item)s</i>.")
+                        % {"user": current_user.name, "item": rec.name},
+                        message_type="notification",
+                    )
+                else:
+                    rec.task_id.message_post(
+                        body=_("<b>%(user)s</b> отозвал(а) согласование пункта <i>%(item)s</i>.")
+                        % {"user": current_user.name, "item": rec.name},
+                        message_type="notification",
+                    )
         return result
 
     def unlink(self):
@@ -181,11 +195,6 @@ class UniversityTaskApprovalItem(models.Model):
                     "is_approved": True,
                     "approved_date": fields.Datetime.now(),
                 }
-            )
-            rec.task_id.message_post(
-                body=_("<b>%(user)s</b> approved checklist item <i>%(item)s</i>.")
-                % {"user": self.env.user.name, "item": rec.name},
-                message_type="notification",
             )
 
     def action_revoke(self):

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="project_management.PriorityBadge">
+        <!-- Режим просмотра — бейдж -->
+        <t t-if="props.readonly">
+            <span t-attf-class="pm-priority-badge {{ current.cls }}">
+                <t t-esc="current.label"/>
+            </span>
+        </t>
+        <!-- Режим редактирования — выпадающий список с цветом -->
+        <t t-else="">
+            <div class="pm-priority-select-wrap">
+                <select t-attf-class="pm-priority-select {{ current.cls }}"
+                        t-on-change="onChange">
+                    <t t-foreach="levels" t-as="lvl" t-key="lvl.value">
+                        <option t-att-value="lvl.value"
+                                t-att-selected="current.value === lvl.value">
+                            <t t-esc="lvl.label"/>
+                        </option>
+                    </t>
+                </select>
+            </div>
+        </t>
+    </t>
+</templates>
