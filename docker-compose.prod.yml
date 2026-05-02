@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:${POSTGRES_VERSION:-16}
-    env_file: .env.prod
+    env_file: .env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -23,11 +23,13 @@ services:
       -c work_mem=4MB
 
   odoo-perms:
-    image: alpine:3.20
+    image: odoo:${ODOO_VERSION:-18.0}
+    user: root
+    entrypoint: []
     command:
       - sh
       - -c
-      - mkdir -p /var/lib/odoo/sessions /var/log/odoo && chown -R 101:101 /var/lib/odoo /var/log/odoo
+      - mkdir -p /var/lib/odoo/sessions /var/lib/odoo/filestore /var/log/odoo && chown -R odoo:odoo /var/lib/odoo /var/log/odoo
     volumes:
       - odoo-web-data:/var/lib/odoo
       - odoo-logs:/var/log/odoo
@@ -35,7 +37,7 @@ services:
 
   odoo:
     image: odoo:${ODOO_VERSION:-18.0}
-    env_file: .env.prod
+    env_file: .env
     depends_on:
       db:
         condition: service_healthy
@@ -94,7 +96,7 @@ services:
 
   minio:
     image: minio/minio:latest
-    env_file: .env.prod
+    env_file: .env
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}

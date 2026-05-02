@@ -13,7 +13,7 @@ wait_for_postgres() {
 # Generate odoo.conf from environment variables
 # $1: "stdout" — no logfile (for init/update), anything else — log to file (for server)
 generate_config() {
-    mkdir -p /etc/odoo /var/lib/odoo/sessions
+    mkdir -p /etc/odoo /var/lib/odoo/sessions /var/lib/odoo/filestore
     mkdir -p /var/log/odoo || true
 
     if [ "${1}" = "stdout" ]; then
