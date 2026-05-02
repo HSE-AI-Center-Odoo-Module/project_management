@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:${POSTGRES_VERSION:-16}
+    env_file: .env.dev
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks: [backend]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  odoo:
+    image: odoo:${ODOO_VERSION:-18.0}
+    env_file: .env.dev
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST: db
+      PORT: 5432
+      USER: ${DB_USER}
+      PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      WORKERS: ${WORKERS:-2}
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
+      - ./docker/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/entrypoint.sh"]
+    command: odoo
+    restart: unless-stopped
+    networks: [backend]
+
+networks:
+  backend:
+
+volumes:
+  odoo-db-data:
+  odoo-web-data:

@@ -26,21 +26,24 @@ jobs:
     steps:
       - name: Create database backup
         run: |
-          mkdir -p /home/hseai/odoo-stack/backups
+          DEPLOY_DIR="/opt/project_management"
+          BACKUP_DIR="/opt/backups/odoo"
+          mkdir -p "$BACKUP_DIR"
 
-          BACKUP_NAME="hseai_backup_$(date +%Y%m%d_%H%M%S).sql.gz"
+          BACKUP_NAME="backup_$(date +%Y%m%d_%H%M%S).sql.gz"
           echo "Starting backup: $BACKUP_NAME..."
 
-          docker exec odoo-stack-db-1 pg_dump -U odoo odoo \
-            | gzip > /home/hseai/odoo-stack/backups/$BACKUP_NAME
+          docker compose -f "$DEPLOY_DIR/docker-compose.prod.yml" \
+            exec -T db pg_dump -U odoo odoo_prod \
+            | gzip > "$BACKUP_DIR/$BACKUP_NAME"
 
           echo "✅ Backup created: $BACKUP_NAME"
 
-          cd /home/hseai/odoo-stack/backups \
+          cd "$BACKUP_DIR" \
             && ls -t *.sql.gz 2>/dev/null | tail -n +11 | xargs -r rm -- || true
 
           echo "📦 Current backups:"
-          ls -lh /home/hseai/odoo-stack/backups/
+          ls -lh "$BACKUP_DIR/"
 
   # ==========================================
   # Деплой модуля
@@ -53,17 +56,17 @@ jobs:
       - name: Pull latest code to server
         run: |
           set -euo pipefail
-          MODULE_DIR="/home/hseai/odoo-stack/addons/project_management"
+          DEPLOY_DIR="/opt/project_management"
 
-          echo "📁 Working in: $MODULE_DIR"
+          echo "📁 Working in: $DEPLOY_DIR"
 
-          if [ ! -d "$MODULE_DIR/.git" ]; then
-            echo "❌ $MODULE_DIR is not a git repository!"
-            echo "Run manually: git clone <repo_url> $MODULE_DIR"
+          if [ ! -d "$DEPLOY_DIR/.git" ]; then
+            echo "❌ $DEPLOY_DIR is not a git repository!"
+            echo "Run manually: git clone <repo_url> $DEPLOY_DIR"
             exit 1
           fi
 
-          cd "$MODULE_DIR"
+          cd "$DEPLOY_DIR"
 
           echo "--- Current state ---"
           echo "Branch: $(git branch --show-current || echo 'detached HEAD')"
@@ -80,37 +83,26 @@ jobs:
       - name: Verify files are visible inside container
         run: |
           set -euo pipefail
+          DEPLOY_DIR="/opt/project_management"
 
           echo "--- Checking volume mount inside container ---"
-          docker exec odoo-stack-odoo-1 ls /mnt/extra-addons/project_management/ 2>/dev/null \
-            && echo "✅ Volume mount OK: /mnt/extra-addons" \
-            || docker exec odoo-stack-odoo-1 ls /usr/lib/python3/dist-packages/odoo/addons/project_management/ 2>/dev/null \
-            && echo "✅ Volume mount OK: built-in addons path" \
-            || echo "⚠️  Could not verify path inside container — check addons-path in odoo.conf"
+          docker compose -f "$DEPLOY_DIR/docker-compose.prod.yml" \
+            exec -T odoo ls /mnt/extra-addons/project_management/ \
+            && echo "✅ Volume mount OK" \
+            || echo "⚠️  Could not verify path inside container"
 
       - name: Update module in Odoo database
-        env:
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_HOST: db
-          DB_USER: odoo
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           set -euo pipefail
+          DEPLOY_DIR="/opt/project_management"
 
-          echo "🔄 Running odoo -u project_management inside container..."
+          echo "🔄 Running update via entrypoint..."
 
-          docker exec odoo-stack-odoo-1 odoo \
-            -d "$DB_NAME" \
-            --db_host="$DB_HOST" \
-            --db_user="$DB_USER" \
-            --db_password="$DB_PASSWORD" \
-            -u project_management \
-            --stop-after-init \
-            --no-http \
-            --log-level=info \
-          2>&1 | tee /tmp/odoo-update.log
+          docker compose -f "$DEPLOY_DIR/docker-compose.prod.yml" \
+            run --rm odoo update \
+            2>&1 | tee /tmp/odoo-update.log
 
-          if grep -qE "^[0-9].*ERROR.*project_management" /tmp/odoo-update.log; then
+          if grep -qE "ERROR.*project_management" /tmp/odoo-update.log; then
             echo "❌ Module update failed — errors found:"
             grep -E "ERROR|WARNING.*project_management" /tmp/odoo-update.log | tail -30
             exit 1
@@ -121,7 +113,8 @@ jobs:
       - name: Restart Odoo
         if: always()
         run: |
-          docker restart odoo-stack-odoo-1
+          DEPLOY_DIR="/opt/project_management"
+          docker compose -f "$DEPLOY_DIR/docker-compose.prod.yml" restart odoo
           echo "✅ Odoo restarted"
 
       - name: Upload update log
@@ -145,7 +138,7 @@ jobs:
           sleep 25
 
           HTTP_CODE=$(curl -s -L -o /dev/null -w "%{http_code}" \
-            https://hseai.smartlilac.com/web/login || echo "000")
+            https://projecthse.smartlilac.com/web/login || echo "000")
 
           if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "303" ]; then
             echo "✅ Site is accessible (HTTP $HTTP_CODE)"
