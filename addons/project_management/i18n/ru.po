@@ -1020,7 +1020,7 @@ msgstr "Тип университетского проекта"
 #: model:ir.actions.act_window,name:project_management.action_university_project_all
 #: model_terms:ir.ui.view,arch_db:project_management.view_university_project_list
 msgid "University Projects"
-msgstr "Университетские проекты"
+msgstr "Центр ИИ"
 
 #. module: project_management
 #: model:ir.model,name:project_management.model_university_project_link
